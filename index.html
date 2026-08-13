@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plantão Ref</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE8;
+    --card:#FBFBF8;
+    --ink:#1B2430;
+    --ink-soft:#4A5262;
+    --line:#CDD0C6;
+    --accent:#0F5C4E;
+    --warn:#B5651D;
+    --crit:#9B2226;
+    --chip-bg:#FFFFFF;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:radial-gradient(circle at 1px 1px, rgba(27,36,48,0.05) 1px, transparent 0);
+    background-size:22px 22px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    padding-bottom:90px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(237,238,232,0.94);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:14px 18px 12px;
+  }
+  .headrow{display:flex; justify-content:space-between; align-items:flex-start; gap:14px;}
+  .brandright{display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex:0 0 auto;}
+  .doctorname{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600; font-size:14px; color:var(--ink);
+    text-align:right; line-height:1.25; white-space:nowrap;
+  }
+  .doctorname .role{
+    display:block; font-family:'IBM Plex Mono', monospace; font-size:10px;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); font-weight:500;
+    margin-top:1px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); font-weight:600;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(24px,5vw,34px);
+    margin:2px 0 2px; letter-spacing:-0.01em;
+  }
+  .subtitle{font-size:13px; color:var(--ink-soft); margin-bottom:12px;}
+  .iconbtn{
+    background:var(--chip-bg); border:1px solid var(--line);
+    border-radius:8px; padding:8px 10px; cursor:pointer;
+    font-size:15px; color:var(--ink-soft); flex:0 0 auto;
+  }
+  .iconbtn:hover{color:var(--ink); border-color:var(--ink);}
+  .iconbtn.on{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+  .searchbar{
+    display:flex; align-items:center; gap:8px;
+    background:var(--chip-bg); border:1.5px solid var(--line);
+    border-radius:999px; padding:9px 16px; max-width:640px;
+  }
+  .searchbar svg{flex:0 0 auto; opacity:0.55;}
+  .searchbar input{
+    border:none; outline:none; background:transparent;
+    font-family:'IBM Plex Mono', monospace; font-size:14px; width:100%; color:var(--ink);
+  }
+  .searchbar input::placeholder{color:#9AA0A6;}
+  #resultCount{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft); margin-top:6px;}
+
+  .catbar{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
+  .catchip{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.02em;
+    border:1px solid var(--line); background:var(--chip-bg); border-radius:999px;
+    padding:5px 10px 5px 8px; cursor:pointer; display:flex; align-items:center; gap:6px;
+    color:var(--ink-soft); transition:transform .12s ease, background .12s ease;
+  }
+  .catchip:hover{transform:translateY(-1px);}
+  .catchip.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .catdot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
+
+  main{max-width:900px; margin:0 auto; padding:0 18px;}
+
+  .index-wrap{margin-top:22px;}
+  .index-group{margin-bottom:18px;}
+  .index-group-label{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:13px;
+    text-transform:uppercase; letter-spacing:.06em; display:flex; align-items:center; gap:8px;
+    margin-bottom:8px; color:var(--ink);
+  }
+  .index-group-label .bar{width:14px; height:14px; border-radius:4px; flex:0 0 auto;}
+  .pillrow{display:flex; flex-wrap:wrap; gap:7px;}
+  .pill{
+    font-family:'IBM Plex Sans', sans-serif; font-size:13px; font-weight:500;
+    background:var(--chip-bg); border:1px solid var(--line); border-left-width:4px;
+    border-radius:8px; padding:7px 12px; cursor:pointer; color:var(--ink);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .pill:hover{transform:translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,0.08);}
+  .pill.hidden, .index-group.hidden, .card.hidden{display:none !important;}
+
+  .toolbar{display:flex; gap:10px; margin:26px 0 14px; flex-wrap:wrap; font-family:'IBM Plex Mono', monospace; font-size:12px;}
+  .toolbar button{background:var(--card); border:1px solid var(--line); border-radius:6px; padding:6px 10px; cursor:pointer; color:var(--ink-soft);}
+  .toolbar button:hover{color:var(--ink); border-color:var(--ink);}
+  .toolbar button.primary{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+  .content-title{
+    font-family:'Space Grotesk', sans-serif; font-size:18px; margin:34px 0 10px;
+    padding-top:14px; border-top:2px solid var(--ink);
+  }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-left-width:5px;
+    border-radius:var(--radius); margin-bottom:12px; overflow:hidden;
+  }
+  .card > summary{
+    list-style:none; cursor:pointer; padding:14px 16px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:15px;
+  }
+  .card > summary::-webkit-details-marker{display:none;}
+  .card > summary .chev{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft);
+    transition:transform .18s ease; flex:0 0 auto;
+  }
+  .card[open] > summary .chev{transform:rotate(90deg);}
+  .card .catlabel{
+    font-family:'IBM Plex Mono', monospace; font-size:10px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--ink-soft); font-weight:500; margin-right:auto; margin-left:10px;
+  }
+  .card-body{padding:0 18px 18px; font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:#252d38;}
+  .card-body p{margin:0 0 10px;}
+  .rt{font-family:'IBM Plex Sans', sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--accent); margin-top:14px !important;}
+  .sh{font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:13px; color:var(--ink); background:#EFF1EA; display:inline-block; padding:3px 8px; border-radius:5px;}
+  .med{background:#F3F4EF; border:1px solid #DFE2D8; border-radius:7px; padding:10px 12px; margin:8px 0;}
+  .med-name{font-weight:600; color:var(--ink); margin:0 0 3px !important;}
+  .med-dose{margin:0 !important; color:#3A4150;}
+  .med-dose + .med-dose{margin-top:4px !important;}
+  ul.rxlist{margin:6px 0 12px; padding-left:20px;}
+  ul.rxlist li{margin-bottom:5px;}
+  .note{border-radius:7px; padding:9px 12px; font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; line-height:1.5;}
+  .note.warn{background:#FBF0E3; border:1px solid #E7C79A; color:#7A4413;}
+  .note.crit{background:#FBEAEA; border:1px solid #E7ABAB; color:#7A1F22;}
+  .legalbanner{background:#EDEDED; border:1.5px solid #B8B8B8; border-radius:8px; padding:12px 14px; font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; color:#2A2A2A; margin-bottom:14px;}
+  .legalbanner b{color:#000;}
+  strong{color:var(--ink);}
+  .redflags{
+    background:#FFF4E9; border:1.5px solid #E8B278; border-radius:8px;
+    padding:10px 14px 12px; margin:14px 0; font-family:'IBM Plex Sans', sans-serif;
+  }
+  .rf-title{
+    font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:#8A4B0F; margin:0 0 6px !important;
+  }
+  .rf-list{margin:0; padding-left:20px; font-size:12.5px; color:#5C3A12; line-height:1.6;}
+  .rf-list li{margin-bottom:3px;}
+
+  /* ---------- EDIT MODE ---------- */
+  .cardctrls{display:flex; gap:6px; flex:0 0 auto;}
+  .cardctrls button{
+    border:1px solid var(--line); background:#fff; border-radius:6px;
+    font-size:12px; padding:4px 8px; cursor:pointer; color:var(--ink-soft);
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .cardctrls button:hover{color:var(--ink); border-color:var(--ink);}
+  .cardctrls button.del:hover{color:var(--crit); border-color:var(--crit);}
+
+  .editform{padding:14px 18px 18px; background:#F6F6F1; border-top:1px dashed var(--line);}
+  .editform label{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-size:11px;
+    font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft);
+    margin:10px 0 4px;
+  }
+  .editform input[type=text], .editform select, .editform textarea{
+    width:100%; border:1px solid var(--line); border-radius:7px; padding:9px 10px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; background:#fff; color:var(--ink);
+  }
+  .editform textarea{min-height:220px; resize:vertical; line-height:1.5;}
+  .editform .helptext{font-family:'IBM Plex Sans', sans-serif; font-size:11.5px; color:var(--ink-soft); margin-top:6px; line-height:1.5;}
+  .editform .rowbtns{display:flex; gap:8px; margin-top:14px;}
+  .editform .rowbtns button{
+    font-family:'IBM Plex Sans', sans-serif; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:7px; cursor:pointer; border:1px solid var(--line); background:#fff;
+  }
+  .editform .rowbtns button.save{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+  .newtopic-btn{
+    position:fixed; right:18px; bottom:78px; z-index:60;
+    background:var(--accent); color:#fff; border:none; border-radius:999px;
+    padding:13px 18px; font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.18); cursor:pointer;
+  }
+
+  .unsavedbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:70;
+    background:var(--ink); color:#fff; padding:12px 18px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    font-family:'IBM Plex Sans', sans-serif; font-size:13px;
+    transform:translateY(110%); transition:transform .22s ease;
+  }
+  .unsavedbar.show{transform:translateY(0);}
+  .unsavedbar .actions{display:flex; gap:8px;}
+  .unsavedbar button{
+    border:none; border-radius:7px; padding:9px 14px; font-weight:600; cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif; font-size:13px;
+  }
+  .unsavedbar button.save{background:var(--accent); color:#fff;}
+  .unsavedbar button.discard{background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.4);}
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(20,24,30,0.55); z-index:100;
+    display:none; align-items:flex-start; justify-content:center; padding:40px 16px; overflow-y:auto;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:#fff; border-radius:12px; max-width:480px; width:100%;
+    padding:22px; font-family:'IBM Plex Sans', sans-serif;
+  }
+  .modal h2{font-family:'Space Grotesk', sans-serif; font-size:19px; margin:0 0 6px;}
+  .modal p.desc{font-size:13px; color:var(--ink-soft); line-height:1.5; margin-bottom:16px;}
+  .modal label{display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin:12px 0 4px;}
+  .modal input{width:100%; border:1px solid var(--line); border-radius:7px; padding:10px; font-family:'IBM Plex Mono', monospace; font-size:13px;}
+  .modal .rowbtns{display:flex; gap:8px; margin-top:18px;}
+  .modal .rowbtns button{flex:1; padding:10px; border-radius:7px; font-weight:600; cursor:pointer; border:1px solid var(--line); background:#fff; font-family:'IBM Plex Sans', sans-serif;}
+  .modal .rowbtns button.save{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .modal .status{font-size:12.5px; margin-top:12px; padding:9px 11px; border-radius:7px; display:none;}
+  .modal .status.show{display:block;}
+  .modal .status.ok{background:#E6F4EE; color:#0F5C4E;}
+  .modal .status.err{background:#FBEAEA; color:#7A1F22;}
+  .modal details{margin-top:14px; font-size:12.5px; color:var(--ink-soft);}
+
+  .toast{
+    position:fixed; top:16px; left:50%; transform:translateX(-50%) translateY(-140%);
+    background:var(--ink); color:#fff; padding:11px 18px; border-radius:8px;
+    font-family:'IBM Plex Sans', sans-serif; font-size:13px; z-index:200;
+    transition:transform .25s ease; max-width:90vw; text-align:center;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast.err{background:var(--crit);}
+  .toast.ok{background:var(--accent);}
+
+  footer{max-width:900px; margin:40px auto 0; padding:18px; font-family:'IBM Plex Sans', sans-serif; font-size:12px; color:var(--ink-soft); border-top:1px solid var(--line);}
+  .flash{animation:flash 1.1s ease;}
+  @keyframes flash{0%{background:#DCEEE8;} 100%{background:var(--card);}}
+  .loading{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft); padding:40px 0; text-align:center;}
+
+  @media (max-width:480px){
+    .headrow{flex-direction:column; align-items:flex-start; gap:10px;}
+    .brandright{align-items:flex-start; width:100%;}
+    .doctorname{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="headrow">
+    <div>
+      <div class="eyebrow">Referência clínica pessoal</div>
+      <h1>Plantão Ref</h1>
+      <div class="subtitle">Pronto-Socorro · Adultos · sincronizado com o GitHub</div>
+    </div>
+    <div class="brandright">
+      <div class="doctorname">Dr. Phylúvio Cintra<span class="role">Santa Casa de Capivari</span></div>
+      <div style="display:flex; gap:6px;">
+        <button class="iconbtn" id="editModeBtn" title="Modo edição">✎ Editar</button>
+        <button class="iconbtn" id="settingsBtn" title="Configurações de sincronização">⚙︎</button>
+      </div>
+    </div>
+  </div>
+  <div class="searchbar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="searchInput" type="text" placeholder="Buscar tema (ex: dengue, gota, nitrofurantoína...)" autocomplete="off">
+  </div>
+  <div id="resultCount"></div>
+  <div class="catbar" id="catbar"></div>
+</header>
+
+<main>
+  <div id="loadingMsg" class="loading">Carregando protocolos…</div>
+  <div class="index-wrap" id="indexWrap"></div>
+
+  <div class="toolbar" id="toolbar" style="display:none;">
+    <button id="expandAll">expandir tudo</button>
+    <button id="collapseAll">recolher tudo</button>
+  </div>
+
+  <div class="content-title" id="contentTitle" style="display:none;">Protocolos</div>
+  <div id="cardsWrap"></div>
+</main>
+
+<footer>
+  Documento de apoio pessoal à decisão clínica — não substitui julgamento médico individualizado, avaliação presencial, protocolos institucionais vigentes nem bulas oficiais dos medicamentos.
+</footer>
+
+<button class="newtopic-btn" id="newTopicBtn" style="display:none;">+ Novo tema</button>
+
+<div class="unsavedbar" id="unsavedBar">
+  <span>Alterações não sincronizadas com o GitHub.</span>
+  <div class="actions">
+    <button class="discard" id="discardBtn">Descartar</button>
+    <button class="save" id="saveGithubBtn">Salvar no GitHub</button>
+  </div>
+</div>
+
+<div class="overlay" id="settingsOverlay">
+  <div class="modal">
+    <h2>Sincronização com GitHub</h2>
+    <p class="desc">Preencha uma vez só. Esses dados ficam salvos apenas neste navegador (localStorage) — nunca são enviados a nenhum lugar além da API do GitHub.</p>
+    <label>Usuário/organização do GitHub</label>
+    <input type="text" id="cfgOwner" placeholder="phyluviocintra-source">
+    <label>Repositório</label>
+    <input type="text" id="cfgRepo" placeholder="Plant-o-PS-adulto">
+    <label>Branch</label>
+    <input type="text" id="cfgBranch" placeholder="main">
+    <label>Caminho do arquivo de dados</label>
+    <input type="text" id="cfgPath" placeholder="data.json">
+    <label>Token de acesso pessoal (fine-grained)</label>
+    <input type="password" id="cfgToken" placeholder="github_pat_...">
+    <details>
+      <summary>Como gerar o token</summary>
+      1. No GitHub, vá em Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.<br>
+      2. Em "Repository access", escolha "Only select repositories" e selecione apenas este repositório.<br>
+      3. Em "Permissions" → "Repository permissions" → "Contents", selecione "Read and write".<br>
+      4. Gere e copie o token (começa com github_pat_) — ele só aparece uma vez.<br>
+      5. Cole aqui em cima. Guarde uma cópia em local seguro caso precise reconfigurar depois.
+    </details>
+    <div class="status" id="settingsStatus"></div>
+    <div class="rowbtns">
+      <button id="settingsCancel">Cancelar</button>
+      <button class="save" id="settingsSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ STATE ============ */
+let CATS = {};
+let SECTIONS = [];
+let dirty = false;
+let currentSha = null; // sha of data.json on GitHub, for updates
+const LS_CFG = 'psplantao_ghconfig';
+
+/* ============ MINI-FORMATO ============
+RT: rótulo de via   |  SH: subtítulo
+MD: nome do medicamento (inicia bloco)  |  DS: posologia (linha sob o medicamento)
+TX: parágrafo simples  |  LI: item de lista
+WN: alerta âmbar  |  CR: alerta crítico  |  LB: banner legal
+RF: pergunta obrigatória (red flag) — agrupa em um bloco "🚩 Perguntar sempre"
+================================== */
+
+function inline(t){ return t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); }
+
+function parseRaw(raw){
+  const lines = raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+  let html=''; let inMed=false; let inList=false; let inRF=false;
+  function closeMed(){ if(inMed){ html+='</div>'; inMed=false; } }
+  function closeList(){ if(inList){ html+='</ul>'; inList=false; } }
+  function closeRF(){ if(inRF){ html+='</ul></div>'; inRF=false; } }
+  for(const line of lines){
+    const code=line.slice(0,3); const val=line.slice(3).trim();
+    if(code==='RF:'){
+      closeMed(); closeList();
+      if(!inRF){ html+='<div class="redflags"><p class="rf-title">🚩 Perguntar sempre / não esquecer</p><ul class="rf-list">'; inRF=true; }
+      html+=`<li>${inline(val)}</li>`;
+      continue;
+    }
+    closeRF();
+    if(code==='RT:'){ closeMed(); closeList(); html+=`<p class="rt">${inline(val)}</p>`; }
+    else if(code==='SH:'){ closeMed(); closeList(); html+=`<p class="sh">${inline(val)}</p>`; }
+    else if(code==='MD:'){ closeList(); closeMed(); html+=`<div class="med"><p class="med-name">${inline(val)}</p>`; inMed=true; }
+    else if(code==='DS:'){ html+=`<p class="med-dose">${inline(val)}</p>`; }
+    else if(code==='TX:'){ closeMed(); closeList(); html+=`<p class="tx">${inline(val)}</p>`; }
+    else if(code==='LI:'){ closeMed(); if(!inList){ html+='<ul class="rxlist">'; inList=true; } html+=`<li>${inline(val)}</li>`; }
+    else if(code==='WN:'){ closeMed(); closeList(); html+=`<p class="note warn">⚠️ ${inline(val)}</p>`; }
+    else if(code==='CR:'){ closeMed(); closeList(); html+=`<p class="note crit">❗ ${inline(val)}</p>`; }
+    else if(code==='LB:'){ closeMed(); closeList(); html+=`<div class="legalbanner">⚠️ <b>ATENÇÃO — LEIA ANTES DE USAR ESTE MODELO:</b><br>${inline(val)}</div>`; }
+  }
+  closeMed(); closeList(); closeRF();
+  return html;
+}
+
+/* ============ GITHUB CONFIG ============ */
+function getCfg(){
+  try{ return JSON.parse(localStorage.getItem(LS_CFG) || '{}'); }catch(e){ return {}; }
+}
+function setCfg(cfg){ localStorage.setItem(LS_CFG, JSON.stringify(cfg)); }
+function hasCfg(){ const c=getCfg(); return c.owner && c.repo && c.token; }
+
+function utf8_to_b64(str){ return btoa(unescape(encodeURIComponent(str))); }
+function b64_to_utf8(str){ return decodeURIComponent(escape(atob(str))); }
+
+async function ghApiUrl(){
+  const c=getCfg();
+  const path = c.path || 'data.json';
+  return `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${encodeURIComponent(path)}`;
+}
+
+async function fetchDataFromGithub(){
+  const c=getCfg();
+  if(!c.owner || !c.repo) return null;
+  const path = c.path || 'data.json';
+  try{
+    const headers = c.token ? {Authorization:`Bearer ${c.token}`, Accept:'application/vnd.github+json'} : {Accept:'application/vnd.github+json'};
+    const res = await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/${encodeURIComponent(path)}?ref=${c.branch||'main'}`, {headers});
+    if(res.status===404){ currentSha=null; return null; }
+    if(!res.ok){ throw new Error('HTTP '+res.status); }
+    const json = await res.json();
+    currentSha = json.sha;
+    const text = b64_to_utf8(json.content.replace(/\n/g,''));
+    return JSON.parse(text);
+  }catch(e){
+    console.warn('Falha ao buscar data.json do GitHub', e);
+    return null;
+  }
+}
+
+async function saveDataToGithub(){
+  const c=getCfg();
+  if(!c.owner || !c.repo || !c.token){ showToast('Configure a sincronização primeiro (⚙︎).', true); openSettings(); return; }
+  const path = c.path || 'data.json';
+  const btn = document.getElementById('saveGithubBtn');
+  btn.disabled = true; btn.textContent = 'Salvando…';
+  try{
+    const payload = { cats: CATS, sections: SECTIONS };
+    const contentB64 = utf8_to_b64(JSON.stringify(payload, null, 2));
+    const body = {
+      message: 'Atualiza notas de plantão via editor do site',
+      content: contentB64,
+      branch: c.branch || 'main'
+    };
+    if(currentSha) body.sha = currentSha;
+    const res = await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/${encodeURIComponent(path)}`, {
+      method:'PUT',
+      headers:{
+        Authorization:`Bearer ${c.token}`,
+        Accept:'application/vnd.github+json',
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const json = await res.json();
+    if(!res.ok){ throw new Error(json.message || ('HTTP '+res.status)); }
+    currentSha = json.content.sha;
+    dirty = false;
+    updateUnsavedBar();
+    showToast('Salvo no GitHub. O site atualiza em ~1 minuto.', false);
+  }catch(e){
+    console.error(e);
+    showToast('Erro ao salvar: '+e.message, true);
+  }finally{
+    btn.disabled = false; btn.textContent = 'Salvar no GitHub';
+  }
+}
+
+/* ============ UI HELPERS ============ */
+function showToast(msg, isErr){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(isErr?' err':' ok');
+  setTimeout(()=>{ t.className='toast'; }, 3600);
+}
+function markDirty(){ dirty=true; updateUnsavedBar(); }
+function updateUnsavedBar(){
+  document.getElementById('unsavedBar').classList.toggle('show', dirty);
+}
+
+let editMode = false;
+function setEditMode(on){
+  editMode = on;
+  document.getElementById('editModeBtn').classList.toggle('on', on);
+  document.getElementById('newTopicBtn').style.display = on ? 'block' : 'none';
+  renderAll();
+}
+
+/* ============ BUILD PAGE ============ */
+const catbar = document.getElementById('catbar');
+const indexWrap = document.getElementById('indexWrap');
+const cardsWrap = document.getElementById('cardsWrap');
+let activeCat = null;
+
+function buildCatbar(){
+  catbar.innerHTML = '';
+  const allChip = document.createElement('div');
+  allChip.className = 'catchip' + (activeCat===null ? ' active' : '');
+  allChip.textContent = 'Todos';
+  allChip.onclick = () => { activeCat=null; buildCatbar(); applyFilters(); };
+  catbar.appendChild(allChip);
+  Object.keys(CATS).forEach(key=>{
+    const chip = document.createElement('div');
+    chip.className = 'catchip' + (activeCat===key ? ' active' : '');
+    chip.dataset.cat = key;
+    chip.innerHTML = `<span class="catdot" style="background:${CATS[key].color}"></span>${CATS[key].label}`;
+    chip.onclick = () => { activeCat=key; buildCatbar(); applyFilters(); };
+    catbar.appendChild(chip);
+  });
+}
+
+function catOptionsHtml(selected){
+  return Object.keys(CATS).map(k=>`<option value="${k}" ${k===selected?'selected':''}>${CATS[k].label}</option>`).join('');
+}
+
+function buildIndex(){
+  indexWrap.innerHTML = '';
+  const grouped = {};
+  SECTIONS.forEach(s=>{ (grouped[s.cat] = grouped[s.cat]||[]).push(s); });
+  Object.keys(CATS).forEach(catKey=>{
+    if(!grouped[catKey]) return;
+    const group = document.createElement('div');
+    group.className = 'index-group';
+    group.dataset.cat = catKey;
+    group.innerHTML = `<div class="index-group-label"><span class="bar" style="background:${CATS[catKey].color}"></span>${CATS[catKey].label}</div>`;
+    const row = document.createElement('div');
+    row.className = 'pillrow';
+    grouped[catKey].forEach(sec=>{
+      const pill = document.createElement('button');
+      pill.className = 'pill';
+      pill.style.borderLeftColor = CATS[catKey].color;
+      pill.textContent = sec.title;
+      pill.dataset.title = sec.title.toLowerCase();
+      pill.dataset.id = sec.id;
+      pill.onclick = () => jumpTo(sec.id);
+      row.appendChild(pill);
+    });
+    group.appendChild(row);
+    indexWrap.appendChild(group);
+  });
+}
+
+function editFormHtml(sec){
+  return `
+    <div class="editform" data-id="${sec.id}">
+      <label>Título</label>
+      <input type="text" class="ef-title" value="${sec.title.replace(/"/g,'&quot;')}">
+      <label>Categoria</label>
+      <select class="ef-cat">${catOptionsHtml(sec.cat)}</select>
+      <label>Conteúdo (formato de linhas — veja legenda abaixo)</label>
+      <textarea class="ef-raw" spellcheck="false">${sec.raw.replace(/</g,'&lt;')}</textarea>
+      <div class="helptext">
+        Prefixos por linha: <b>RT:</b> rótulo de via (USO ORAL...) · <b>SH:</b> subtítulo · <b>MD:</b> nome do medicamento · <b>DS:</b> posologia (linha logo após um MD:) · <b>TX:</b> texto simples · <b>LI:</b> item de lista · <b>WN:</b> alerta âmbar · <b>CR:</b> alerta crítico (vermelho) · <b>RF:</b> pergunta obrigatória / red flag (agrupa em bloco "🚩 perguntar sempre") · <b>LB:</b> banner de aviso legal. Use **texto** para negrito.
+      </div>
+      <div class="rowbtns">
+        <button class="cancel">Cancelar</button>
+        <button class="save">Salvar alteração</button>
+      </div>
+    </div>`;
+}
+
+function buildCards(){
+  cardsWrap.innerHTML = '';
+  SECTIONS.forEach(sec=>{
+    const details = document.createElement('details');
+    details.className = 'card';
+    details.id = sec.id;
+    details.dataset.cat = sec.cat;
+    details.dataset.title = sec.title.toLowerCase();
+    details.style.borderLeftColor = CATS[sec.cat] ? CATS[sec.cat].color : '#999';
+
+    const summary = document.createElement('summary');
+    let ctrls = '';
+    if(editMode){
+      ctrls = `<span class="cardctrls">
+        <button class="editbtn" type="button">✎ editar</button>
+        <button class="del" type="button">🗑</button>
+      </span>`;
+    }
+    summary.innerHTML = `<span>${sec.title}</span><span class="catlabel">${CATS[sec.cat]?CATS[sec.cat].label:sec.cat}</span>${ctrls}<span class="chev">▸</span>`;
+    details.appendChild(summary);
+
+    const body = document.createElement('div');
+    body.className = 'card-body';
+    body.innerHTML = parseRaw(sec.raw);
+    details.appendChild(body);
+
+    cardsWrap.appendChild(details);
+
+    if(editMode){
+      summary.querySelector('.editbtn').onclick = (e)=>{ e.preventDefault(); e.stopPropagation(); openEditForm(details, sec); };
+      summary.querySelector('.del').onclick = (e)=>{ e.preventDefault(); e.stopPropagation(); deleteSection(sec.id); };
+    }
+  });
+}
+
+function openEditForm(details, sec){
+  if(details.querySelector('.editform')) return; // já aberto
+  details.open = true;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = editFormHtml(sec);
+  const form = wrap.firstElementChild;
+  details.appendChild(form);
+  form.querySelector('.cancel').onclick = ()=> form.remove();
+  form.querySelector('.save').onclick = ()=>{
+    const newTitle = form.querySelector('.ef-title').value.trim();
+    const newCat = form.querySelector('.ef-cat').value;
+    const newRaw = form.querySelector('.ef-raw').value;
+    if(!newTitle){ showToast('O título não pode ficar vazio.', true); return; }
+    const idx = SECTIONS.findIndex(s=>s.id===sec.id);
+    if(idx>-1){
+      SECTIONS[idx] = {...SECTIONS[idx], title:newTitle, cat:newCat, raw:newRaw};
+      markDirty();
+      renderAll();
+      showToast('Alteração aplicada (ainda não salva no GitHub).', false);
+      setTimeout(()=>jumpTo(sec.id), 50);
+    }
+  };
+}
+
+function deleteSection(id){
+  if(!confirm('Remover este tema? Isso só é permanente depois de "Salvar no GitHub".')) return;
+  SECTIONS = SECTIONS.filter(s=>s.id!==id);
+  markDirty();
+  renderAll();
+}
+
+function slugify(str){
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || ('tema-'+Date.now());
+}
+
+document.getElementById('newTopicBtn').addEventListener('click', ()=>{
+  const title = prompt('Título do novo tema:');
+  if(!title) return;
+  let id = slugify(title);
+  if(SECTIONS.some(s=>s.id===id)) id = id+'-'+Date.now();
+  const firstCat = Object.keys(CATS)[0];
+  const newSec = { id, title, cat: firstCat, raw: 'TX:Preencha o conteúdo deste tema.' };
+  SECTIONS.push(newSec);
+  markDirty();
+  renderAll();
+  setTimeout(()=>{
+    const details = document.getElementById(id);
+    if(details) openEditForm(details, newSec);
+  }, 50);
+});
+
+function jumpTo(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.open = true;
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+
+function normalize(str){ return str.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
+
+function applyFilters(){
+  const q = normalize(document.getElementById('searchInput').value.trim());
+  let visibleCount = 0;
+  document.querySelectorAll('.pill').forEach(pill=>{
+    const sec = SECTIONS.find(s=>s.id===pill.dataset.id);
+    if(!sec) return;
+    const matchesCat = (activeCat===null || sec.cat===activeCat);
+    const matchesQuery = q==='' || normalize(pill.dataset.title).includes(q);
+    const show = matchesCat && matchesQuery;
+    pill.classList.toggle('hidden', !show);
+    if(show) visibleCount++;
+  });
+  document.querySelectorAll('.index-group').forEach(g=>{
+    const anyVisible = [...g.querySelectorAll('.pill')].some(p=>!p.classList.contains('hidden'));
+    g.classList.toggle('hidden', !anyVisible);
+  });
+  document.querySelectorAll('.card').forEach(card=>{
+    const matchesCat = (activeCat===null || card.dataset.cat===activeCat);
+    const matchesQuery = q==='' || normalize(card.dataset.title).includes(q);
+    card.classList.toggle('hidden', !(matchesCat && matchesQuery));
+  });
+  document.getElementById('resultCount').textContent = q ? `${visibleCount} tema(s) encontrado(s)` : '';
+}
+
+function renderAll(){
+  buildCatbar();
+  buildIndex();
+  buildCards();
+  applyFilters();
+}
+
+const searchInputEl = document.getElementById('searchInput');
+searchInputEl.addEventListener('input', applyFilters);
+searchInputEl.addEventListener('keyup', applyFilters);
+searchInputEl.addEventListener('search', applyFilters);
+document.getElementById('expandAll').onclick = () => document.querySelectorAll('.card').forEach(c=>c.open=true);
+document.getElementById('collapseAll').onclick = () => document.querySelectorAll('.card').forEach(c=>c.open=false);
+document.getElementById('saveGithubBtn').onclick = saveDataToGithub;
+document.getElementById('discardBtn').onclick = async ()=>{
+  if(!confirm('Descartar todas as alterações não salvas?')) return;
+  await init(true);
+};
+document.getElementById('editModeBtn').onclick = ()=>{
+  if(!hasCfg()){ showToast('Configure a sincronização com o GitHub primeiro.', true); openSettings(); return; }
+  setEditMode(!editMode);
+};
+
+/* ============ SETTINGS MODAL ============ */
+function openSettings(){
+  const c = getCfg();
+  document.getElementById('cfgOwner').value = c.owner || '';
+  document.getElementById('cfgRepo').value = c.repo || '';
+  document.getElementById('cfgBranch').value = c.branch || 'main';
+  document.getElementById('cfgPath').value = c.path || 'data.json';
+  document.getElementById('cfgToken').value = c.token || '';
+  document.getElementById('settingsStatus').className = 'status';
+  document.getElementById('settingsOverlay').classList.add('show');
+}
+document.getElementById('settingsBtn').onclick = openSettings;
+document.getElementById('settingsCancel').onclick = ()=> document.getElementById('settingsOverlay').classList.remove('show');
+document.getElementById('settingsSave').onclick = async ()=>{
+  const cfg = {
+    owner: document.getElementById('cfgOwner').value.trim(),
+    repo: document.getElementById('cfgRepo').value.trim(),
+    branch: document.getElementById('cfgBranch').value.trim() || 'main',
+    path: document.getElementById('cfgPath').value.trim() || 'data.json',
+    token: document.getElementById('cfgToken').value.trim(),
+  };
+  const statusEl = document.getElementById('settingsStatus');
+  statusEl.className = 'status show';
+  statusEl.textContent = 'Testando conexão…';
+  try{
+    const headers = {Authorization:`Bearer ${cfg.token}`, Accept:'application/vnd.github+json'};
+    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}`, {headers});
+    if(!res.ok) throw new Error('Não foi possível acessar o repositório (HTTP '+res.status+'). Confira usuário, repositório e token.');
+    setCfg(cfg);
+    statusEl.className = 'status show ok';
+    statusEl.textContent = 'Conectado com sucesso. Configuração salva.';
+    setTimeout(async ()=>{
+      document.getElementById('settingsOverlay').classList.remove('show');
+      await init(true);
+    }, 900);
+  }catch(e){
+    statusEl.className = 'status show err';
+    statusEl.textContent = e.message;
+  }
+};
+
+/* ============ INIT ============ */
+async function init(forceRemote){
+  document.getElementById('loadingMsg').style.display = 'block';
+  document.getElementById('loadingMsg').textContent = 'Carregando protocolos…';
+  document.getElementById('toolbar').style.display = 'none';
+  document.getElementById('contentTitle').style.display = 'none';
+
+  let data = null;
+  try{
+    if(hasCfg() || forceRemote){
+      data = await fetchDataFromGithub();
+    }
+    if(!data){
+      // fallback: tenta carregar data.json estático do mesmo diretório (sem token)
+      const res = await fetch('data.json', {cache:'no-store'});
+      if(res.ok) data = await res.json();
+    }
+  }catch(e){
+    console.error('Erro ao inicializar', e);
+  }
+
+  if(!data || !data.cats || !data.sections){
+    document.getElementById('loadingMsg').textContent = 'Não foi possível carregar o conteúdo. Verifique a configuração de sincronização (⚙︎) ou se o arquivo data.json existe no repositório. Detalhes no console do navegador.';
+    return;
+  }
+
+  try{
+    CATS = data.cats;
+    SECTIONS = data.sections;
+    dirty = false;
+    updateUnsavedBar();
+
+    document.getElementById('loadingMsg').style.display = 'none';
+    document.getElementById('toolbar').style.display = 'flex';
+    document.getElementById('contentTitle').style.display = 'block';
+    renderAll();
+  }catch(e){
+    console.error('Erro ao renderizar conteúdo', e);
+    document.getElementById('loadingMsg').style.display = 'block';
+    document.getElementById('loadingMsg').textContent = 'Erro ao exibir o conteúdo. Abra o console do navegador (menu de desenvolvedor) para ver detalhes técnicos, ou avise para eu investigar.';
+  }
+}
+
+init(false);
+</script>
+</body>
+</html>
