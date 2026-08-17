@@ -179,6 +179,26 @@
   }
   .rf-list{margin:0; padding-left:20px; font-size:12.5px; color:#5C3A12; line-height:1.6;}
   .rf-list li{margin-bottom:3px;}
+  .copybox{
+    background:#EEF3F1; border:1.5px solid #B9CFC7; border-radius:8px;
+    padding:10px 14px 12px; margin:10px 0; font-family:'IBM Plex Sans', sans-serif;
+  }
+  .cp-title{
+    font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:#1D5A44; margin:0 0 6px !important;
+  }
+  .cp-text{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:#1B2430;
+    background:#fff; border:1px solid #D6E2DD; border-radius:6px;
+    padding:8px 10px; margin:0 0 8px !important; line-height:1.55;
+    user-select:all;
+  }
+  .cp-btn{
+    background:#0F5C4E; color:#fff; border:none; border-radius:6px;
+    padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .cp-btn:hover{background:#0C4A3F;}
 
   /* ---------- EDIT MODE ---------- */
   .cardctrls{display:flex; gap:6px; flex:0 0 auto;}
@@ -417,9 +437,35 @@ MD: nome do medicamento (inicia bloco)  |  DS: posologia (linha sob o medicament
 TX: parágrafo simples  |  LI: item de lista
 WN: alerta âmbar  |  CR: alerta crítico  |  LB: banner legal
 RF: pergunta obrigatória (red flag) — agrupa em um bloco "🚩 Perguntar sempre"
+CP: bloco pronto para copiar (ex: red flags já em "nega", separados por vírgula)
 ================================== */
 
 function inline(t){ return t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); }
+function esc(t){ const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+
+let cpCounter = 0;
+function copyCP(id, btn){
+  const text = document.getElementById(id).textContent;
+  const done = () => {
+    const old = btn.textContent;
+    btn.textContent = 'Copiado ✓';
+    setTimeout(()=>{ btn.textContent = old; }, 1600);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>{
+      fallbackCopy(text); done();
+    });
+  } else {
+    fallbackCopy(text); done();
+  }
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
 
 function parseRaw(raw){
   const lines = raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
@@ -445,6 +491,12 @@ function parseRaw(raw){
     else if(code==='WN:'){ closeMed(); closeList(); html+=`<p class="note warn">⚠️ ${inline(val)}</p>`; }
     else if(code==='CR:'){ closeMed(); closeList(); html+=`<p class="note crit">❗ ${inline(val)}</p>`; }
     else if(code==='LB:'){ closeMed(); closeList(); html+=`<div class="legalbanner">⚠️ <b>ATENÇÃO — LEIA ANTES DE USAR ESTE MODELO:</b><br>${inline(val)}</div>`; }
+    else if(code==='CP:'){
+      closeMed(); closeList();
+      cpCounter++;
+      const cpid = 'cp-'+cpCounter;
+      html += `<div class="copybox"><p class="cp-title">📋 Pronto para copiar</p><p class="cp-text" id="${cpid}">${esc(val)}</p><button class="cp-btn" type="button" onclick="copyCP('${cpid}', this)">Copiar</button></div>`;
+    }
   }
   closeMed(); closeList(); closeRF();
   return html;
@@ -607,7 +659,7 @@ function editFormHtml(sec){
       <label>Conteúdo (formato de linhas — veja legenda abaixo)</label>
       <textarea class="ef-raw" spellcheck="false">${sec.raw.replace(/</g,'&lt;')}</textarea>
       <div class="helptext">
-        Prefixos por linha: <b>RT:</b> rótulo de via (USO ORAL...) · <b>SH:</b> subtítulo · <b>MD:</b> nome do medicamento · <b>DS:</b> posologia (linha logo após um MD:) · <b>TX:</b> texto simples · <b>LI:</b> item de lista · <b>WN:</b> alerta âmbar · <b>CR:</b> alerta crítico (vermelho) · <b>RF:</b> pergunta obrigatória / red flag (agrupa em bloco "🚩 perguntar sempre") · <b>LB:</b> banner de aviso legal. Use **texto** para negrito.
+        Prefixos por linha: <b>RT:</b> rótulo de via (USO ORAL...) · <b>SH:</b> subtítulo · <b>MD:</b> nome do medicamento · <b>DS:</b> posologia (linha logo após um MD:) · <b>TX:</b> texto simples · <b>LI:</b> item de lista · <b>WN:</b> alerta âmbar · <b>CR:</b> alerta crítico (vermelho) · <b>RF:</b> pergunta obrigatória / red flag (agrupa em bloco "🚩 perguntar sempre") · <b>CP:</b> bloco pronto para copiar (texto único, com botão "Copiar") · <b>LB:</b> banner de aviso legal. Use **texto** para negrito.
       </div>
       <div class="rowbtns">
         <button class="cancel">Cancelar</button>
