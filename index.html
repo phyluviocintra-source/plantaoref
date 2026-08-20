@@ -153,6 +153,10 @@
   }
   .svcard > summary::-webkit-details-marker{display:none;}
   .svcard > summary .chev{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft); transition:transform .18s ease;}
+  .svcard > summary .catlabel{
+    font-family:'IBM Plex Mono', monospace; font-size:10px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--ink-soft); font-weight:500; margin-right:auto; margin-left:10px;
+  }
   .svcard[open] > summary .chev{transform:rotate(90deg);}
   .svbody{padding:0 16px 16px;}
   .svitem{
@@ -295,8 +299,8 @@
   .cp-text{
     font-family:'IBM Plex Mono', monospace; font-size:12px; color:#1B2430;
     background:#fff; border:1px solid #D6E2DD; border-radius:6px;
-    padding:8px 10px; margin:0 0 8px !important; line-height:1.55;
-    user-select:all;
+    padding:10px 12px; margin:0 0 8px !important; line-height:1.6;
+    user-select:all; white-space:pre-wrap; word-wrap:break-word;
   }
   .cp-btn{
     background:#0F5C4E; color:#fff; border:none; border-radius:6px;
@@ -520,6 +524,7 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="svSearchInput" type="text" placeholder="Buscar diagnóstico (ex: asma, AVC, sepse...)" autocomplete="off">
     </div>
+    <div class="catbar" id="svCatbar" style="margin-top:12px;"></div>
     <div class="content-title" style="margin-top:20px;">Prescrições de Internação</div>
     <div id="svIndexWrap" class="index-wrap" style="margin-top:0;"></div>
     <div id="svCardsWrap"></div>
@@ -628,19 +633,31 @@ function fallbackCopy(text){
 
 function parseRaw(raw){
   const lines = raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
-  let html=''; let inMed=false; let inList=false; let inRF=false;
+  let html=''; let inMed=false; let inList=false; let inRF=false; let inCP=false; let cpLines=[];
   function closeMed(){ if(inMed){ html+='</div>'; inMed=false; } }
   function closeList(){ if(inList){ html+='</ul>'; inList=false; } }
   function closeRF(){ if(inRF){ html+='</ul></div>'; inRF=false; } }
+  function closeCP(){
+    if(inCP){
+      cpCounter++;
+      const cpid = 'cp-'+cpCounter;
+      const text = cpLines.join('\n');
+      html += `<div class="copybox"><p class="cp-title">📋 Pronto para copiar</p><pre class="cp-text" id="${cpid}">${esc(text)}</pre><button class="cp-btn" type="button" onclick="copyCP('${cpid}', this)">Copiar</button></div>`;
+      inCP=false; cpLines=[];
+    }
+  }
   for(const line of lines){
     const code=line.slice(0,3); const val=line.slice(3).trim();
     if(code==='RF:'){
-      closeMed(); closeList();
+      closeMed(); closeList(); closeCP();
       if(!inRF){ html+='<div class="redflags"><p class="rf-title">🚩 Perguntar sempre / não esquecer</p><ul class="rf-list">'; inRF=true; }
       html+=`<li>${inline(val)}</li>`;
       continue;
     }
     closeRF();
+    if(code==='CP:'){ closeMed(); closeList(); closeCP(); inCP=true; cpLines=[]; if(val) cpLines.push(val); continue; }
+    if(code==='CL:'){ if(inCP){ cpLines.push(val); } continue; }
+    closeCP();
     if(code==='RT:'){ closeMed(); closeList(); html+=`<p class="rt">${inline(val)}</p>`; }
     else if(code==='SH:'){ closeMed(); closeList(); html+=`<p class="sh">${inline(val)}</p>`; }
     else if(code==='MD:'){ closeList(); closeMed(); html+=`<div class="med"><p class="med-name">${inline(val)}</p>`; inMed=true; }
@@ -650,14 +667,8 @@ function parseRaw(raw){
     else if(code==='WN:'){ closeMed(); closeList(); html+=`<p class="note warn">⚠️ ${inline(val)}</p>`; }
     else if(code==='CR:'){ closeMed(); closeList(); html+=`<p class="note crit">❗ ${inline(val)}</p>`; }
     else if(code==='LB:'){ closeMed(); closeList(); html+=`<div class="legalbanner">⚠️ <b>ATENÇÃO — LEIA ANTES DE USAR ESTE MODELO:</b><br>${inline(val)}</div>`; }
-    else if(code==='CP:'){
-      closeMed(); closeList();
-      cpCounter++;
-      const cpid = 'cp-'+cpCounter;
-      html += `<div class="copybox"><p class="cp-title">📋 Pronto para copiar</p><p class="cp-text" id="${cpid}">${esc(val)}</p><button class="cp-btn" type="button" onclick="copyCP('${cpid}', this)">Copiar</button></div>`;
-    }
   }
-  closeMed(); closeList(); closeRF();
+  closeMed(); closeList(); closeRF(); closeCP();
   return html;
 }
 
@@ -1075,51 +1086,82 @@ document.querySelectorAll('.homecard').forEach(card=>{
 });
 
 /* ============ SALA VERMELHA E INTERNAÇÃO ============ */
+let svActiveCat = null;
 function renderSalaVermelha(){
+  const catbarWrap = document.getElementById('svCatbar');
   const indexWrap = document.getElementById('svIndexWrap');
   const cardsWrap = document.getElementById('svCardsWrap');
+  catbarWrap.innerHTML = '';
   indexWrap.innerHTML = '';
   cardsWrap.innerHTML = '';
   if(!ORDERSETS.length){
     cardsWrap.innerHTML = '<p style="font-family:IBM Plex Sans,sans-serif;color:var(--ink-soft);font-size:13px;">Nenhuma prescrição de internação cadastrada ainda.</p>';
     return;
   }
-  const row = document.createElement('div');
-  row.className = 'pillrow';
-  ORDERSETS.forEach(os=>{
-    const color = (CATS[os.cat] && CATS[os.cat].color) || '#8B1E3F';
-    const pill = document.createElement('button');
-    pill.className = 'pill';
-    pill.style.borderLeftColor = color;
-    pill.textContent = os.title;
-    pill.dataset.title = os.title.toLowerCase();
-    pill.onclick = ()=> svJumpTo(os.id);
-    row.appendChild(pill);
+
+  // categorias presentes nos order sets, na ordem de CATS
+  const grouped = {};
+  ORDERSETS.forEach(os=>{ (grouped[os.cat] = grouped[os.cat]||[]).push(os); });
+  const presentCats = Object.keys(CATS).filter(k=>grouped[k]);
+
+  // chips de categoria
+  const allChip = document.createElement('div');
+  allChip.className = 'catchip' + (svActiveCat===null ? ' active' : '');
+  allChip.textContent = 'Todos';
+  allChip.onclick = ()=>{ svActiveCat=null; renderSalaVermelha(); };
+  catbarWrap.appendChild(allChip);
+  presentCats.forEach(k=>{
+    const chip = document.createElement('div');
+    chip.className = 'catchip' + (svActiveCat===k ? ' active' : '');
+    chip.innerHTML = `<span class="catdot" style="background:${CATS[k].color}"></span>${CATS[k].label}`;
+    chip.onclick = ()=>{ svActiveCat=k; renderSalaVermelha(); };
+    catbarWrap.appendChild(chip);
   });
-  indexWrap.appendChild(row);
 
   const tagLabels = {dieta:'Dieta', procedimento:'Procedimento', medicamento:'Medicamento', monitorizacao:'Monitorização', cuidado:'Cuidado', oxigenoterapia:'O2', exame:'Exame', soro:'Soro', hemocomponente:'Hemocomponente', interconsulta:'Interconsulta', avaliacao:'Avaliação', preparo:'Preparo', ventilacao:'Ventilação', meta:'Meta', posicao:'Posição'};
-  ORDERSETS.forEach(os=>{
-    const color = (CATS[os.cat] && CATS[os.cat].color) || '#8B1E3F';
-    const details = document.createElement('details');
-    details.className = 'svcard';
-    details.id = 'sv-'+os.id;
-    details.dataset.title = os.title.toLowerCase();
-    details.style.borderLeftColor = color;
-    const summary = document.createElement('summary');
-    summary.innerHTML = `<span>${os.title}</span><span class="chev">▸</span>`;
-    details.appendChild(summary);
-    const body = document.createElement('div');
-    body.className = 'svbody';
-    os.items.forEach((item, idx)=>{
-      const row = document.createElement('div');
-      row.className = 'svitem';
-      const tag = tagLabels[item.kind] || item.kind;
-      row.innerHTML = `<span class="svitem-num">${idx+1}.</span><div class="svitem-body"><span class="svitem-tag ${item.kind}">${tag}</span><span class="svitem-title">${item.title}</span>${item.detail?`<div class="svitem-detail">${item.detail}</div>`:''}</div>`;
-      body.appendChild(row);
+
+  presentCats.forEach(catKey=>{
+    if(svActiveCat && svActiveCat!==catKey) return;
+    const color = CATS[catKey].color;
+    const group = document.createElement('div');
+    group.className = 'index-group';
+    group.innerHTML = `<div class="index-group-label"><span class="bar" style="background:${color}"></span>${CATS[catKey].label}</div>`;
+    const row = document.createElement('div');
+    row.className = 'pillrow';
+    grouped[catKey].forEach(os=>{
+      const pill = document.createElement('button');
+      pill.className = 'pill';
+      pill.style.borderLeftColor = color;
+      pill.textContent = os.title;
+      pill.dataset.title = os.title.toLowerCase();
+      pill.onclick = ()=> svJumpTo(os.id);
+      row.appendChild(pill);
     });
-    details.appendChild(body);
-    cardsWrap.appendChild(details);
+    group.appendChild(row);
+    indexWrap.appendChild(group);
+
+    grouped[catKey].forEach(os=>{
+      const details = document.createElement('details');
+      details.className = 'svcard';
+      details.id = 'sv-'+os.id;
+      details.dataset.title = os.title.toLowerCase();
+      details.dataset.cat = catKey;
+      details.style.borderLeftColor = color;
+      const summary = document.createElement('summary');
+      summary.innerHTML = `<span>${os.title}</span><span class="catlabel">${CATS[catKey].label}</span><span class="chev">▸</span>`;
+      details.appendChild(summary);
+      const body = document.createElement('div');
+      body.className = 'svbody';
+      os.items.forEach((item, idx)=>{
+        const r = document.createElement('div');
+        r.className = 'svitem';
+        const tag = tagLabels[item.kind] || item.kind;
+        r.innerHTML = `<span class="svitem-num">${idx+1}.</span><div class="svitem-body"><span class="svitem-tag ${item.kind}">${tag}</span><span class="svitem-title">${item.title}</span>${item.detail?`<div class="svitem-detail">${item.detail}</div>`:''}</div>`;
+        body.appendChild(r);
+      });
+      details.appendChild(body);
+      cardsWrap.appendChild(details);
+    });
   });
 }
 function svJumpTo(id){
