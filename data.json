@@ -1147,6 +1147,658 @@
           "detail": "Se dúvida diagnóstica"
         }
       ]
+    },
+    {
+      "id": "anafilaxia-sv",
+      "title": "Anafilaxia",
+      "cat": "emergencia",
+      "items": [
+        {
+          "kind": "posicao",
+          "title": "Decúbito dorsal com MMII elevados",
+          "detail": "Trendelenburg se hipotensão; sentado apenas se dispneia predominante sem hipotensão"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia",
+          "detail": "ACM — alvo SpO2 ≥94%"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso calibroso (2 acessos se choque)",
+          "detail": "Preferencialmente periférico, calibre 14-18G"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Adrenalina 1mg/mL (1:1000)",
+          "detail": "0,3-0,5mg (0,3-0,5mL) IM em face lateral da coxa (vasto lateral) — repetir a cada 5-15min se necessário — PRIMEIRA LINHA, NÃO ATRASAR"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Adrenalina EV contínua (se refratário/choque persistente)",
+          "detail": "Diluir 1mg em 100mL SF 0,9% (10mcg/mL) — iniciar 0,5-1mcg/min (3-6mL/h) EV em bomba, titular por PA/resposta — via central se disponível"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Prometazina ou Difenidramina",
+          "detail": "Prometazina 25-50mg IM/EV lento — bloqueio H1, sintomático (não substitui adrenalina)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Ranitidina/Famotidina EV",
+          "detail": "Bloqueio H2 adjuvante, se disponível"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Metilprednisolona",
+          "detail": "40-125mg EV — previne reação bifásica, efeito não imediato"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Salbutamol inalatório",
+          "detail": "100mcg/jato • 4-8 jatos • se broncoespasmo associado"
+        },
+        {
+          "kind": "soro",
+          "title": "Cristaloide em bolus se hipotensão",
+          "detail": "SF 0,9% 1000-2000mL EV rápido (20mL/kg), reavaliar resposta"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua",
+          "detail": "PA, FC, SpO2, ECG contínuo — mínimo 4-6h de observação (risco de reação bifásica)"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Via aérea — atenção a edema de glote",
+          "detail": "Kit de via aérea difícil disponível à beira-leito; considerar IOT precoce se estridor/edema progressivo"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Considerar UTI se refratário a adrenalina IM",
+          "detail": "Necessidade de adrenalina EV contínua = critério de internação em unidade monitorizada"
+        }
+      ]
+    },
+    {
+      "id": "taquiarritmia-instavel",
+      "title": "Taquiarritmia Instável (FA/Flutter com RVR, TSV, TV com pulso)",
+      "cat": "cardio",
+      "items": [
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico + monitorização contínua",
+          "detail": "ECG contínuo, PA não invasiva, SpO2"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia se SpO2 <94%",
+          "detail": "ACM"
+        },
+        {
+          "kind": "avaliacao",
+          "title": "Definir instabilidade",
+          "detail": "Hipotensão, rebaixamento de consciência, dor torácica isquêmica, sinais de choque, EAP — presença de qualquer um = cardioversão elétrica imediata"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Cardioversão elétrica sincronizada (se instável)",
+          "detail": "QRS estreito regular: 50-100J • QRS estreito irregular (FA): 120-200J bifásico • QRS largo: 100J — sedação prévia se possível (etomidato ou midazolam) sem atrasar"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Sedação para cardioversão",
+          "detail": "Midazolam 0,05-0,1mg/kg EV lento OU Etomidato 0,15mg/kg EV — se tempo permitir"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Adenosina (se TSV regular QRS estreito, estável)",
+          "detail": "6mg EV em bolus rápido + flush 20mL SF, seguido de 12mg se sem resposta em 1-2min"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Amiodarona (se instável refratário ou TV)",
+          "detail": "150mg diluído em 100mL SG5% EV em 10min, seguido de manutenção 1mg/min por 6h"
+        },
+        {
+          "kind": "exame",
+          "title": "ECG de 12 derivações antes e após intervenção",
+          "detail": "Documentar ritmo basal e pós-conversão"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua pós-conversão",
+          "detail": "Mínimo 4-6h, reavaliar ritmo e sinais vitais de 1/1h"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Cardiologia",
+          "detail": "Se refratário, dúvida diagnóstica (WPW, QT longo) ou necessidade de anticoagulação em FA nova"
+        }
+      ]
+    },
+    {
+      "id": "eap-hipertensivo",
+      "title": "Edema Agudo de Pulmão (EAP Hipertensivo)",
+      "cat": "cardio",
+      "items": [
+        {
+          "kind": "posicao",
+          "title": "Decúbito elevado (Fowler/semi-Fowler)",
+          "detail": "90° se tolerado"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia — meta SpO2 ≥94%",
+          "detail": "Cateter/máscara não reinalante ACM; considerar VNI (CPAP/BiPAP) precocemente se disponível"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": "Evitar excesso de volume EV"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Nitroglicerina EV",
+          "detail": "Diluir 50mg em 250mL SG5% (200mcg/mL) — iniciar 10-20mcg/min (3-6mL/h), titular a cada 5min por PA/sintomas, alvo PAS >90-100mmHg"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Furosemida EV",
+          "detail": "20-40mg EV em bolus (dose maior se já em uso crônico) — repetir conforme diurese e resposta clínica"
+        },
+        {
+          "kind": "procedimento",
+          "title": "VNI (CPAP/BiPAP) se disponível e sem contraindicação",
+          "detail": "Reduz necessidade de IOT — reavaliar em 30-60min"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua",
+          "detail": "PA (preferir invasiva se nitroglicerina em altas doses), SpO2, FR, diurese horária"
+        },
+        {
+          "kind": "exame",
+          "title": "ECG + troponina",
+          "detail": "Investigar causa isquêmica precipitante"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Balanço hídrico rigoroso",
+          "detail": "Sonda vesical de demora se necessário para monitorização de diurese"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Cardiologia / UTI",
+          "detail": "Se refratário a medidas iniciais, necessidade de suporte ventilatório ou instabilidade hemodinâmica"
+        }
+      ]
+    },
+    {
+      "id": "tep-macico-submacico",
+      "title": "TEP Maciço / Submaciço",
+      "cat": "cardio",
+      "items": [
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia — meta SpO2 ≥94%",
+          "detail": "ACM"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso calibroso",
+          "detail": "2 acessos periféricos se instabilidade"
+        },
+        {
+          "kind": "avaliacao",
+          "title": "Estratificação de risco",
+          "detail": "TEP maciço = choque/hipotensão persistente; submaciço = disfunção de VD sem hipotensão — define indicação de trombólise"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Heparina não fracionada (se sem contraindicação a anticoagulação)",
+          "detail": "Bolus 80U/kg EV, manutenção 18U/kg/h EV em bomba — ajustar por TTPA seriado (preferida sobre HBPM se possível trombólise)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Trombólise (se TEP maciço com choque)",
+          "detail": "Alteplase (rtPA) 100mg EV em 2h (ou 0,6mg/kg em 15min se PCR iminente) — avaliar contraindicações absolutas (sangramento ativo, AVC hemorrágico prévio, cirurgia/trauma recente)"
+        },
+        {
+          "kind": "soro",
+          "title": "Cristaloide criterioso se hipotensão",
+          "detail": "SF 0,9% 250-500mL em bolus — EVITAR excesso (piora sobrecarga de VD)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Vasopressor se choque refratário a volume",
+          "detail": "Noradrenalina 0,05-0,3mcg/kg/min EV em bomba, titular por PAM ≥65mmHg"
+        },
+        {
+          "kind": "exame",
+          "title": "Angio-TC de tórax (se disponível e estável para transporte) / Ecocardiograma à beira-leito",
+          "detail": "Avaliar disfunção de VD, trombo em trânsito"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua",
+          "detail": "ECG, PA (preferir invasiva se instável), SpO2, diurese"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "UTI / Cardiologia — avaliar indicação de trombólise ou trombectomia",
+          "detail": "Prioridade se TEP maciço confirmado ou fortemente suspeito com instabilidade"
+        }
+      ]
+    },
+    {
+      "id": "emergencia-hipertensiva-loa",
+      "title": "Emergência Hipertensiva (com lesão de órgão-alvo)",
+      "cat": "cardio",
+      "items": [
+        {
+          "kind": "avaliacao",
+          "title": "Confirmar lesão de órgão-alvo aguda",
+          "detail": "Não tratar apenas o número da PA — buscar sinais de encefalopatia, EAP, SCA, dissecção de aorta, IRA, eclâmpsia"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia se necessário",
+          "detail": "ACM"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": "Preferir 2 acessos se uso de vasoativos"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Nitroprussiato de sódio EV (se disponível)",
+          "detail": "Diluir 50mg em 250mL SG5%, iniciar 0,3-0,5mcg/kg/min, titular a cada 5min — proteger da luz, monitorizar toxicidade por cianeto em uso prolongado/IRA"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Nitroglicerina EV (preferir se suspeita de SCA/EAP)",
+          "detail": "Diluir 50mg em 250mL SG5%, iniciar 10-20mcg/min, titular por PA/sintomas"
+        },
+        {
+          "kind": "meta",
+          "title": "Redução da PA",
+          "detail": "Reduzir PAM em até 25% na primeira hora (exceto dissecção de aorta: PAS alvo <120mmHg e FC <60 em 20min; e AVC — ver protocolo específico)"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua",
+          "detail": "PA invasiva se possível, ECG contínuo, diurese horária, avaliação neurológica seriada"
+        },
+        {
+          "kind": "exame",
+          "title": "ECG, função renal, EAS, fundoscopia (se disponível)",
+          "detail": "Investigar lesão de órgão-alvo"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Especialidade conforme órgão-alvo acometido",
+          "detail": "Cardiologia (SCA/dissecção), Neurologia (encefalopatia/AVC), Nefrologia (IRA), Obstetrícia (eclâmpsia)"
+        }
+      ]
+    },
+    {
+      "id": "hemorragia-digestiva-alta-sv",
+      "title": "Hemorragia Digestiva Alta",
+      "cat": "gi",
+      "items": [
+        {
+          "kind": "procedimento",
+          "title": "2 acessos venosos calibrosos",
+          "detail": "Calibre 14-18G"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia se necessário",
+          "detail": "ACM"
+        },
+        {
+          "kind": "exame",
+          "title": "Hemograma, coagulograma, tipagem sanguínea, ureia/creatinina, função hepática",
+          "detail": "Solicitar prova cruzada se sinais de sangramento ativo/instabilidade"
+        },
+        {
+          "kind": "soro",
+          "title": "Reposição volêmica com cristaloide",
+          "detail": "SF 0,9% ou Ringer Lactato — meta PAS >90-100mmHg, evitar reposição excessiva (hipervolemia piora ressangramento em varizes)"
+        },
+        {
+          "kind": "hemocomponente",
+          "title": "Transfusão de concentrado de hemácias se indicado",
+          "detail": "Meta Hb ~7g/dL (ou ~8g/dL se cardiopatia/instabilidade) — não transfundir apenas por número, correlacionar com clínica"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Omeprazol/Pantoprazol EV",
+          "detail": "Ataque 80mg EV, seguido de infusão contínua 8mg/h (ou 40mg EV 12/12h se sem bomba disponível) — iniciar empiricamente antes da EDA"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Terlipressina (se suspeita de varizes esofágicas)",
+          "detail": "2mg EV 4/4h até controle do sangramento, depois 1mg 4/4h — contraindicado em coronariopatia grave não controlada"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Antibioticoprofilaxia (se cirrótico com suspeita de sangramento varicoso)",
+          "detail": "Ceftriaxona 1g EV 1x/dia por até 7 dias"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Sonda nasogástrica (individualizar indicação)",
+          "detail": "Não é mandatória de rotina — considerar se dúvida diagnóstica quanto à origem/atividade do sangramento"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua",
+          "detail": "PA, FC, SpO2, diurese horária, reavaliação de Hb seriada"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Endoscopia digestiva alta (urgência)",
+          "detail": "Idealmente nas primeiras 24h (mais precoce se instabilidade); Cirurgia geral se refratário"
+        }
+      ]
+    },
+    {
+      "id": "hipercalemia-grave",
+      "title": "Hipercalemia Grave (K >6,5 ou alterações eletrocardiográficas)",
+      "cat": "emergencia",
+      "items": [
+        {
+          "kind": "exame",
+          "title": "ECG de 12 derivações imediato",
+          "detail": "Onda T apiculada, alargamento de QRS, perda de onda P — define urgência da conduta"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": "Preferencialmente 2 acessos"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Gluconato de cálcio 10% (se alterações no ECG)",
+          "detail": "10mL (1 ampola) EV em 2-3min, pode repetir em 5min se ECG persistir alterado — estabiliza membrana, não reduz K sérico"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Insulina regular + Glicose",
+          "detail": "10UI insulina regular EV + 50mL SG50% (ou 500mL SG10%) EV em 15-30min — monitorizar glicemia capilar de 30/30min por risco de hipoglicemia"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Salbutamol inalatório em altas doses",
+          "detail": "10-20mg (nebulização contínua/repetida) — efeito adjuvante, reduz K por via distinta da insulina"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Bicarbonato de sódio (se acidose metabólica associada)",
+          "detail": "50-100mEq EV em 10-30min — efeito limitado isoladamente, usar como adjuvante"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Poliestirenossulfonato de cálcio/sódio (resina de troca)",
+          "detail": "Conforme disponibilidade — remoção mais lenta, não usar em íleo/obstrução"
+        },
+        {
+          "kind": "exame",
+          "title": "Função renal, gasometria venosa, repetir K sérico em 1-2h",
+          "detail": "Reavaliar resposta às medidas"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização cardíaca contínua",
+          "detail": "Obrigatória até normalização do K e do ECG"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Nefrologia — avaliar necessidade de diálise de urgência",
+          "detail": "Se refratário às medidas clínicas, IRA oligúrica/anúrica, ou hipercalemia ameaçadora à vida persistente"
+        }
+      ]
+    },
+    {
+      "id": "coma-rebaixamento",
+      "title": "Rebaixamento do Nível de Consciência (Coma) — Abordagem Inicial",
+      "cat": "neuro",
+      "items": [
+        {
+          "kind": "avaliacao",
+          "title": "ABCDE + Glasgow",
+          "detail": "Avaliar via aérea, respiração, circulação antes de investigação etiológica"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Proteção de via aérea",
+          "detail": "Considerar IOT se Glasgow ≤8 ou reflexos de proteção ausentes"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia",
+          "detail": "ACM — alvo SpO2 ≥94%"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": "Coletar exames antes de infundir glicose, se possível"
+        },
+        {
+          "kind": "exame",
+          "title": "Glicemia capilar imediata (obrigatória em todo coma)",
+          "detail": "Não atrasar por outros exames"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Glicose hipertônica (se hipoglicemia confirmada)",
+          "detail": "SG50% 60-100mL EV em bolus, reavaliar glicemia em 15min"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Tiamina (antes ou junto da glicose, se etilismo/desnutrição suspeitos)",
+          "detail": "100mg EV/IM — previne encefalopatia de Wernicke"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Naloxona (se suspeita de intoxicação por opioides — miose, bradipneia)",
+          "detail": "0,4-2mg EV/IM/IN, repetir a cada 2-3min conforme resposta até 10mg"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Flumazenil (uso criterioso — risco de convulsão, evitar se uso crônico de BZD ou coingestão de tricíclicos)",
+          "detail": "0,2mg EV, repetir se necessário — não usar de rotina"
+        },
+        {
+          "kind": "exame",
+          "title": "Exames complementares direcionados",
+          "detail": "Gasometria, eletrólitos, função renal/hepática, TC de crânio (se trauma, foco neurológico, sem causa metabólica evidente)"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua + reavaliação seriada do Glasgow",
+          "detail": "De 30/30min até estabilização da causa"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Neurologia/UTI conforme etiologia",
+          "detail": "Sempre que causa estrutural, refratariedade ou necessidade de suporte ventilatório"
+        }
+      ]
+    },
+    {
+      "id": "pos-pcr",
+      "title": "Cuidados Pós-PCR (Pós-Retorno da Circulação Espontânea)",
+      "cat": "emergencia",
+      "items": [
+        {
+          "kind": "procedimento",
+          "title": "Via aérea definitiva",
+          "detail": "Confirmar/manter IOT, capnografia se disponível"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Titular oxigênio — evitar hiperóxia",
+          "detail": "Alvo SpO2 94-98% (não 100% mantido)"
+        },
+        {
+          "kind": "ventilacao",
+          "title": "Ventilação protetora",
+          "detail": "Volume corrente 6-8mL/kg peso predito, alvo normocapnia (PaCO2 35-45mmHg)"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização hemodinâmica contínua",
+          "detail": "PA (preferir invasiva), ECG contínuo, diurese horária, glicemia seriada"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Vasopressor se hipotensão (PAM <65mmHg)",
+          "detail": "Noradrenalina 0,05-0,3mcg/kg/min EV em bomba, titular por PAM"
+        },
+        {
+          "kind": "meta",
+          "title": "Controle direcionado de temperatura",
+          "detail": "Evitar febre — alvo ≤37,5°C (resfriamento ativo se disponível e indicado, conforme protocolo institucional)"
+        },
+        {
+          "kind": "exame",
+          "title": "ECG de 12 derivações imediato",
+          "detail": "Investigar causa isquêmica — ativar hemodinâmica se supra de ST"
+        },
+        {
+          "kind": "exame",
+          "title": "Gasometria, lactato, eletrólitos, função renal",
+          "detail": "Repetir seriadamente para guiar suporte"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Sedoanalgesia",
+          "detail": "Fentanil + Midazolam (ou Propofol) EV contínuo, titular por nível de sedação-alvo"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Investigar e tratar causa da PCR",
+          "detail": "5H e 5T — não assumir causa sem investigação (hipóxia, hipovolemia, hipo/hipercalemia, hipotermia, acidose; tensão no tórax, tamponamento, trombose coronária, TEP, tóxicos)"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "UTI (transferência prioritária) / Cardiologia se etiologia isquêmica",
+          "detail": "Todo paciente pós-PCR necessita cuidados intensivos"
+        }
+      ]
+    },
+    {
+      "id": "delirium-agitacao-grave",
+      "title": "Delirium / Agitação Psicomotora Grave (Contenção Química)",
+      "cat": "psiquiatria",
+      "items": [
+        {
+          "kind": "avaliacao",
+          "title": "Excluir causa orgânica antes de sedar",
+          "detail": "Hipoglicemia, hipóxia, intoxicação, abstinência, infecção (ITU/pneumonia), distúrbio metabólico — não tratar agitação como diagnóstico primário sem triagem mínima"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Ambiente seguro + contenção física se risco iminente",
+          "detail": "Sempre que possível, medida física transitória até contenção química fazer efeito, com registro do motivo e reavaliação frequente"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Haloperidol",
+          "detail": "2,5-5mg IM/EV — evitar se suspeita de delirium tremens/abstinência alcoólica ou prolongamento de QT conhecido"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Associação Haloperidol + Prometazina",
+          "detail": "Haloperidol 5mg + Prometazina 25-50mg IM — reduz efeitos extrapiramidais, opção comum em agitação grave"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Midazolam (se suspeita de abstinência alcoólica/benzodiazepínica)",
+          "detail": "5-10mg IM/EV, repetir conforme resposta"
+        },
+        {
+          "kind": "exame",
+          "title": "Glicemia capilar, eletrólitos, função renal/hepática",
+          "detail": "Rastreio mínimo de causa orgânica"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização de SpO2, FR, nível de sedação",
+          "detail": "Risco de depressão respiratória com sedação — reavaliar a cada 15-30min"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Reavaliar necessidade de contenção física a cada intervalo curto",
+          "detail": "Suspender assim que segurança permitir — registrar em prontuário"
+        },
+        {
+          "kind": "interconsulta",
+          "title": "Psiquiatria/Neurologia conforme etiologia",
+          "detail": "Se sem causa orgânica identificada ou quadro persistente/recorrente"
+        }
+      ]
+    },
+    {
+      "id": "sri-sv",
+      "title": "Sequência Rápida de Intubação (SRI)",
+      "cat": "emergencia",
+      "items": [
+        {
+          "kind": "preparo",
+          "title": "Checklist pré-intubação",
+          "detail": "Material de via aérea, aspiração testada, capnógrafo, plano B (via aérea difícil) definido antes de iniciar"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Pré-oxigenação",
+          "detail": "Máscara não reinalante 100% por 3-5min ou VNI se disponível, alvo SpO2 ≥95% antes de iniciar"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Indução — Etomidato",
+          "detail": "0,3mg/kg EV — preferido em instabilidade hemodinâmica"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Indução — Cetamina (alternativa, especialmente se broncoespasmo/hipotensão)",
+          "detail": "1-2mg/kg EV"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Bloqueador neuromuscular — Succinilcolina",
+          "detail": "1-1,5mg/kg EV — evitar se hipercalemia, grande queimado/crush >72h, doença neuromuscular"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Bloqueador neuromuscular — Rocurônio (alternativa)",
+          "detail": "1-1,2mg/kg EV — se contraindicação à succinilcolina"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Laringoscopia e intubação orotraqueal",
+          "detail": "Confirmar posicionamento por capnografia + ausculta bilateral"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Sedoanalgesia de manutenção pós-IOT",
+          "detail": "Fentanil + Midazolam (ou Propofol) EV contínuo, titular por nível de sedação-alvo"
+        },
+        {
+          "kind": "exame",
+          "title": "RX de tórax de controle",
+          "detail": "Confirmar posicionamento do TOT"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização contínua",
+          "detail": "SpO2, capnografia, PA, FC"
+        }
+      ]
     }
   ]
 }
