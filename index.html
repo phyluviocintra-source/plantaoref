@@ -116,6 +116,97 @@
 
   main{max-width:900px; margin:0 auto; padding:0 18px;}
 
+  /* ---------- NAVBAR ---------- */
+  .navbar{display:flex; gap:6px; flex-wrap:wrap; margin-top:14px;}
+  .navtab{
+    font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; font-weight:600;
+    background:var(--chip-bg); border:1px solid var(--line); border-radius:8px;
+    padding:8px 12px; cursor:pointer; color:var(--ink-soft);
+  }
+  .navtab:hover{color:var(--ink); border-color:var(--ink);}
+  .navtab.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+
+  /* ---------- HOME ---------- */
+  .homegrid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px;}
+  @media (max-width:700px){ .homegrid{grid-template-columns:1fr;} }
+  .homecard{
+    background:var(--card); border:1px solid var(--line); border-top:5px solid var(--hc);
+    border-radius:12px; padding:22px 18px; cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .homecard:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.08);}
+  .homecard-icon{font-size:28px; margin-bottom:10px;}
+  .homecard h3{font-family:'Space Grotesk', sans-serif; font-size:17px; margin:0 0 8px; color:var(--ink);}
+  .homecard p{font-size:12.5px; color:var(--ink-soft); line-height:1.5; margin:0;}
+
+  .viewpanel{margin-top:6px;}
+
+  /* ---------- SALA VERMELHA ---------- */
+  .svcard{
+    background:var(--card); border:1px solid var(--line); border-left-width:5px;
+    border-radius:var(--radius); margin-bottom:12px; overflow:hidden;
+  }
+  .svcard > summary{
+    list-style:none; cursor:pointer; padding:14px 16px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:15px;
+  }
+  .svcard > summary::-webkit-details-marker{display:none;}
+  .svcard > summary .chev{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft); transition:transform .18s ease;}
+  .svcard[open] > summary .chev{transform:rotate(90deg);}
+  .svbody{padding:0 16px 16px;}
+  .svitem{
+    display:flex; gap:10px; padding:9px 0; border-top:1px dashed var(--line);
+  }
+  .svitem:first-child{border-top:none;}
+  .svitem-num{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft);
+    width:20px; flex:0 0 auto; padding-top:2px;
+  }
+  .svitem-body{flex:1;}
+  .svitem-title{font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:13.5px; color:var(--ink);}
+  .svitem-tag{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:9px; text-transform:uppercase;
+    letter-spacing:.05em; padding:1px 6px; border-radius:4px; margin-right:7px; vertical-align:middle;
+    background:#EFF1EA; color:var(--ink-soft);
+  }
+  .svitem-tag.medicamento{background:#E6F4EE; color:#0F5C4E;}
+  .svitem-tag.monitorizacao{background:#EAF0F8; color:#2A5688;}
+  .svitem-tag.cuidado{background:#FBF0E3; color:#8A4B0F;}
+  .svitem-detail{font-family:'IBM Plex Mono', monospace; font-size:12px; color:#3A4150; margin-top:2px;}
+
+  /* ---------- CALCULADORAS ---------- */
+  .calccard{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:20px 20px 24px; margin-bottom:20px;
+  }
+  .calccard h2{font-family:'Space Grotesk', sans-serif; font-size:19px; margin:0 0 4px;}
+  .calccard .calcdesc{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px;}
+  .calcfield{margin-bottom:14px;}
+  .calcfield label{
+    display:block; font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; font-weight:600;
+    color:var(--ink); margin-bottom:5px;
+  }
+  .calcfield select, .calcfield input{
+    width:100%; border:1px solid var(--line); border-radius:7px; padding:9px 10px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; background:#fff; color:var(--ink);
+  }
+  .calcgrid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:520px){ .calcgrid{grid-template-columns:1fr;} }
+  .calcbtn{
+    background:var(--accent); color:#fff; border:none; border-radius:8px;
+    padding:11px 20px; font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:14px;
+    cursor:pointer; margin-top:6px;
+  }
+  .calcresult{
+    margin-top:18px; padding:16px; border-radius:10px; background:#F3F4EF; border:1px solid #DDE0D6;
+  }
+  .calcresult .score{font-family:'Space Grotesk', sans-serif; font-size:26px; font-weight:700; color:var(--ink);}
+  .calcresult .interp{font-family:'IBM Plex Sans', sans-serif; font-size:13px; color:var(--ink-soft); margin-top:6px; line-height:1.5;}
+  .calcresult.risk-low{border-color:#B9CFC7; background:#EEF3F1;}
+  .calcresult.risk-mod{border-color:#E7C79A; background:#FBF0E3;}
+  .calcresult.risk-high{border-color:#E7ABAB; background:#FBEAEA;}
+
   .index-wrap{margin-top:22px;}
   .index-group{margin-bottom:18px;}
   .index-group-label{
@@ -366,25 +457,76 @@
       </div>
     </div>
   </div>
-  <div class="searchbar">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input id="searchInput" type="text" placeholder="Buscar tema (ex: dengue, gota, nitrofurantoína...)" autocomplete="off">
-  </div>
-  <div id="resultCount"></div>
-  <div class="catbar" id="catbar"></div>
+  <nav class="navbar" id="navbar">
+    <button class="navtab" data-view="home">🏠 Início</button>
+    <button class="navtab" data-view="prescricoes">📋 Prescrições do PS</button>
+    <button class="navtab" data-view="salavermelha">🚨 Sala Vermelha e Internação</button>
+    <button class="navtab" data-view="calculadoras">🧮 Calculadoras</button>
+  </nav>
 </header>
 
 <main>
-  <div id="loadingMsg" class="loading">Carregando protocolos…</div>
-  <div class="index-wrap" id="indexWrap"></div>
 
-  <div class="toolbar" id="toolbar" style="display:none;">
-    <button id="expandAll">expandir tudo</button>
-    <button id="collapseAll">recolher tudo</button>
+  <!-- ============ HOME ============ -->
+  <div id="viewHome" class="viewpanel">
+    <div class="homegrid">
+      <div class="homecard" data-view="prescricoes" style="--hc:#0F5C4E">
+        <div class="homecard-icon">📋</div>
+        <h3>Prescrições do PS</h3>
+        <p>Receituário padrão por queixa — infecto, trauma, dermato, uro, ginecologia e mais. Busca rápida por tema.</p>
+      </div>
+      <div class="homecard" data-view="salavermelha" style="--hc:#8B1E3F">
+        <div class="homecard-icon">🚨</div>
+        <h3>Sala Vermelha e Internação</h3>
+        <p>Prescrições completas de internação por diagnóstico — dieta, acesso, medicações com dose/via/diluição, monitorização.</p>
+      </div>
+      <div class="homecard" data-view="calculadoras" style="--hc:#4A6FA5">
+        <div class="homecard-icon">🧮</div>
+        <h3>Calculadoras</h3>
+        <p>Escores clínicos com cálculo automático — Glasgow, CHA₂DS₂-VASc, HEART, CURB-65, Wells, NIHSS, Framingham.</p>
+      </div>
+    </div>
   </div>
 
-  <div class="content-title" id="contentTitle" style="display:none;">Protocolos</div>
-  <div id="cardsWrap"></div>
+  <!-- ============ PRESCRIÇÕES DO PS ============ -->
+  <div id="viewPrescricoes" class="viewpanel" style="display:none;">
+    <div class="searchbar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="Buscar tema (ex: dengue, gota, nitrofurantoína...)" autocomplete="off">
+    </div>
+    <div id="resultCount"></div>
+    <div class="catbar" id="catbar"></div>
+
+    <div id="loadingMsg" class="loading">Carregando protocolos…</div>
+    <div class="index-wrap" id="indexWrap"></div>
+
+    <div class="toolbar" id="toolbar" style="display:none;">
+      <button id="expandAll">expandir tudo</button>
+      <button id="collapseAll">recolher tudo</button>
+    </div>
+
+    <div class="content-title" id="contentTitle" style="display:none;">Protocolos</div>
+    <div id="cardsWrap"></div>
+  </div>
+
+  <!-- ============ SALA VERMELHA E INTERNAÇÃO ============ -->
+  <div id="viewSalaVermelha" class="viewpanel" style="display:none;">
+    <div class="searchbar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="svSearchInput" type="text" placeholder="Buscar diagnóstico (ex: asma, AVC, sepse...)" autocomplete="off">
+    </div>
+    <div class="content-title" style="margin-top:20px;">Prescrições de Internação</div>
+    <div id="svIndexWrap" class="index-wrap" style="margin-top:0;"></div>
+    <div id="svCardsWrap"></div>
+  </div>
+
+  <!-- ============ CALCULADORAS ============ -->
+  <div id="viewCalculadoras" class="viewpanel" style="display:none;">
+    <div class="content-title" style="margin-top:20px;">Escores Clínicos</div>
+    <div id="calcIndexWrap" class="pillrow" style="margin:14px 0 24px;"></div>
+    <div id="calcArea"></div>
+  </div>
+
 </main>
 
 <footer>
@@ -392,6 +534,7 @@
 </footer>
 
 <button class="newtopic-btn" id="newTopicBtn" style="display:none;">+ Novo tema</button>
+
 
 <div class="unsavedbar" id="unsavedBar">
   <span>Alterações não sincronizadas com o GitHub.</span>
@@ -437,6 +580,7 @@
 /* ============ STATE ============ */
 let CATS = {};
 let SECTIONS = [];
+let ORDERSETS = [];
 let dirty = false;
 let currentSha = null; // sha of data.json on GitHub, for updates
 const LS_CFG = 'psplantao_ghconfig';
@@ -891,6 +1035,7 @@ async function init(forceRemote){
   try{
     CATS = data.cats;
     SECTIONS = data.sections;
+    ORDERSETS = data.orderSets || [];
     dirty = false;
     updateUnsavedBar();
 
@@ -898,11 +1043,411 @@ async function init(forceRemote){
     document.getElementById('toolbar').style.display = 'flex';
     document.getElementById('contentTitle').style.display = 'block';
     renderAll();
+    renderSalaVermelha();
   }catch(e){
     console.error('Erro ao renderizar conteúdo', e);
     document.getElementById('loadingMsg').style.display = 'block';
     document.getElementById('loadingMsg').textContent = 'Erro ao exibir o conteúdo. Abra o console do navegador (menu de desenvolvedor) para ver detalhes técnicos, ou avise para eu investigar.';
   }
+}
+
+/* ============ NAVEGAÇÃO ENTRE VIEWS ============ */
+function setView(view){
+  const ids = {home:'viewHome', prescricoes:'viewPrescricoes', salavermelha:'viewSalaVermelha', calculadoras:'viewCalculadoras'};
+  Object.keys(ids).forEach(v=>{
+    document.getElementById(ids[v]).style.display = (v===view) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.navtab').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.view===view);
+  });
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+}
+document.querySelectorAll('.navtab').forEach(btn=>{
+  btn.addEventListener('click', ()=> setView(btn.dataset.view));
+});
+document.querySelectorAll('.homecard').forEach(card=>{
+  card.addEventListener('click', ()=> setView(card.dataset.view));
+});
+
+/* ============ SALA VERMELHA E INTERNAÇÃO ============ */
+function renderSalaVermelha(){
+  const indexWrap = document.getElementById('svIndexWrap');
+  const cardsWrap = document.getElementById('svCardsWrap');
+  indexWrap.innerHTML = '';
+  cardsWrap.innerHTML = '';
+  if(!ORDERSETS.length){
+    cardsWrap.innerHTML = '<p style="font-family:IBM Plex Sans,sans-serif;color:var(--ink-soft);font-size:13px;">Nenhuma prescrição de internação cadastrada ainda.</p>';
+    return;
+  }
+  const row = document.createElement('div');
+  row.className = 'pillrow';
+  ORDERSETS.forEach(os=>{
+    const color = (CATS[os.cat] && CATS[os.cat].color) || '#8B1E3F';
+    const pill = document.createElement('button');
+    pill.className = 'pill';
+    pill.style.borderLeftColor = color;
+    pill.textContent = os.title;
+    pill.dataset.title = os.title.toLowerCase();
+    pill.onclick = ()=> svJumpTo(os.id);
+    row.appendChild(pill);
+  });
+  indexWrap.appendChild(row);
+
+  const tagLabels = {dieta:'Dieta', procedimento:'Procedimento', medicamento:'Medicamento', monitorizacao:'Monitorização', cuidado:'Cuidado', oxigenoterapia:'O2', exame:'Exame'};
+  ORDERSETS.forEach(os=>{
+    const color = (CATS[os.cat] && CATS[os.cat].color) || '#8B1E3F';
+    const details = document.createElement('details');
+    details.className = 'svcard';
+    details.id = 'sv-'+os.id;
+    details.dataset.title = os.title.toLowerCase();
+    details.style.borderLeftColor = color;
+    const summary = document.createElement('summary');
+    summary.innerHTML = `<span>${os.title}</span><span class="chev">▸</span>`;
+    details.appendChild(summary);
+    const body = document.createElement('div');
+    body.className = 'svbody';
+    os.items.forEach((item, idx)=>{
+      const row = document.createElement('div');
+      row.className = 'svitem';
+      const tag = tagLabels[item.kind] || item.kind;
+      row.innerHTML = `<span class="svitem-num">${idx+1}.</span><div class="svitem-body"><span class="svitem-tag ${item.kind}">${tag}</span><span class="svitem-title">${item.title}</span>${item.detail?`<div class="svitem-detail">${item.detail}</div>`:''}</div>`;
+      body.appendChild(row);
+    });
+    details.appendChild(body);
+    cardsWrap.appendChild(details);
+  });
+}
+function svJumpTo(id){
+  const el = document.getElementById('sv-'+id);
+  if(!el) return;
+  el.open = true;
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+document.getElementById('svSearchInput').addEventListener('input', function(){
+  const q = normalize(this.value.trim());
+  document.querySelectorAll('#svIndexWrap .pill').forEach(p=>{
+    p.classList.toggle('hidden', q!=='' && !normalize(p.dataset.title).includes(q));
+  });
+  document.querySelectorAll('.svcard').forEach(c=>{
+    c.classList.toggle('hidden', q!=='' && !normalize(c.dataset.title).includes(q));
+  });
+});
+
+/* ============ CALCULADORAS ============ */
+const CALCULATORS = [
+  {id:'glasgow', label:'Glasgow'},
+  {id:'cha2ds2vasc', label:'CHA₂DS₂-VASc'},
+  {id:'framingham', label:'Framingham'},
+  {id:'curb65', label:'CURB-65'},
+  {id:'wellsdvt', label:'Wells (TVP)'},
+  {id:'wellspe', label:'Wells (TEP)'},
+  {id:'nihss', label:'NIHSS'},
+  {id:'heart', label:'HEART Score'}
+];
+
+function buildCalcIndex(){
+  const wrap = document.getElementById('calcIndexWrap');
+  wrap.innerHTML = '';
+  CALCULATORS.forEach(c=>{
+    const pill = document.createElement('button');
+    pill.className = 'pill';
+    pill.style.borderLeftColor = '#4A6FA5';
+    pill.textContent = c.label;
+    pill.onclick = ()=> renderCalculator(c.id);
+    wrap.appendChild(pill);
+  });
+}
+
+function calcResultHtml(score, maxScore, interp, riskClass){
+  return `<div class="calcresult ${riskClass||''}"><div class="score">${score}${maxScore?(' / '+maxScore):''}</div><div class="interp">${interp}</div></div>`;
+}
+
+function renderCalculator(id){
+  const area = document.getElementById('calcArea');
+  const fns = {
+    glasgow: calcGlasgow,
+    cha2ds2vasc: calcCha2ds2vasc,
+    framingham: calcFramingham,
+    curb65: calcCurb65,
+    wellsdvt: calcWellsDvt,
+    wellspe: calcWellsPe,
+    nihss: calcNihss,
+    heart: calcHeart
+  };
+  area.innerHTML = '';
+  if(fns[id]) fns[id](area);
+  area.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function selectField(label, help, options){
+  const opts = options.map(o=>`<option value="${o.v}">${o.t}</option>`).join('');
+  return `<div class="calcfield"><label>${label}</label><select>${opts}</select>${help?`<div class="cp-title" style="margin-top:4px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">${help}</div>`:''}</div>`;
+}
+
+/* ---- Glasgow ---- */
+function calcGlasgow(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>Escala de Coma de Glasgow</h2>
+    <div class="calcdesc">Avaliação do nível de consciência — abertura ocular, resposta verbal e resposta motora.</div>
+    <div id="gcs-fields">
+      ${selectField('Abertura Ocular','', [{v:4,t:'4 — Espontânea'},{v:3,t:'3 — Ao som/comando verbal'},{v:2,t:'2 — À dor'},{v:1,t:'1 — Ausente'}])}
+      ${selectField('Resposta Verbal','', [{v:5,t:'5 — Orientada'},{v:4,t:'4 — Confusa'},{v:3,t:'3 — Palavras inapropriadas'},{v:2,t:'2 — Sons incompreensíveis'},{v:1,t:'1 — Ausente'}])}
+      ${selectField('Resposta Motora','', [{v:6,t:'6 — Obedece a comandos'},{v:5,t:'5 — Localiza a dor'},{v:4,t:'4 — Flexão inespecífica (retirada)'},{v:3,t:'3 — Flexão anormal (decorticação)'},{v:2,t:'2 — Extensão (descerebração)'},{v:1,t:'1 — Ausente'}])}
+    </div>
+    <button class="calcbtn" id="gcs-calc">Calcular Escore</button>
+    <div id="gcs-result"></div>
+  </div>`;
+  document.getElementById('gcs-calc').onclick = ()=>{
+    const selects = area.querySelectorAll('#gcs-fields select');
+    const vals = [...selects].map(s=>parseInt(s.value));
+    const total = vals.reduce((a,b)=>a+b,0);
+    let interp, cls;
+    if(total>=13){ interp='TCE leve (13-15).'; cls='risk-low'; }
+    else if(total>=9){ interp='TCE moderado (9-12).'; cls='risk-mod'; }
+    else { interp='TCE grave (≤8) — considerar via aérea definitiva (IOT).'; cls='risk-high'; }
+    document.getElementById('gcs-result').innerHTML = calcResultHtml(total, 15, interp, cls);
+  };
+}
+
+/* ---- CHA2DS2-VASc ---- */
+function calcCha2ds2vasc(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>CHA₂DS₂-VASc</h2>
+    <div class="calcdesc">Risco de AVC/tromboembolismo em fibrilação atrial não valvar — orienta indicação de anticoagulação.</div>
+    <div id="chadsvasc-fields" class="calcgrid">
+      ${selectField('IC / Disfunção de VE','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('HAS','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('Idade','', [{v:0,t:'<65 anos'},{v:1,t:'65-74 anos (+1)'},{v:2,t:'≥75 anos (+2)'}])}
+      ${selectField('Diabetes','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('AVC/AIT/TE prévio','', [{v:0,t:'Não'},{v:2,t:'Sim (+2)'}])}
+      ${selectField('Doença vascular (IAM, DAP, placa aórtica)','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('Sexo','', [{v:0,t:'Masculino'},{v:1,t:'Feminino (+1)'}])}
+    </div>
+    <button class="calcbtn" id="chadsvasc-calc">Calcular Escore</button>
+    <div id="chadsvasc-result"></div>
+  </div>`;
+  document.getElementById('chadsvasc-calc').onclick = ()=>{
+    const selects = area.querySelectorAll('#chadsvasc-fields select');
+    const vals = [...selects].map(s=>parseInt(s.value));
+    const total = vals.reduce((a,b)=>a+b,0);
+    const isFemale = vals[6] === 1;
+    let interp, cls;
+    const lowThreshold = isFemale ? 1 : 0;
+    if(total<=lowThreshold){ interp='Risco baixo — anticoagulação geralmente não indicada.'; cls='risk-low'; }
+    else if(total===lowThreshold+1){ interp='Risco intermediário — considerar anticoagulação conforme perfil do paciente.'; cls='risk-mod'; }
+    else { interp='Risco elevado — anticoagulação oral geralmente indicada (preferência por DOAC).'; cls='risk-high'; }
+    document.getElementById('chadsvasc-result').innerHTML = calcResultHtml(total, 9, interp, cls);
+  };
+}
+
+/* ---- Framingham (equação contínua D'Agostino 2008) ---- */
+function calcFramingham(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>Framingham Risk Score (2008)</h2>
+    <div class="calcdesc">Risco de evento cardiovascular (DAC, AVC, DAP, IC) em 10 anos — equação geral de D'Agostino et al., Circulation 2008.</div>
+    <div class="calcgrid">
+      <div class="calcfield"><label>Sexo</label><select id="frs-sex"><option value="M">Masculino</option><option value="F">Feminino</option></select></div>
+      <div class="calcfield"><label>Idade (anos)</label><input type="number" id="frs-age" min="30" max="74" value="55"></div>
+      <div class="calcfield"><label>Colesterol Total (mg/dL)</label><input type="number" id="frs-tc" value="200"></div>
+      <div class="calcfield"><label>HDL (mg/dL)</label><input type="number" id="frs-hdl" value="50"></div>
+      <div class="calcfield"><label>PA Sistólica (mmHg)</label><input type="number" id="frs-sbp" value="130"></div>
+      <div class="calcfield"><label>Em tratamento para HAS?</label><select id="frs-treated"><option value="0">Não</option><option value="1">Sim</option></select></div>
+      <div class="calcfield"><label>Tabagista atual?</label><select id="frs-smoker"><option value="0">Não</option><option value="1">Sim</option></select></div>
+      <div class="calcfield"><label>Diabetes?</label><select id="frs-diabetes"><option value="0">Não</option><option value="1">Sim</option></select></div>
+    </div>
+    <button class="calcbtn" id="frs-calc">Calcular Risco</button>
+    <div id="frs-result"></div>
+    <div class="cp-title" style="margin-top:14px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">Válido para 30-74 anos, sem DCV prévia. Fórmula: D'Agostino RB Sr et al. Circulation. 2008;117:743-753.</div>
+  </div>`;
+  document.getElementById('frs-calc').onclick = ()=>{
+    const sex = document.getElementById('frs-sex').value;
+    const age = parseFloat(document.getElementById('frs-age').value);
+    const tc = parseFloat(document.getElementById('frs-tc').value);
+    const hdl = parseFloat(document.getElementById('frs-hdl').value);
+    const sbp = parseFloat(document.getElementById('frs-sbp').value);
+    const treated = document.getElementById('frs-treated').value === '1';
+    const smoker = document.getElementById('frs-smoker').value === '1' ? 1 : 0;
+    const diabetes = document.getElementById('frs-diabetes').value === '1' ? 1 : 0;
+    if(!age || !tc || !hdl || !sbp){
+      document.getElementById('frs-result').innerHTML = calcResultHtml('—', null, 'Preencha todos os campos numéricos.', 'risk-mod');
+      return;
+    }
+    const lnSBPu = treated ? 0 : Math.log(sbp);
+    const lnSBPt = treated ? Math.log(sbp) : 0;
+    let riskFactors, s0;
+    if(sex === 'F'){
+      riskFactors = 2.32888*Math.log(age) + 1.20904*Math.log(tc) - 0.70833*Math.log(hdl) + 2.76157*lnSBPu + 2.82263*lnSBPt + 0.52873*smoker + 0.69154*diabetes - 26.1931;
+      s0 = 0.95012;
+    } else {
+      riskFactors = 3.06117*Math.log(age) + 1.12370*Math.log(tc) - 0.93263*Math.log(hdl) + 1.93303*lnSBPu + 1.99881*lnSBPt + 0.65451*smoker + 0.57367*diabetes - 23.9802;
+      s0 = 0.88936;
+    }
+    const risk = (1 - Math.pow(s0, Math.exp(riskFactors))) * 100;
+    const riskR = Math.max(0, Math.min(100, risk));
+    let interp, cls;
+    if(riskR < 10){ interp='Risco baixo (<10% em 10 anos).'; cls='risk-low'; }
+    else if(riskR < 20){ interp='Risco intermediário (10-20% em 10 anos).'; cls='risk-mod'; }
+    else { interp='Risco alto (≥20% em 10 anos) — considerar terapia intensiva de prevenção.'; cls='risk-high'; }
+    document.getElementById('frs-result').innerHTML = calcResultHtml(riskR.toFixed(1)+'%', null, interp, cls);
+  };
+}
+
+/* ---- CURB-65 ---- */
+function calcCurb65(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>CURB-65</h2>
+    <div class="calcdesc">Gravidade da pneumonia adquirida na comunidade — orienta decisão de internação.</div>
+    <div id="curb-fields">
+      ${selectField('Confusão mental nova','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('Ureia >50mg/dL (ou >7mmol/L)','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('FR ≥30irpm','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('PA sistólica <90 ou diastólica ≤60mmHg','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+      ${selectField('Idade ≥65 anos','', [{v:0,t:'Não'},{v:1,t:'Sim (+1)'}])}
+    </div>
+    <button class="calcbtn" id="curb-calc">Calcular Escore</button>
+    <div id="curb-result"></div>
+  </div>`;
+  document.getElementById('curb-calc').onclick = ()=>{
+    const selects = area.querySelectorAll('#curb-fields select');
+    const total = [...selects].reduce((a,s)=>a+parseInt(s.value),0);
+    let interp, cls;
+    if(total<=1){ interp='Baixo risco — tratamento ambulatorial geralmente possível.'; cls='risk-low'; }
+    else if(total===2){ interp='Risco intermediário — considerar internação em enfermaria.'; cls='risk-mod'; }
+    else { interp='Alto risco — internação, considerar UTI se 4-5 pontos.'; cls='risk-high'; }
+    document.getElementById('curb-result').innerHTML = calcResultHtml(total, 5, interp, cls);
+  };
+}
+
+/* ---- Wells TVP ---- */
+function calcWellsDvt(area){
+  const items = [
+    ['Câncer ativo (tratamento em curso, últimos 6 meses ou paliativo)',1],
+    ['Paralisia, paresia ou imobilização gessada recente de MMII',1],
+    ['Acamado >3 dias ou cirurgia de grande porte <12 semanas',1],
+    ['Dor localizada no trajeto do sistema venoso profundo',1],
+    ['Edema de todo o membro',1],
+    ['Edema de panturrilha >3cm comparado ao lado assintomático',1],
+    ['Edema depressível (cacifo) maior na perna sintomática',1],
+    ['Veias colaterais superficiais não varicosas',1],
+    ['TVP prévia documentada',1],
+    ['Diagnóstico alternativo pelo menos tão provável quanto TVP',-2],
+  ];
+  area.innerHTML = `<div class="calccard">
+    <h2>Wells Score — TVP</h2>
+    <div class="calcdesc">Probabilidade pré-teste de trombose venosa profunda.</div>
+    <div id="wdvt-fields">
+      ${items.map((it,i)=>selectField(it[0], '', [{v:0,t:'Não'},{v:it[1],t:`Sim (${it[1]>0?'+':''}${it[1]})`}])).join('')}
+    </div>
+    <button class="calcbtn" id="wdvt-calc">Calcular Escore</button>
+    <div id="wdvt-result"></div>
+  </div>`;
+  document.getElementById('wdvt-calc').onclick = ()=>{
+    const selects = area.querySelectorAll('#wdvt-fields select');
+    const total = [...selects].reduce((a,s)=>a+parseInt(s.value),0);
+    let interp, cls;
+    if(total<1){ interp='Probabilidade baixa de TVP.'; cls='risk-low'; }
+    else if(total<=2){ interp='Probabilidade moderada de TVP.'; cls='risk-mod'; }
+    else { interp='Probabilidade alta de TVP.'; cls='risk-high'; }
+    document.getElementById('wdvt-result').innerHTML = calcResultHtml(total, null, interp, cls);
+  };
+}
+
+/* ---- Wells TEP ---- */
+function calcWellsPe(area){
+  const items = [
+    ['Sinais/sintomas clínicos de TVP',3],
+    ['Diagnóstico alternativo menos provável que TEP',3],
+    ['FC >100bpm',1.5],
+    ['Imobilização ≥3 dias ou cirurgia nas últimas 4 semanas',1.5],
+    ['TVP/TEP prévios',1.5],
+    ['Hemoptise',1],
+    ['Malignidade (tratamento ativo, últimos 6 meses ou paliativo)',1],
+  ];
+  area.innerHTML = `<div class="calccard">
+    <h2>Wells Score — TEP</h2>
+    <div class="calcdesc">Probabilidade pré-teste de tromboembolismo pulmonar.</div>
+    <div id="wpe-fields">
+      ${items.map((it)=>selectField(it[0], '', [{v:0,t:'Não'},{v:it[1],t:`Sim (+${it[1]})`}])).join('')}
+    </div>
+    <button class="calcbtn" id="wpe-calc">Calcular Escore</button>
+    <div id="wpe-result"></div>
+  </div>`;
+  document.getElementById('wpe-calc').onclick = ()=>{
+    const selects = area.querySelectorAll('#wpe-fields select');
+    const total = [...selects].reduce((a,s)=>a+parseFloat(s.value),0);
+    let interp, cls;
+    if(total<=4){ interp='TEP improvável (≤4) — considerar D-dímero.'; cls='risk-low'; }
+    else { interp='TEP provável (>4) — considerar AngioTC de tórax direto.'; cls='risk-high'; }
+    document.getElementById('wpe-result').innerHTML = calcResultHtml(total, null, interp, cls);
+  };
+}
+
+/* ---- HEART Score ---- */
+function calcHeart(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>HEART Score</h2>
+    <div class="calcdesc">Risco de evento cardiovascular maior em pacientes com dor torácica no PS.</div>
+    <div id="heart-fields">
+      ${selectField('History (história clínica)','', [{v:0,t:'0 — Pouco suspeita'},{v:1,t:'1 — Moderadamente suspeita'},{v:2,t:'2 — Muito suspeita'}])}
+      ${selectField('ECG','', [{v:0,t:'0 — Normal'},{v:1,t:'1 — Alteração de repolarização inespecífica'},{v:2,t:'2 — Infra de ST significativo'}])}
+      ${selectField('Age (idade)','', [{v:0,t:'<45 anos'},{v:1,t:'45-64 anos'},{v:2,t:'≥65 anos'}])}
+      ${selectField('Risk factors (fatores de risco)','', [{v:0,t:'0 fatores'},{v:1,t:'1-2 fatores'},{v:2,t:'≥3 fatores ou doença aterosclerótica conhecida'}])}
+      ${selectField('Troponina inicial','', [{v:0,t:'0 — Normal (≤ limite)'},{v:1,t:'1 — Entre 1-3x o limite'},{v:2,t:'2 — >3x o limite'}])}
+    </div>
+    <button class="calcbtn" id="heart-calc">Calcular Escore</button>
+    <div id="heart-result"></div>
+  </div>`;
+  document.getElementById('heart-calc').onclick = ()=>{
+    const selects = area.querySelectorAll('#heart-fields select');
+    const total = [...selects].reduce((a,s)=>a+parseInt(s.value),0);
+    let interp, cls;
+    if(total<=3){ interp='Risco baixo (0-3) — considerar alta com seguimento ambulatorial.'; cls='risk-low'; }
+    else if(total<=6){ interp='Risco moderado (4-6) — considerar internação/observação e investigação adicional.'; cls='risk-mod'; }
+    else { interp='Risco alto (7-10) — investigação e tratamento precoces, considerar estratégia invasiva.'; cls='risk-high'; }
+    document.getElementById('heart-result').innerHTML = calcResultHtml(total, 10, interp, cls);
+  };
+}
+
+/* ---- NIHSS ---- */
+function calcNihss(area){
+  const items = [
+    {label:'1a. Nível de consciência', opts:[[0,'0 — Alerta'],[1,'1 — Não alerta, mas desperta a estímulos mínimos'],[2,'2 — Não alerta, requer estímulo repetido/doloroso'],[3,'3 — Reflexo ou irresponsivo']]},
+    {label:'1b. Perguntas orientação (mês, idade)', opts:[[0,'0 — Ambas corretas'],[1,'1 — Uma correta'],[2,'2 — Nenhuma correta']]},
+    {label:'1c. Comandos (abrir/fechar olhos, mão)', opts:[[0,'0 — Ambos corretos'],[1,'1 — Um correto'],[2,'2 — Nenhum correto']]},
+    {label:'2. Olhar conjugado', opts:[[0,'0 — Normal'],[1,'1 — Paralisia parcial do olhar'],[2,'2 — Desvio forçado/paralisia total']]},
+    {label:'3. Campos visuais', opts:[[0,'0 — Sem perda visual'],[1,'1 — Hemianopsia parcial'],[2,'2 — Hemianopsia completa'],[3,'3 — Hemianopsia bilateral/cegueira cortical']]},
+    {label:'4. Paralisia facial', opts:[[0,'0 — Normal'],[1,'1 — Paralisia mínima'],[2,'2 — Paralisia parcial'],[3,'3 — Paralisia completa uni/bilateral']]},
+    {label:'5a. Motor MSE (braço esquerdo)', opts:[[0,'0 — Sem queda'],[1,'1 — Queda em <10s'],[2,'2 — Algum esforço contra gravidade'],[3,'3 — Sem esforço contra gravidade'],[4,'4 — Sem movimento']]},
+    {label:'5b. Motor MSD (braço direito)', opts:[[0,'0 — Sem queda'],[1,'1 — Queda em <10s'],[2,'2 — Algum esforço contra gravidade'],[3,'3 — Sem esforço contra gravidade'],[4,'4 — Sem movimento']]},
+    {label:'6a. Motor MIE (perna esquerda)', opts:[[0,'0 — Sem queda'],[1,'1 — Queda em <5s'],[2,'2 — Algum esforço contra gravidade'],[3,'3 — Sem esforço contra gravidade'],[4,'4 — Sem movimento']]},
+    {label:'6b. Motor MID (perna direita)', opts:[[0,'0 — Sem queda'],[1,'1 — Queda em <5s'],[2,'2 — Algum esforço contra gravidade'],[3,'3 — Sem esforço contra gravidade'],[4,'4 — Sem movimento']]},
+    {label:'7. Ataxia de membros', opts:[[0,'0 — Ausente'],[1,'1 — Presente em 1 membro'],[2,'2 — Presente em 2 membros']]},
+    {label:'8. Sensibilidade', opts:[[0,'0 — Normal'],[1,'1 — Perda leve a moderada'],[2,'2 — Perda grave a total']]},
+    {label:'9. Linguagem (afasia)', opts:[[0,'0 — Normal'],[1,'1 — Afasia leve a moderada'],[2,'2 — Afasia grave'],[3,'3 — Mudo/afasia global']]},
+    {label:'10. Disartria', opts:[[0,'0 — Normal'],[1,'1 — Leve a moderada'],[2,'2 — Grave/anartria']]},
+    {label:'11. Extinção/inatenção (negligência)', opts:[[0,'0 — Ausente'],[1,'1 — Leve (1 modalidade)'],[2,'2 — Grave (2+ modalidades)']]},
+  ];
+  area.innerHTML = `<div class="calccard">
+    <h2>NIHSS</h2>
+    <div class="calcdesc">Escala de gravidade do AVC — National Institutes of Health Stroke Scale (0-42).</div>
+    <div id="nihss-fields">
+      ${items.map(it=>selectField(it.label,'',it.opts.map(o=>({v:o[0],t:o[1]})))).join('')}
+    </div>
+    <button class="calcbtn" id="nihss-calc">Calcular Escore</button>
+    <div id="nihss-result"></div>
+  </div>`;
+  document.getElementById('nihss-calc').onclick = ()=>{
+    const selects = area.querySelectorAll('#nihss-fields select');
+    const total = [...selects].reduce((a,s)=>a+parseInt(s.value),0);
+    let interp, cls;
+    if(total===0){ interp='Sem déficit mensurável.'; cls='risk-low'; }
+    else if(total<=4){ interp='AVC leve.'; cls='risk-low'; }
+    else if(total<=15){ interp='AVC moderado.'; cls='risk-mod'; }
+    else if(total<=20){ interp='AVC moderado a grave.'; cls='risk-mod'; }
+    else { interp='AVC grave.'; cls='risk-high'; }
+    document.getElementById('nihss-result').innerHTML = calcResultHtml(total, 42, interp, cls);
+  };
 }
 
 /* ============ TELA DE SENHA ============ */
@@ -924,6 +1469,8 @@ async function tryUnlock(){
   if(hash === LOCK_HASH){
     document.body.classList.remove('locked');
     document.getElementById('lockScreen').remove();
+    setView('home');
+    buildCalcIndex();
     init(false);
   } else {
     errEl.textContent = 'Senha incorreta.';
