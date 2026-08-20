@@ -173,6 +173,11 @@
   .svitem-tag.medicamento{background:#E6F4EE; color:#0F5C4E;}
   .svitem-tag.monitorizacao{background:#EAF0F8; color:#2A5688;}
   .svitem-tag.cuidado{background:#FBF0E3; color:#8A4B0F;}
+  .svitem-tag.soro{background:#E8F0FA; color:#2A5688;}
+  .svitem-tag.hemocomponente{background:#FBEAEA; color:#7A1F22;}
+  .svitem-tag.interconsulta{background:#F0EAF5; color:#5C4B8A;}
+  .svitem-tag.meta{background:#DCEFEA; color:#0C4A3F;}
+  .svitem-tag.avaliacao{background:#EFF1EA; color:#4A5262;}
   .svitem-detail{font-family:'IBM Plex Mono', monospace; font-size:12px; color:#3A4150; margin-top:2px;}
 
   /* ---------- CALCULADORAS ---------- */
@@ -1093,7 +1098,7 @@ function renderSalaVermelha(){
   });
   indexWrap.appendChild(row);
 
-  const tagLabels = {dieta:'Dieta', procedimento:'Procedimento', medicamento:'Medicamento', monitorizacao:'Monitorização', cuidado:'Cuidado', oxigenoterapia:'O2', exame:'Exame'};
+  const tagLabels = {dieta:'Dieta', procedimento:'Procedimento', medicamento:'Medicamento', monitorizacao:'Monitorização', cuidado:'Cuidado', oxigenoterapia:'O2', exame:'Exame', soro:'Soro', hemocomponente:'Hemocomponente', interconsulta:'Interconsulta', avaliacao:'Avaliação', preparo:'Preparo', ventilacao:'Ventilação', meta:'Meta', posicao:'Posição'};
   ORDERSETS.forEach(os=>{
     const color = (CATS[os.cat] && CATS[os.cat].color) || '#8B1E3F';
     const details = document.createElement('details');
