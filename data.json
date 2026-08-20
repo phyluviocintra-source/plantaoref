@@ -720,5 +720,433 @@
       "cat": "oftalmo",
       "raw": "\nRT:USO OFTALMOLÓGICO\nMD:1) OLOPATADINA 0,1-0,2% COLÍRIO\nDS:PINGAR 01 GOTA NO(S) OLHO(S) 12/12H (0,1%) OU 1X AO DIA (0,2%), POR TEMPO PROLONGADO ENQUANTO HOUVER EXPOSIÇÃO AO ALÉRGENO.\nDS:ALTERNATIVA: CETOTIFENO 0,025% COLÍRIO, 01 GOTA 12/12H.\nMD:2) CARMELOSE SÓDICA 5MG/ML\nDS:PINGAR 01 A 02 GOTAS 4/4H SE NECESSÁRIO — LUBRIFICA E AJUDA A DILUIR O ALÉRGENO NA SUPERFÍCIE OCULAR.\nRT:USO ORAL (se rinite alérgica ou sintomas sistêmicos associados)\nMD:3) LORATADINA 10MG\nDS:TOMAR 01 CP VO 1X AO DIA POR 5 A 7 DIAS.\nTX:COMPRESSAS FRIAS VÁRIAS VEZES AO DIA — ALIVIAM PRURIDO E EDEMA PALPEBRAL.\nTX:ORIENTAR EVITAR COÇAR OS OLHOS (piora a liberação de histamina e pode lesionar a córnea) E IDENTIFICAR/EVITAR O ALÉRGENO DESENCADEANTE, QUANDO POSSÍVEL.\nCR:CORTICOIDE TÓPICO (ex: fluormetolona) — RESERVAR PARA CASOS GRAVES/REFRATÁRIOS, POR TEMPO CURTO E COM ACOMPANHAMENTO OFTALMOLÓGICO. RISCO DE GLAUCOMA, CATARATA E POTENCIALIZAÇÃO DE INFECÇÃO HERPÉTICA COM USO PROLONGADO/NÃO SUPERVISIONADO — NÃO PRESCREVER PARA USO CONTÍNUO NO PS.\nTX:DIFERENCIAÇÃO RÁPIDA: ALÉRGICA = PRURIDO INTENSO BILATERAL, SECREÇÃO AQUOSA/MUCOIDE, QUEMOSE. BACTERIANA = SECREÇÃO PURULENTA, GERALMENTE UNILATERAL NO INÍCIO. VIRAL = SECREÇÃO AQUOSA, LINFONODO PRÉ-AURICULAR, FREQUENTE HISTÓRIA DE IVAS RECENTE.\nRF:PRURIDO INTENSO BILATERAL (muito sugestivo de etiologia alérgica)?\nRF:HISTÓRIA PESSOAL/FAMILIAR DE ATOPIA (rinite, asma, dermatite)?\nRF:SAZONALIDADE OU RELAÇÃO COM EXPOSIÇÃO ESPECÍFICA (poeira, pelos, pólen, lente de contato, colírio novo)?\nRF:DOR OCULAR INTENSA, FOTOFOBIA OU BAIXA ACUIDADE VISUAL (não típico de alérgica — pensar em causa infecciosa/inflamatória mais grave)?\n"
     }
+  ],
+  "orderSets": [
+    {
+      "id": "asma-grave",
+      "title": "Asma — Crise Grave (Internação)",
+      "cat": "pneumo",
+      "items": [
+        {
+          "kind": "dieta",
+          "title": "Dieta oral leve conforme tolerância",
+          "detail": "Dieta zero apenas se desconforto respiratório importante"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico salinizado",
+          "detail": ""
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigenoterapia",
+          "detail": "ACM — alvo SpO2 ≥94%"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Salbutamol",
+          "detail": "100mcg/jato spray • 4-8 jatos • inalatório com espaçador • 20/20min por 3 doses, depois conforme necessidade"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Brometo de Ipratrópio",
+          "detail": "20mcg/jato spray • 4 jatos • inalatório • junto ao salbutamol nas 3 primeiras doses"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Prednisona",
+          "detail": "20mg comp • 40mg (2 comp) VO • 1x/dia por 5 dias (ou Metilprednisolona 40-60mg EV se não aceita VO)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Sulfato de Magnésio",
+          "detail": "10% Amp 10ml • 2g diluído em 100ml SF 0,9% EV • dose única em 20min — se refratário/exacerbação grave"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Oximetria contínua",
+          "detail": ""
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Sinais vitais",
+          "detail": "Aferir de 1/1h"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Cabeceira elevada",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "avc-isquemico",
+      "title": "AVC Isquêmico — Fase Aguda (Internação)",
+      "cat": "neuro",
+      "items": [
+        {
+          "kind": "dieta",
+          "title": "Dieta zero até avaliação de disfagia",
+          "detail": "Triagem de deglutição à beira do leito antes de liberar dieta"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": ""
+        },
+        {
+          "kind": "exame",
+          "title": "TC de crânio sem contraste urgente + glicemia capilar",
+          "detail": "Excluir hemorragia antes de qualquer terapia de reperfusão"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Alteplase (se dentro da janela, sem contraindicação)",
+          "detail": "0,9mg/kg EV (máx 90mg) — 10% em bolus no 1º min + 90% em infusão ao longo de 60min. Ver protocolo AVC Agudo para critérios/janela."
+        },
+        {
+          "kind": "medicamento",
+          "title": "AAS",
+          "detail": "160-300mg VO/SNE 1x/dia — iniciar 24h após trombólise, ou imediatamente se não trombolisado"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Sinais vitais e NIHSS seriado",
+          "detail": "1/1h nas primeiras 24h se trombolisado; 2/2h a 4/4h se não trombolisado"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Glicemia capilar",
+          "detail": "6/6h — manter entre 140-180mg/dL"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Cabeceira a 30°",
+          "detail": ""
+        },
+        {
+          "kind": "cuidado",
+          "title": "Controle pressórico",
+          "detail": "Manter PA <185/110 se trombolisado; permitir até 220/120 se não trombolisado (ver protocolo de Emergência Hipertensiva)"
+        }
+      ]
+    },
+    {
+      "id": "avc-hemorragico",
+      "title": "AVC Hemorrágico (Internação)",
+      "cat": "neuro",
+      "items": [
+        {
+          "kind": "dieta",
+          "title": "Dieta zero",
+          "detail": ""
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico calibroso",
+          "detail": ""
+        },
+        {
+          "kind": "exame",
+          "title": "TC de crânio sem contraste + coagulograma + tipagem sanguínea",
+          "detail": ""
+        },
+        {
+          "kind": "medicamento",
+          "title": "Controle pressórico",
+          "detail": "Labetalol ou Nicardipina EV — meta PAS <140mmHg (ver protocolo de Emergência Hipertensiva)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Reversão de anticoagulação, se em uso",
+          "detail": "Conforme o anticoagulante — complexo protrombínico, vitamina K, idarucizumabe/andexanet, conforme o caso"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Sinais vitais e escala neurológica",
+          "detail": "De 1/1h"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Glasgow seriado",
+          "detail": ""
+        },
+        {
+          "kind": "cuidado",
+          "title": "Cabeceira a 30°",
+          "detail": ""
+        },
+        {
+          "kind": "cuidado",
+          "title": "Acionar neurocirurgia",
+          "detail": "Avaliar necessidade de drenagem/craniotomia conforme volume e localização do hematoma"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Evitar hipotensão e hipoxemia",
+          "detail": "Agravam a lesão secundária"
+        }
+      ]
+    },
+    {
+      "id": "bradiarritmia",
+      "title": "Bradiarritmia Instável",
+      "cat": "cardio",
+      "items": [
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": ""
+        },
+        {
+          "kind": "procedimento",
+          "title": "Monitorização cardíaca contínua + ECG de 12 derivações",
+          "detail": ""
+        },
+        {
+          "kind": "medicamento",
+          "title": "Atropina",
+          "detail": "0,5mg EV • repetir a cada 3-5min • dose máxima total 3mg"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Se refratário — Dopamina ou Adrenalina",
+          "detail": "Dopamina 5-20mcg/kg/min EV BIC, OU Adrenalina 2-10mcg/min EV BIC"
+        },
+        {
+          "kind": "procedimento",
+          "title": "Marca-passo transcutâneo",
+          "detail": "Preparar/instalar se refratário à droga ou instabilidade grave (hipotensão, rebaixamento, choque)"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Sinais vitais contínuos",
+          "detail": ""
+        },
+        {
+          "kind": "cuidado",
+          "title": "Investigar e corrigir causa",
+          "detail": "Hipercalemia, IAM inferior, intoxicação por betabloqueador/BCC/digitálico, hipotermia, hipotireoidismo"
+        }
+      ]
+    },
+    {
+      "id": "cad-ehh",
+      "title": "Cetoacidose Diabética (CAD) / EHH (Internação)",
+      "cat": "emergencia",
+      "items": [
+        {
+          "kind": "dieta",
+          "title": "Dieta zero até resolução da cetoacidose",
+          "detail": ""
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": "2 acessos, se possível"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Soro Fisiológico 0,9%",
+          "detail": "500-1000ml/h nas primeiras 2-4h (ex: 70kg → 1000ml na 1ª hora)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Insulina Regular",
+          "detail": "Diluição: 50UI + 50ml SF 0,9% (1UI/ml) EV BIC • 0,1UI/kg/h (ex: 70kg = 7ml/h)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Reposição de potássio conforme nível sérico",
+          "detail": "Não iniciar insulina se K <3,3 — repor K primeiro (ver Padronização de Eletrólitos)"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Glicemia capilar",
+          "detail": "De 1/1h"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Eletrólitos, função renal e pH venoso",
+          "detail": "De 4/4h até resolução"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Trocar para soro glicosado quando glicemia <250mg/dL",
+          "detail": ""
+        },
+        {
+          "kind": "cuidado",
+          "title": "Investigar e tratar o fator precipitante",
+          "detail": "Infecção, má adesão, IAM, AVC, pancreatite"
+        }
+      ]
+    },
+    {
+      "id": "crise-convulsiva-se",
+      "title": "Crise Convulsiva / Status Epiléptico",
+      "cat": "neuro",
+      "items": [
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico",
+          "detail": ""
+        },
+        {
+          "kind": "exame",
+          "title": "Glicemia capilar imediata",
+          "detail": ""
+        },
+        {
+          "kind": "medicamento",
+          "title": "Lorazepam (1ª linha)",
+          "detail": "0,1mg/kg EV (máx 4mg) • repetir 1x após 5-10min se persistir. Sem acesso EV: Midazolam 10mg IM."
+        },
+        {
+          "kind": "medicamento",
+          "title": "Fenitoína ou Levetiracetam (2ª linha, se crise persistir)",
+          "detail": "Fenitoína 20mg/kg EV, máx 50mg/min; OU Levetiracetam 60mg/kg EV (máx 4500mg)"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Tiamina",
+          "detail": "200-500mg EV antes de qualquer solução glicosada, se suspeita de etilismo/desnutrição"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Sinais vitais e nível de consciência contínuos",
+          "detail": ""
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "ECG contínuo durante infusão de fenitoína",
+          "detail": ""
+        },
+        {
+          "kind": "cuidado",
+          "title": "Proteção de via aérea",
+          "detail": "Decúbito lateral, evitar contenção física excessiva"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Se refratário após 2ª linha",
+          "detail": "Sedação contínua com IOT (Midazolam/Propofol) — acionar UTI"
+        }
+      ]
+    },
+    {
+      "id": "sepse-choque",
+      "title": "Sepse / Choque Séptico (Internação)",
+      "cat": "emergencia",
+      "items": [
+        {
+          "kind": "dieta",
+          "title": "Dieta zero até estabilização",
+          "detail": ""
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acesso venoso periférico calibroso (2 acessos) ou central",
+          "detail": ""
+        },
+        {
+          "kind": "exame",
+          "title": "Lactato + hemoculturas (2 amostras)",
+          "detail": "Coletar antes do antibiótico, sem atrasar o antibiótico >45min"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Cristaloide em bolus",
+          "detail": "SF 0,9% ou Ringer • 30ml/kg EV • se hipotensão ou lactato ≥4mmol/L"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Antibiótico de amplo espectro",
+          "detail": "Ceftriaxona 2g EV 1x/dia OU Piperacilina-Tazobactam 4,5g EV 6/6h (ajustar ao foco) — iniciar o quanto antes"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Noradrenalina, se hipotensão persistente após volume",
+          "detail": "Diluição padrão: 04 amp (16ml) + 234ml SG5% = 128mcg/ml EV BIC • titular para PAM ≥65mmHg"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "PA, FC e diurese horária",
+          "detail": ""
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Lactato seriado",
+          "detail": "Reavaliar em 2-4h se inicial ≥2mmol/L"
+        },
+        {
+          "kind": "cuidado",
+          "title": "Identificar e controlar o foco infeccioso",
+          "detail": "O quanto antes — drenagem, remoção de dispositivo, desbridamento"
+        }
+      ]
+    },
+    {
+      "id": "sca-supra",
+      "title": "Síndrome Coronariana Aguda — Supra de ST (IAM)",
+      "cat": "cardio",
+      "items": [
+        {
+          "kind": "dieta",
+          "title": "Dieta leve/zero conforme estabilidade",
+          "detail": ""
+        },
+        {
+          "kind": "procedimento",
+          "title": "ECG de 12 derivações em até 10min + acesso venoso",
+          "detail": ""
+        },
+        {
+          "kind": "procedimento",
+          "title": "Acionar hemodinâmica",
+          "detail": "Angioplastia primária — meta contato-balão ≤90min"
+        },
+        {
+          "kind": "medicamento",
+          "title": "AAS",
+          "detail": "160-300mg VO mastigado • dose de ataque"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Clopidogrel",
+          "detail": "300-600mg VO • dose de ataque, conforme protocolo da hemodinâmica"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Anticoagulação parenteral",
+          "detail": "Heparina não fracionada ou Enoxaparina, conforme estratégia de reperfusão"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Nitrato sublingual, se dor ativa e PAS >90mmHg",
+          "detail": "Evitar se suspeita de infarto de VD"
+        },
+        {
+          "kind": "medicamento",
+          "title": "Morfina, se dor refratária ao nitrato",
+          "detail": "2-4mg EV"
+        },
+        {
+          "kind": "oxigenoterapia",
+          "title": "Oxigênio suplementar",
+          "detail": "Apenas se SpO2 <90%"
+        },
+        {
+          "kind": "monitorizacao",
+          "title": "Monitorização cardíaca contínua + sinais vitais",
+          "detail": ""
+        },
+        {
+          "kind": "cuidado",
+          "title": "Troponina e ECG seriados",
+          "detail": "Se dúvida diagnóstica"
+        }
+      ]
+    }
   ]
 }
