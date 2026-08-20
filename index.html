@@ -26,6 +26,32 @@
     --chip-bg:#FFFFFF;
     --radius:10px;
   }
+  [data-theme="dark"]{
+    --paper:#14181D;
+    --card:#1D2329;
+    --ink:#EDEEE8;
+    --ink-soft:#A2ABB5;
+    --line:#333B44;
+    --accent:#3CA98A;
+    --warn:#E0A458;
+    --crit:#E68A8D;
+    --chip-bg:#242A31;
+  }
+  [data-theme="dark"] body{
+    background-image:radial-gradient(circle at 1px 1px, rgba(237,238,232,0.05) 1px, transparent 0);
+  }
+  [data-theme="dark"] .med{background:#242A31; border-color:#333B44;}
+  [data-theme="dark"] .sh{background:#242A31;}
+  [data-theme="dark"] .redflags{background:#2B2115; border-color:#5C4321;}
+  [data-theme="dark"] .rf-list{color:#D8B98A;}
+  [data-theme="dark"] .rf-title{color:#E0A458;}
+  [data-theme="dark"] .note.warn{background:#2B2115; border-color:#5C4321; color:#E0C89A;}
+  [data-theme="dark"] .note.crit{background:#2E1A1B; border-color:#5C2528; color:#F0AEAF;}
+  [data-theme="dark"] .copybox{background:#1A2622; border-color:#2C4A3F;}
+  [data-theme="dark"] .cp-text{background:#14181D; border-color:#2C4A3F; color:var(--ink);}
+  [data-theme="dark"] .legalbanner{background:#242A31; border-color:#3A424B; color:var(--ink-soft);}
+  [data-theme="dark"] .legalbanner b{color:var(--ink);}
+  [data-theme="dark"] .lockicon{background:var(--accent);}
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
@@ -183,6 +209,16 @@
   .svitem-tag.meta{background:#DCEFEA; color:#0C4A3F;}
   .svitem-tag.avaliacao{background:#EFF1EA; color:#4A5262;}
   .svitem-detail{font-family:'IBM Plex Mono', monospace; font-size:12px; color:#3A4150; margin-top:2px;}
+  .svcheck{display:flex; align-items:flex-start; padding-top:2px; flex:0 0 auto;}
+  .svcheck input{width:16px; height:16px; cursor:pointer; accent-color:var(--accent);}
+  .svitem.done .svitem-title{text-decoration:line-through; color:var(--ink-soft);}
+  .svitem.done .svitem-detail{text-decoration:line-through; opacity:0.6;}
+  .svitem.done{opacity:0.72;}
+  .svresetbtn{
+    background:none; border:1px solid var(--line); border-radius:6px; font-size:14px; cursor:pointer;
+    padding:2px 7px; flex:0 0 auto; color:var(--ink-soft); margin-left:8px;
+  }
+  .svresetbtn:hover{color:var(--ink); border-color:var(--ink);}
 
   /* ---------- CALCULADORAS ---------- */
   .calccard{
@@ -262,7 +298,28 @@
     font-family:'IBM Plex Mono', monospace; font-size:10px; text-transform:uppercase;
     letter-spacing:.08em; color:var(--ink-soft); font-weight:500; margin-right:auto; margin-left:10px;
   }
-  .card-body{padding:0 18px 18px; font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:#252d38;}
+  .favbtn{
+    background:none; border:none; font-size:18px; cursor:pointer; line-height:1;
+    padding:0 2px; flex:0 0 auto; color:#C9A227;
+  }
+  .favbtn:hover{transform:scale(1.15);}
+  .notebox{
+    margin-top:16px; padding:10px 12px; background:#FFFBEA; border:1.5px dashed #E0CB7A;
+    border-radius:8px;
+  }
+  [data-theme="dark"] .notebox{background:#2B2712; border-color:#5C4F1F;}
+  .note-title{
+    font-family:'IBM Plex Sans', sans-serif; font-size:11px; font-weight:600; text-transform:uppercase;
+    letter-spacing:.04em; color:#8A6D0F; margin:0 0 6px !important;
+  }
+  [data-theme="dark"] .note-title{color:#D8B98A;}
+  .note-input{
+    width:100%; min-height:50px; border:1px solid #E0CB7A; border-radius:6px; padding:8px 10px;
+    font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; color:var(--ink); background:#fff;
+    resize:vertical;
+  }
+  [data-theme="dark"] .note-input{background:#1D2329; border-color:#5C4F1F; color:var(--ink);}
+  .card-body{padding:0 18px 18px; font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:var(--ink);}
   .card-body p{margin:0 0 10px;}
   .rt{font-family:'IBM Plex Sans', sans-serif; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--accent); margin-top:14px !important;}
   .sh{font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:13px; color:var(--ink); background:#EFF1EA; display:inline-block; padding:3px 8px; border-radius:5px;}
@@ -360,6 +417,8 @@
   }
   .unsavedbar button.save{background:var(--accent); color:#fff;}
   .unsavedbar button.discard{background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.4);}
+  .unsavedbar.update{background:#1D5A8A; z-index:75;}
+  .unsavedbar.update button.save{background:#fff; color:#1D5A8A;}
 
   /* ---------- MODAL ---------- */
   .overlay{
@@ -461,6 +520,7 @@
     <div class="brandright">
       <div class="doctorname">Dr. Phylúvio Cintra<span class="role">Santa Casa de Capivari</span></div>
       <div style="display:flex; gap:6px;">
+        <button class="iconbtn" id="themeBtn" title="Alternar tema claro/escuro">🌙</button>
         <button class="iconbtn" id="editModeBtn" title="Modo edição">✎ Editar</button>
         <button class="iconbtn" id="settingsBtn" title="Configurações de sincronização">⚙︎</button>
       </div>
@@ -554,6 +614,14 @@
   </div>
 </div>
 
+<div class="unsavedbar update" id="updateBanner">
+  <span>🔄 Nova versão do Plantão Ref disponível.</span>
+  <div class="actions">
+    <button class="discard" id="updateDismiss">Depois</button>
+    <button class="save" id="updateBtn">Atualizar agora</button>
+  </div>
+</div>
+
 <div class="overlay" id="settingsOverlay">
   <div class="modal">
     <h2>Sincronização com GitHub</h2>
@@ -587,6 +655,68 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* ============ TEMA CLARO/ESCURO ============ */
+const LS_THEME = 'psplantao_theme';
+function applyTheme(theme){
+  if(theme === 'dark'){
+    document.documentElement.setAttribute('data-theme', 'dark');
+    const btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = '☀️';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    const btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = '🌙';
+  }
+}
+(function initTheme(){
+  const saved = localStorage.getItem(LS_THEME);
+  const theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(theme);
+})();
+document.getElementById('themeBtn').addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  localStorage.setItem(LS_THEME, next);
+  applyTheme(next);
+});
+
+/* ============ FAVORITOS ============ */
+const LS_FAV = 'psplantao_favoritos';
+function getFavorites(){
+  try{ return JSON.parse(localStorage.getItem(LS_FAV) || '[]'); }catch(e){ return []; }
+}
+function setFavorites(arr){ localStorage.setItem(LS_FAV, JSON.stringify(arr)); }
+function isFavorite(id){ return getFavorites().includes(id); }
+function toggleFavorite(id){
+  let favs = getFavorites();
+  if(favs.includes(id)) favs = favs.filter(f=>f!==id);
+  else favs.push(id);
+  setFavorites(favs);
+}
+
+/* ============ ANOTAÇÕES PESSOAIS ============ */
+const LS_NOTES = 'psplantao_notas';
+function getNotes(){
+  try{ return JSON.parse(localStorage.getItem(LS_NOTES) || '{}'); }catch(e){ return {}; }
+}
+function getNote(id){ return getNotes()[id] || ''; }
+function setNote(id, text){
+  const notes = getNotes();
+  if(text.trim()){ notes[id] = text; } else { delete notes[id]; }
+  localStorage.setItem(LS_NOTES, JSON.stringify(notes));
+}
+
+/* ============ CHECKLIST SALA VERMELHA (por sessão) ============ */
+function svCheckKey(osId, idx){ return 'psplantao_svcheck_'+osId+'_'+idx; }
+function isSvChecked(osId, idx){ return sessionStorage.getItem(svCheckKey(osId, idx)) === '1'; }
+function setSvChecked(osId, idx, checked){
+  if(checked) sessionStorage.setItem(svCheckKey(osId, idx), '1');
+  else sessionStorage.removeItem(svCheckKey(osId, idx));
+}
+function resetSvChecklist(osId, itemCount){
+  for(let i=0;i<itemCount;i++) sessionStorage.removeItem(svCheckKey(osId, i));
+}
+
 /* ============ STATE ============ */
 let CATS = {};
 let SECTIONS = [];
@@ -796,6 +926,31 @@ function buildIndex(){
   indexWrap.innerHTML = '';
   const grouped = {};
   SECTIONS.forEach(s=>{ (grouped[s.cat] = grouped[s.cat]||[]).push(s); });
+
+  // grupo de favoritos, sempre no topo se houver algum
+  const favIds = getFavorites();
+  const favSecs = favIds.map(id=>SECTIONS.find(s=>s.id===id)).filter(Boolean);
+  if(favSecs.length){
+    const group = document.createElement('div');
+    group.className = 'index-group';
+    group.dataset.cat = '__favoritos__';
+    group.innerHTML = `<div class="index-group-label"><span class="bar" style="background:#C9A227"></span>⭐ Favoritos</div>`;
+    const row = document.createElement('div');
+    row.className = 'pillrow';
+    favSecs.forEach(sec=>{
+      const pill = document.createElement('button');
+      pill.className = 'pill';
+      pill.style.borderLeftColor = '#C9A227';
+      pill.textContent = sec.title;
+      pill.dataset.title = sec.title.toLowerCase();
+      pill.dataset.id = sec.id;
+      pill.onclick = () => jumpTo(sec.id);
+      row.appendChild(pill);
+    });
+    group.appendChild(row);
+    indexWrap.appendChild(group);
+  }
+
   Object.keys(CATS).forEach(catKey=>{
     if(!grouped[catKey]) return;
     const group = document.createElement('div');
@@ -856,15 +1011,37 @@ function buildCards(){
         <button class="del" type="button">🗑</button>
       </span>`;
     }
-    summary.innerHTML = `<span>${sec.title}</span><span class="catlabel">${CATS[sec.cat]?CATS[sec.cat].label:sec.cat}</span>${ctrls}<span class="chev">▸</span>`;
+    const favOn = isFavorite(sec.id);
+    summary.innerHTML = `<span>${sec.title}</span><span class="catlabel">${CATS[sec.cat]?CATS[sec.cat].label:sec.cat}</span><button class="favbtn ${favOn?'on':''}" type="button" title="Marcar como favorito">${favOn?'⭐':'☆'}</button>${ctrls}<span class="chev">▸</span>`;
     details.appendChild(summary);
 
     const body = document.createElement('div');
     body.className = 'card-body';
     body.innerHTML = parseRaw(sec.raw);
-    details.appendChild(body);
 
+    // anotações pessoais
+    const noteWrap = document.createElement('div');
+    noteWrap.className = 'notebox';
+    const savedNote = getNote(sec.id);
+    noteWrap.innerHTML = `<p class="note-title">📝 Minha anotação (só neste aparelho)</p><textarea class="note-input" placeholder="Ex: aqui no SUS não tem X, uso Y...">${savedNote.replace(/</g,'&lt;')}</textarea>`;
+    body.appendChild(noteWrap);
+
+    details.appendChild(body);
     cardsWrap.appendChild(details);
+
+    summary.querySelector('.favbtn').onclick = (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      toggleFavorite(sec.id);
+      renderAll();
+      setTimeout(()=>jumpTo(sec.id), 30);
+    };
+
+    let noteTimer;
+    noteWrap.querySelector('.note-input').addEventListener('input', function(){
+      clearTimeout(noteTimer);
+      const val = this.value;
+      noteTimer = setTimeout(()=> setNote(sec.id, val), 400);
+    });
 
     if(editMode){
       summary.querySelector('.editbtn').onclick = (e)=>{ e.preventDefault(); e.stopPropagation(); openEditForm(details, sec); };
@@ -1148,7 +1325,7 @@ function renderSalaVermelha(){
       details.dataset.cat = catKey;
       details.style.borderLeftColor = color;
       const summary = document.createElement('summary');
-      summary.innerHTML = `<span>${os.title}</span><span class="catlabel">${CATS[catKey].label}</span><span class="chev">▸</span>`;
+      summary.innerHTML = `<span>${os.title}</span><span class="catlabel">${CATS[catKey].label}</span><button class="svresetbtn" type="button" title="Reiniciar checklist">↺</button><span class="chev">▸</span>`;
       details.appendChild(summary);
       const body = document.createElement('div');
       body.className = 'svbody';
@@ -1156,11 +1333,28 @@ function renderSalaVermelha(){
         const r = document.createElement('div');
         r.className = 'svitem';
         const tag = tagLabels[item.kind] || item.kind;
-        r.innerHTML = `<span class="svitem-num">${idx+1}.</span><div class="svitem-body"><span class="svitem-tag ${item.kind}">${tag}</span><span class="svitem-title">${item.title}</span>${item.detail?`<div class="svitem-detail">${item.detail}</div>`:''}</div>`;
+        const checked = isSvChecked(os.id, idx);
+        r.innerHTML = `<label class="svcheck"><input type="checkbox" ${checked?'checked':''}></label><span class="svitem-num">${idx+1}.</span><div class="svitem-body"><span class="svitem-tag ${item.kind}">${tag}</span><span class="svitem-title">${item.title}</span>${item.detail?`<div class="svitem-detail">${item.detail}</div>`:''}</div>`;
+        if(checked) r.classList.add('done');
+        const cb = r.querySelector('input[type=checkbox]');
+        cb.addEventListener('change', ()=>{
+          setSvChecked(os.id, idx, cb.checked);
+          r.classList.toggle('done', cb.checked);
+        });
         body.appendChild(r);
       });
       details.appendChild(body);
       cardsWrap.appendChild(details);
+
+      summary.querySelector('.svresetbtn').onclick = (e)=>{
+        e.preventDefault(); e.stopPropagation();
+        resetSvChecklist(os.id, os.items.length);
+        body.querySelectorAll('.svitem').forEach(r=>{
+          r.classList.remove('done');
+          const cb = r.querySelector('input[type=checkbox]');
+          if(cb) cb.checked = false;
+        });
+      };
     });
   });
 }
@@ -1532,14 +1726,51 @@ document.getElementById('lockInput').addEventListener('keydown', e => {
 });
 document.getElementById('lockInput').focus();
 
-/* ============ PWA: registrar service worker (cache offline) ============ */
+/* ============ PWA: registrar service worker (cache offline + aviso de atualização) ============ */
+let waitingWorker = null;
+function showUpdateBanner(){
+  document.getElementById('updateBanner').classList.add('show');
+}
+function hideUpdateBanner(){
+  document.getElementById('updateBanner').classList.remove('show');
+}
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(err => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      // ja existe um worker esperando (ex: aba ficou aberta durante a atualização)
+      if(reg.waiting){
+        waitingWorker = reg.waiting;
+        showUpdateBanner();
+      }
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if(!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
+            waitingWorker = newWorker;
+            showUpdateBanner();
+          }
+        });
+      });
+    }).catch(err => {
       console.warn('Service worker não registrado:', err);
+    });
+
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if(refreshing) return;
+      refreshing = true;
+      window.location.reload();
     });
   });
 }
+document.getElementById('updateBtn').addEventListener('click', () => {
+  if(waitingWorker){
+    waitingWorker.postMessage({type:'SKIP_WAITING'});
+  }
+  hideUpdateBanner();
+});
+document.getElementById('updateDismiss').addEventListener('click', hideUpdateBanner);
 </script>
 </body>
 </html>
