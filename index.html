@@ -530,6 +530,7 @@
     <button class="navtab" data-view="home">🏠 Início</button>
     <button class="navtab" data-view="prescricoes">📋 Prescrições do PS</button>
     <button class="navtab" data-view="salavermelha">🚨 Sala Vermelha e Internação</button>
+    <button class="navtab" data-view="pediatria">👶 Pediatria</button>
     <button class="navtab" data-view="calculadoras">🧮 Calculadoras</button>
   </nav>
 </header>
@@ -548,6 +549,11 @@
         <div class="homecard-icon">🚨</div>
         <h3>Sala Vermelha e Internação</h3>
         <p>Prescrições completas de internação por diagnóstico — dieta, acesso, medicações com dose/via/diluição, monitorização.</p>
+      </div>
+      <div class="homecard" data-view="pediatria" style="--hc:#C9705A">
+        <div class="homecard-icon">👶</div>
+        <h3>Pediatria</h3>
+        <p>Calculadora de dose por peso — escolha o medicamento, informe o peso e o site calcula o volume/quantidade, já com o teto de segurança.</p>
       </div>
       <div class="homecard" data-view="calculadoras" style="--hc:#4A6FA5">
         <div class="homecard-icon">🧮</div>
@@ -588,6 +594,18 @@
     <div class="content-title" style="margin-top:20px;">Prescrições de Internação</div>
     <div id="svIndexWrap" class="index-wrap" style="margin-top:0;"></div>
     <div id="svCardsWrap"></div>
+  </div>
+
+  <!-- ============ PEDIATRIA ============ -->
+  <div id="viewPediatria" class="viewpanel" style="display:none;">
+    <div class="legalbanner">⚠️ <b>ATENÇÃO:</b> calculadora de apoio baseada em fórmulas práticas de referência ("peso ÷ X"), não substitui a bula do medicamento nem o julgamento clínico. Sempre conferir a concentração real do produto disponível antes de prescrever — o resultado já aplica o teto de dose de segurança quando informado na referência.</div>
+    <div class="searchbar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="pedSearchInput" type="text" placeholder="Buscar medicamento (ex: amoxicilina, dipirona...)" autocomplete="off">
+    </div>
+    <div class="content-title" style="margin-top:20px;">Calculadora por Peso</div>
+    <div id="pedIndexWrap" class="index-wrap" style="margin-top:0;"></div>
+    <div id="pedArea"></div>
   </div>
 
   <!-- ============ CALCULADORAS ============ -->
@@ -1246,7 +1264,7 @@ async function init(forceRemote){
 
 /* ============ NAVEGAÇÃO ENTRE VIEWS ============ */
 function setView(view){
-  const ids = {home:'viewHome', prescricoes:'viewPrescricoes', salavermelha:'viewSalaVermelha', calculadoras:'viewCalculadoras'};
+  const ids = {home:'viewHome', prescricoes:'viewPrescricoes', salavermelha:'viewSalaVermelha', pediatria:'viewPediatria', calculadoras:'viewCalculadoras'};
   Object.keys(ids).forEach(v=>{
     document.getElementById(ids[v]).style.display = (v===view) ? 'block' : 'none';
   });
@@ -1374,6 +1392,171 @@ document.getElementById('svSearchInput').addEventListener('input', function(){
     c.classList.toggle('hidden', q!=='' && !normalize(c.dataset.title).includes(q));
   });
 });
+
+/* ============ PEDIATRIA — CALCULADORA POR PESO ============ */
+// Fórmulas conferidas contra a tabela de referência (símbolo ÷ confirmado por zoom da imagem original).
+const PED_CATS = {
+  analgesicos: 'Analgésicos/Antitérmicos',
+  antiacidos: 'Antiácidos/RGE',
+  antialergicos: 'Antialérgicos',
+  antibioticos: 'Antibióticos',
+  antiemeticos: 'Antieméticos/Vômitos',
+  antiespasmodicos: 'Antiespasmódicos/Cólicas',
+  antiinflamatorios: 'Antiinflamatórios',
+  antiparasitarios: 'Antiparasitários',
+  xaropes: 'Xaropes/Tosse/Asma',
+  corticoides: 'Corticoides/Alergia/Asma/Laringite',
+  laxantes: 'Laxantes'
+};
+
+// type: 'div' dose=peso/divisor | 'mult' dose=peso*fator | 'gotaskg' dose=taxa*peso (gotas)
+//       'mlkg' dose=taxa*peso (ml) | 'mgkg_ml' dose_mg=taxa*peso, converte p/ ml via concentração
+//       'special_annita' dose=7.5*peso/20 | 'twothirds' dose=(2/3)*peso (gotas)
+const PEDIATRIC_DRUGS = [
+  {id:'dipirona-gotas', cat:'analgesicos', name:'Dipirona Gotas 500mg/mL (Novalgina®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'6/6h se febre/dor'},
+  {id:'dipirona-inj', cat:'analgesicos', name:'Dipirona Injetável', type:'div', divisor:20, unit:'mL', max:2, freq:'IM/EV'},
+  {id:'ibuprofeno-50', cat:'analgesicos', name:'Ibuprofeno Gotas 50mg/mL (Alivium®)', type:'gotaskg', rate:2, unit:'gotas', max:null, freq:'até 6/6h se febre/dor'},
+  {id:'ibuprofeno-100', cat:'analgesicos', name:'Ibuprofeno Gotas 100mg/mL (Alivium®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'até 6/6h se febre/dor'},
+  {id:'paracetamol-gotas', cat:'analgesicos', name:'Paracetamol Gotas 200mg/mL (Tylenol®)', type:'gotaskg', rate:1, unit:'gotas', max:50, freq:'4/4h ou 6/6h se febre/dor'},
+
+  {id:'ranitidina-inj', cat:'antiacidos', name:'Ranitidina Injetável 50mg/2mL (Antak®)', type:'div', divisor:20, unit:'mL', max:2, freq:'EV'},
+
+  {id:'dexclorfeniramina', cat:'antialergicos', name:'Dexclorfeniramina 2mg/5mL (Polaramine®)', type:'div', divisor:4, unit:'mL', max:5, freq:'8/8h por 5 dias'},
+  {id:'prometazina-inj', cat:'antialergicos', name:'Prometazina Injetável 50mg/2mL (Fenergan®)', type:'mult', factor:0.02, unit:'mL', max:2, freq:'IM'},
+
+  {id:'ac-nalidixico', cat:'antibioticos', name:'Ácido Nalidíxico 50mg/mL (Wintomylon®)', type:'div', divisor:4, unit:'mL', max:10, freq:'6/6h por 7 dias', note:'Não usar <3 meses.'},
+  {id:'amoxicilina', cat:'antibioticos', name:'Amoxicilina 250mg/5mL', type:'div', divisor:3, unit:'mL', max:10, freq:'8/8h por 7 a 14 dias'},
+  {id:'amox-clav', cat:'antibioticos', name:'Amoxicilina + Clavulanato 250+62,5mg/5mL', type:'div', divisor:3, unit:'mL', max:10, freq:'8/8h por 7 a 14 dias'},
+  {id:'azitromicina', cat:'antibioticos', name:'Azitromicina (Azi®, Astro®)', type:'div', divisor:4, unit:'mL', max:10, freq:'1x/dia por 3-5 dias'},
+  {id:'cefalexina-ped', cat:'antibioticos', name:'Cefalexina 250mg/5mL (Keflex®)', type:'div', divisor:4, unit:'mL', max:10, freq:'6/6h por 7 a 14 dias'},
+  {id:'ceftriaxone-ped', cat:'antibioticos', name:'Ceftriaxone 250mg/500mg/1g (Rocefin®)', type:'mgkg_flat', rate:50, unit:'mg', max:1000, maxUnit:'mg', freq:'1x/dia IM por 3 a 7 dias', note:'Resultado em mg — dose de 50mg/kg (máx. 1g/dose).'},
+  {id:'metronidazol-ped', cat:'antibioticos', name:'Metronidazol Suspensão Oral 4% (Flagyl®)', type:'mlkg_dia', rate:0.5, unit:'mL', max:10, freq:'dividido 2-3x/dia', note:'Valor calculado é a dose TOTAL DIÁRIA em mL — dividir por 2 ou 3 doses.'},
+
+  {id:'dimenidrato-gotas', cat:'antiemeticos', name:'Dimenidrato Gotas 25mg/mL (Dramin®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'6/6h SN'},
+  {id:'dimenidrato-inj', cat:'antiemeticos', name:'Dimenidrato Injetável 50mg/mL IM', type:'mult', factor:0.03, unit:'mL', max:1, freq:'IM'},
+  {id:'metoclopramida-gotas', cat:'antiemeticos', name:'Metoclopramida Gotas 4mg/mL (Plasil®)', type:'twothirds', unit:'gotas', max:40, freq:'8/8h SN'},
+  {id:'metoclopramida-inj', cat:'antiemeticos', name:'Metoclopramida Injetável 10mg/2mL', type:'div', divisor:20, unit:'mL', max:2, freq:'IM/EV'},
+
+  {id:'escopolamina-gotas', cat:'antiespasmodicos', name:'Escopolamina+Dipirona Gotas (Buscopam Composto®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'6/6h SN'},
+  {id:'buscopam-ev', cat:'antiespasmodicos', name:'Buscopam Composto® EV', type:'div', divisor:20, unit:'mL', max:null, freq:'Infundir diluído no soro, lentamente'},
+
+  {id:'cetoprofeno-gotas', cat:'antiinflamatorios', name:'Cetoprofeno Gotas 20mg/mL (Profenid®)', type:'gotaskg', rate:1, unit:'gotas', max:50, freq:'8/8h por 2 a 5 dias'},
+  {id:'diclofenaco-gotas', cat:'antiinflamatorios', name:'Diclofenaco Gotas 15mg/mL (Cataflan®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'8/8h por 2 a 5 dias'},
+  {id:'nimesulida-gotas', cat:'antiinflamatorios', name:'Nimesulida Gotas (Scaflam®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'12/12h por 2 a 5 dias', note:'Uso controverso <12 anos em algumas diretrizes — confirmar restrição vigente antes de prescrever.'},
+
+  {id:'annita', cat:'antiparasitarios', name:'Annita® Suspensão Oral 20mg/mL (Nitazoxanida)', type:'special_annita', unit:'mL', max:15, freq:'12/12h por 3 dias'},
+
+  {id:'acebrofilina', cat:'xaropes', name:'Acebrofilina Xarope 25mg/5mL (Filinar®)', type:'div', divisor:5, unit:'mL', max:10, freq:'12/12h por 5 dias'},
+  {id:'koide-d', cat:'xaropes', name:'Koide D® XPE (Dexclorfeniramina + Betametasona)', type:'div', divisor:4, unit:'mL', max:5, freq:'8/8h por 5 dias', note:'Tosse seca/irritativa. >2 anos.'},
+  {id:'terbutalina', cat:'xaropes', name:'Terbutalina Xarope (Bricanyl®)', type:'mlkg', rate:0.25, unit:'mL', max:5, freq:'8/8h por 5 dias'},
+
+  {id:'dexametasona-elixir', cat:'corticoides', name:'Dexametasona Elixir (Decadron®)', type:'div', divisor:3, unit:'mL', max:15, freq:'8/8h por 3 a 5 dias'},
+  {id:'dexametasona-inj', cat:'corticoides', name:'Dexametasona 4mg/mL (Decadron®) Injetável', type:'mgkg_ml', rate:0.3, conc:4, unit:'mL', maxMg:4, freq:'IM ou EV'},
+  {id:'hidrocortisona-asma', cat:'corticoides', name:'Hidrocortisona (Solucortef®) — Asma', type:'mgkg_flat', rate:5, unit:'mg', max:null, freq:'Infundir em SG5% lento'},
+  {id:'hidrocortisona-alergia', cat:'corticoides', name:'Hidrocortisona (Solucortef®) — Alergia', type:'mgkg_flat', rate:10, unit:'mg', max:null, freq:'Infundir em SG5% lento'},
+  {id:'prednisolona', cat:'corticoides', name:'Prednisolona 3mg/mL (Prelone®)', type:'div', divisor:6, unit:'mL', max:20, freq:'12/12h por 5 dias'},
+
+  {id:'oleo-mineral', cat:'laxantes', name:'Óleo Mineral (Nujol®)', type:'mlkg', rate:1.5, rateRange:[1,2], unit:'mL', max:15, freq:'1 a 2x/dia', note:'Evitar <1 ano. Faixa de 1 a 2mL/kg — exibindo o valor médio.'},
+  {id:'leite-magnesia', cat:'laxantes', name:'Leite de Magnésia', type:'mlkg', rate:2, rateRange:[1,3], unit:'mL', max:30, freq:'1 a 2x/dia', note:'Faixa de 1 a 3mL/kg/dia — exibindo o valor médio.'},
+];
+
+function computePedDose(drug, weight){
+  let raw = 0;
+  switch(drug.type){
+    case 'div': raw = weight / drug.divisor; break;
+    case 'mult': raw = weight * drug.factor; break;
+    case 'gotaskg': raw = weight * drug.rate; break;
+    case 'mlkg': raw = weight * drug.rate; break;
+    case 'mlkg_dia': raw = weight * drug.rate; break;
+    case 'twothirds': raw = (2/3) * weight; break;
+    case 'special_annita': raw = (7.5 * weight) / 20; break;
+    case 'mgkg_flat': raw = weight * drug.rate; break;
+    case 'mgkg_ml': raw = (weight * drug.rate) / drug.conc; break;
+    default: raw = 0;
+  }
+  let capped = false;
+  let capLimit = drug.max;
+  if(drug.type === 'mgkg_ml' && drug.maxMg){
+    const rawMg = weight * drug.rate;
+    if(rawMg > drug.maxMg){ raw = drug.maxMg / drug.conc; capped = true; }
+  } else if(capLimit != null && raw > capLimit){
+    raw = capLimit;
+    capped = true;
+  }
+  return {value: raw, capped};
+}
+
+function pedUnitLabel(drug){
+  if(drug.type === 'mgkg_flat') return drug.unit; // mg
+  return drug.unit; // mL ou gotas
+}
+
+function buildPedIndex(){
+  const wrap = document.getElementById('pedIndexWrap');
+  wrap.innerHTML = '';
+  const grouped = {};
+  PEDIATRIC_DRUGS.forEach(d=>{ (grouped[d.cat] = grouped[d.cat]||[]).push(d); });
+  Object.keys(PED_CATS).forEach(catKey=>{
+    if(!grouped[catKey]) return;
+    const group = document.createElement('div');
+    group.className = 'index-group';
+    group.innerHTML = `<div class="index-group-label"><span class="bar" style="background:#C9705A"></span>${PED_CATS[catKey]}</div>`;
+    const row = document.createElement('div');
+    row.className = 'pillrow';
+    grouped[catKey].forEach(d=>{
+      const pill = document.createElement('button');
+      pill.className = 'pill';
+      pill.style.borderLeftColor = '#C9705A';
+      pill.textContent = d.name;
+      pill.dataset.title = d.name.toLowerCase();
+      pill.onclick = () => renderPedDrug(d.id);
+      row.appendChild(pill);
+    });
+    group.appendChild(row);
+    wrap.appendChild(group);
+  });
+}
+
+function renderPedDrug(id){
+  const drug = PEDIATRIC_DRUGS.find(d=>d.id===id);
+  if(!drug) return;
+  const area = document.getElementById('pedArea');
+  area.innerHTML = `<div class="calccard">
+    <h2>${drug.name}</h2>
+    <div class="calcdesc">Posologia: ${drug.freq}${drug.max!=null?` · dose máxima ${drug.max}${drug.unit==='mg'?'mg':drug.unit}/dose`:''}</div>
+    <div class="calcfield"><label>Peso da criança (kg)</label><input type="number" id="ped-weight" step="0.1" min="0" placeholder="Ex: 12,5"></div>
+    <button class="calcbtn" id="ped-calc">Calcular</button>
+    <div id="ped-result"></div>
+    ${drug.note?`<div class="cp-title" style="margin-top:14px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">${drug.note}</div>`:''}
+  </div>`;
+  document.getElementById('ped-calc').onclick = ()=>{
+    const w = parseFloat(document.getElementById('ped-weight').value);
+    const resEl = document.getElementById('ped-result');
+    if(!w || w<=0){
+      resEl.innerHTML = calcResultHtml('—', null, 'Informe um peso válido.', 'risk-mod');
+      return;
+    }
+    const {value, capped} = computePedDose(drug, w);
+    const rounded = Math.round(value*10)/10;
+    const unitLabel = drug.unit === 'gotas' ? 'gotas' : (drug.unit === 'mg' ? 'mg' : 'mL');
+    let interp = `Peso informado: ${w}kg · ${drug.freq}`;
+    if(capped) interp += ' — valor já ajustado para a dose máxima de segurança.';
+    resEl.innerHTML = calcResultHtml(rounded + ' ' + unitLabel, null, interp, capped ? 'risk-mod' : 'risk-low');
+  };
+}
+
+document.getElementById('pedSearchInput').addEventListener('input', function(){
+  const q = normalize(this.value.trim());
+  document.querySelectorAll('#pedIndexWrap .pill').forEach(p=>{
+    p.classList.toggle('hidden', q!=='' && !normalize(p.dataset.title).includes(q));
+  });
+  document.querySelectorAll('#pedIndexWrap .index-group').forEach(g=>{
+    const anyVisible = [...g.querySelectorAll('.pill')].some(p=>!p.classList.contains('hidden'));
+    g.classList.toggle('hidden', !anyVisible);
+  });
+});
+
+buildPedIndex();
 
 /* ============ CALCULADORAS ============ */
 const CALCULATORS = [
