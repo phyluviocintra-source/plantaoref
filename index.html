@@ -598,14 +598,14 @@
 
   <!-- ============ PEDIATRIA ============ -->
   <div id="viewPediatria" class="viewpanel" style="display:none;">
-    <div class="legalbanner">⚠️ <b>ATENÇÃO:</b> calculadora de apoio baseada em fórmulas práticas de referência ("peso ÷ X"), não substitui a bula do medicamento nem o julgamento clínico. Sempre conferir a concentração real do produto disponível antes de prescrever — o resultado já aplica o teto de dose de segurança quando informado na referência.</div>
+    <div class="legalbanner">⚠️ <b>ATENÇÃO:</b> calculadora de apoio baseada em fórmulas práticas de referência ("peso ÷ X"), não substitui a bula do medicamento nem o julgamento clínico. Sempre conferir a concentração real do produto disponível antes de prescrever — o resultado já aplica o teto de dose de segurança quando informado na referência.<br><br><b>Excluídos intencionalmente</b> por contraindicação/restrição pediátrica formal em bula: Nimesulida (contraindicada &lt;12 anos), Metoclopramida gotas e injetável (contraindicada &lt;1 ano e não recomendada até os 18 anos, risco de reação extrapiramidal).</div>
     <div class="searchbar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="pedSearchInput" type="text" placeholder="Buscar medicamento (ex: amoxicilina, dipirona...)" autocomplete="off">
     </div>
     <div class="content-title" style="margin-top:20px;">Calculadora por Peso</div>
-    <div id="pedIndexWrap" class="index-wrap" style="margin-top:0;"></div>
     <div id="pedArea"></div>
+    <div id="pedIndexWrap" class="index-wrap" style="margin-top:8px;"></div>
   </div>
 
   <!-- ============ CALCULADORAS ============ -->
@@ -1415,8 +1415,8 @@ const PED_CATS = {
 const PEDIATRIC_DRUGS = [
   {id:'dipirona-gotas', cat:'analgesicos', name:'Dipirona Gotas 500mg/mL (Novalgina®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'6/6h se febre/dor'},
   {id:'dipirona-inj', cat:'analgesicos', name:'Dipirona Injetável', type:'div', divisor:20, unit:'mL', max:2, freq:'IM/EV'},
-  {id:'ibuprofeno-50', cat:'analgesicos', name:'Ibuprofeno Gotas 50mg/mL (Alivium®)', type:'gotaskg', rate:2, unit:'gotas', max:null, freq:'até 6/6h se febre/dor'},
-  {id:'ibuprofeno-100', cat:'analgesicos', name:'Ibuprofeno Gotas 100mg/mL (Alivium®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'até 6/6h se febre/dor'},
+  {id:'ibuprofeno-50', cat:'analgesicos', name:'Ibuprofeno Gotas 50mg/mL (Alivium®)', type:'gotaskg', rate:2, unit:'gotas', max:null, freq:'até 6/6h se febre/dor', note:'Não recomendado <6 meses de idade (imaturidade renal).'},
+  {id:'ibuprofeno-100', cat:'analgesicos', name:'Ibuprofeno Gotas 100mg/mL (Alivium®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'até 6/6h se febre/dor', note:'Não recomendado <6 meses de idade (imaturidade renal).'},
   {id:'paracetamol-gotas', cat:'analgesicos', name:'Paracetamol Gotas 200mg/mL (Tylenol®)', type:'gotaskg', rate:1, unit:'gotas', max:50, freq:'4/4h ou 6/6h se febre/dor'},
 
   {id:'ranitidina-inj', cat:'antiacidos', name:'Ranitidina Injetável 50mg/2mL (Antak®)', type:'div', divisor:20, unit:'mL', max:2, freq:'EV'},
@@ -1432,17 +1432,13 @@ const PEDIATRIC_DRUGS = [
   {id:'ceftriaxone-ped', cat:'antibioticos', name:'Ceftriaxone 250mg/500mg/1g (Rocefin®)', type:'mgkg_flat', rate:50, unit:'mg', max:1000, maxUnit:'mg', freq:'1x/dia IM por 3 a 7 dias', note:'Resultado em mg — dose de 50mg/kg (máx. 1g/dose).'},
   {id:'metronidazol-ped', cat:'antibioticos', name:'Metronidazol Suspensão Oral 4% (Flagyl®)', type:'mlkg_dia', rate:0.5, unit:'mL', max:10, freq:'dividido 2-3x/dia', note:'Valor calculado é a dose TOTAL DIÁRIA em mL — dividir por 2 ou 3 doses.'},
 
-  {id:'dimenidrato-gotas', cat:'antiemeticos', name:'Dimenidrato Gotas 25mg/mL (Dramin®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'6/6h SN'},
-  {id:'dimenidrato-inj', cat:'antiemeticos', name:'Dimenidrato Injetável 50mg/mL IM', type:'mult', factor:0.03, unit:'mL', max:1, freq:'IM'},
-  {id:'metoclopramida-gotas', cat:'antiemeticos', name:'Metoclopramida Gotas 4mg/mL (Plasil®)', type:'twothirds', unit:'gotas', max:40, freq:'8/8h SN'},
-  {id:'metoclopramida-inj', cat:'antiemeticos', name:'Metoclopramida Injetável 10mg/2mL', type:'div', divisor:20, unit:'mL', max:2, freq:'IM/EV'},
-
+  {id:'dimenidrato-gotas', cat:'antiemeticos', name:'Dimenidrato Gotas 25mg/mL (Dramin®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'6/6h SN', note:'CONTRAINDICADO <2 anos de idade (bula).'},
+  {id:'dimenidrato-inj', cat:'antiemeticos', name:'Dimenidrato Injetável 50mg/mL IM', type:'mult', factor:0.03, unit:'mL', max:1, freq:'IM', note:'CONTRAINDICADO <2 anos de idade (bula).'},
   {id:'escopolamina-gotas', cat:'antiespasmodicos', name:'Escopolamina+Dipirona Gotas (Buscopam Composto®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'6/6h SN'},
   {id:'buscopam-ev', cat:'antiespasmodicos', name:'Buscopam Composto® EV', type:'div', divisor:20, unit:'mL', max:null, freq:'Infundir diluído no soro, lentamente'},
 
   {id:'cetoprofeno-gotas', cat:'antiinflamatorios', name:'Cetoprofeno Gotas 20mg/mL (Profenid®)', type:'gotaskg', rate:1, unit:'gotas', max:50, freq:'8/8h por 2 a 5 dias'},
   {id:'diclofenaco-gotas', cat:'antiinflamatorios', name:'Diclofenaco Gotas 15mg/mL (Cataflan®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'8/8h por 2 a 5 dias'},
-  {id:'nimesulida-gotas', cat:'antiinflamatorios', name:'Nimesulida Gotas (Scaflam®)', type:'gotaskg', rate:1, unit:'gotas', max:40, freq:'12/12h por 2 a 5 dias', note:'Uso controverso <12 anos em algumas diretrizes — confirmar restrição vigente antes de prescrever.'},
 
   {id:'annita', cat:'antiparasitarios', name:'Annita® Suspensão Oral 20mg/mL (Nitazoxanida)', type:'special_annita', unit:'mL', max:15, freq:'12/12h por 3 dias'},
 
@@ -1458,6 +1454,20 @@ const PEDIATRIC_DRUGS = [
 
   {id:'oleo-mineral', cat:'laxantes', name:'Óleo Mineral (Nujol®)', type:'mlkg', rate:1.5, rateRange:[1,2], unit:'mL', max:15, freq:'1 a 2x/dia', note:'Evitar <1 ano. Faixa de 1 a 2mL/kg — exibindo o valor médio.'},
   {id:'leite-magnesia', cat:'laxantes', name:'Leite de Magnésia', type:'mlkg', rate:2, rateRange:[1,3], unit:'mL', max:30, freq:'1 a 2x/dia', note:'Faixa de 1 a 3mL/kg/dia — exibindo o valor médio.'},
+
+  {id:'ondansetrona-ped', cat:'antiemeticos', name:'Ondansetrona Solução Oral 4mg/5mL', type:'mgkg_ml', rate:0.15, conc:0.8, unit:'mL', maxMg:8, freq:'Dose única — pode repetir 1x se vomitar em até 15min. Não repetir 3ª dose.', note:'0,15mg/kg (Dutch Pediatrics Formulary/uso ED consagrado) — referência etária: 4mg (2-11 anos), 4-8mg (≥11 anos). Uso off-label <6 meses.'},
+
+  {id:'loratadina-xarope', cat:'antialergicos', name:'Loratadina Xarope 1mg/mL (Claritin®)', type:'weight30', under30:5, over30:10, unit:'mL', freq:'1x/dia'},
+  {id:'desloratadina-xarope', cat:'antialergicos', name:'Desloratadina Xarope 0,5mg/mL', type:'ageband', freq:'1x/dia', bands:[
+    {label:'6 a 11 meses', dose:'2mL (1mg)'},
+    {label:'1 a 5 anos', dose:'2,5mL (1,25mg)'},
+    {label:'6 a 11 anos', dose:'5mL (2,5mg)'},
+    {label:'≥12 anos', dose:'10mL (5mg)'},
+  ], note:'Uso a partir de 6 meses de idade.'},
+
+  {id:'salbutamol-xarope', cat:'xaropes', name:'Salbutamol Xarope 2mg/5mL (Aerolin®)', type:'mgkg_ml', rate:0.1, conc:0.4, unit:'mL', maxMg:4, freq:'8/8h SN', note:'0,1mg/kg/dose (faixa aceita 0,1-0,15mg/kg). Preferir via inalatória quando possível — mais eficaz que xarope em crise.'},
+  {id:'salbutamol-spray', cat:'xaropes', name:'Salbutamol Spray 100mcg/jato (Aerolin®)', type:'fixed', fixedDose:'100-200mcg (1-2 jatos)', freq:'Com espaçador. Repetir a cada 20min por até 3 doses na 1ª hora se necessário, depois conforme necessidade.', note:'Dose por jato, não por peso — mesma dose independente da idade/peso a partir de uso com espaçador adequado.'},
+  {id:'clenil-spray', cat:'xaropes', name:'Beclometasona Spray (Clenil®)', type:'fixed', fixedDose:'1-2 jatos 12/12h', freq:'Dose conforme apresentação (50, 100 ou 250mcg/jato) e gravidade — sempre usar com espaçador.', note:'Dose de manutenção não é peso-dependente — ajustar conforme step de gravidade da asma (GINA) e resposta clínica. Confirmar concentração do dispositivo disponível.'},
 ];
 
 function computePedDose(drug, weight){
@@ -1472,6 +1482,7 @@ function computePedDose(drug, weight){
     case 'special_annita': raw = (7.5 * weight) / 20; break;
     case 'mgkg_flat': raw = weight * drug.rate; break;
     case 'mgkg_ml': raw = (weight * drug.rate) / drug.conc; break;
+    case 'weight30': raw = weight < 30 ? drug.under30 : drug.over30; break;
     default: raw = 0;
   }
   let capped = false;
@@ -1479,6 +1490,8 @@ function computePedDose(drug, weight){
   if(drug.type === 'mgkg_ml' && drug.maxMg){
     const rawMg = weight * drug.rate;
     if(rawMg > drug.maxMg){ raw = drug.maxMg / drug.conc; capped = true; }
+  } else if(drug.type === 'weight30'){
+    // valor fixo por faixa, sem teto adicional
   } else if(capLimit != null && raw > capLimit){
     raw = capLimit;
     capped = true;
@@ -1521,6 +1534,37 @@ function renderPedDrug(id){
   const drug = PEDIATRIC_DRUGS.find(d=>d.id===id);
   if(!drug) return;
   const area = document.getElementById('pedArea');
+
+  if(drug.type === 'fixed'){
+    area.innerHTML = `<div class="calccard">
+      <h2>${drug.name}</h2>
+      <div class="calcdesc">Dose não é peso-dependente — padrão fixo para a faixa pediátrica.</div>
+      ${calcResultHtml(drug.fixedDose, null, drug.freq, 'risk-low')}
+      ${drug.note?`<div class="cp-title" style="margin-top:14px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">${drug.note}</div>`:''}
+    </div>`;
+    area.scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+
+  if(drug.type === 'ageband'){
+    const opts = drug.bands.map((b,i)=>`<option value="${i}">${b.label}</option>`).join('');
+    area.innerHTML = `<div class="calccard">
+      <h2>${drug.name}</h2>
+      <div class="calcdesc">Posologia: ${drug.freq} — dose por faixa etária (não é por peso)</div>
+      <div class="calcfield"><label>Faixa etária</label><select id="ped-age">${opts}</select></div>
+      <button class="calcbtn" id="ped-calc">Calcular</button>
+      <div id="ped-result"></div>
+      ${drug.note?`<div class="cp-title" style="margin-top:14px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">${drug.note}</div>`:''}
+    </div>`;
+    document.getElementById('ped-calc').onclick = ()=>{
+      const idx = parseInt(document.getElementById('ped-age').value);
+      const band = drug.bands[idx];
+      document.getElementById('ped-result').innerHTML = calcResultHtml(band.dose, null, `${band.label} · ${drug.freq}`, 'risk-low');
+    };
+    area.scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+
   area.innerHTML = `<div class="calccard">
     <h2>${drug.name}</h2>
     <div class="calcdesc">Posologia: ${drug.freq}${drug.max!=null?` · dose máxima ${drug.max}${drug.unit==='mg'?'mg':drug.unit}/dose`:''}</div>
@@ -1543,6 +1587,7 @@ function renderPedDrug(id){
     if(capped) interp += ' — valor já ajustado para a dose máxima de segurança.';
     resEl.innerHTML = calcResultHtml(rounded + ' ' + unitLabel, null, interp, capped ? 'risk-mod' : 'risk-low');
   };
+  area.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 document.getElementById('pedSearchInput').addEventListener('input', function(){
@@ -1555,6 +1600,8 @@ document.getElementById('pedSearchInput').addEventListener('input', function(){
     g.classList.toggle('hidden', !anyVisible);
   });
 });
+
+document.getElementById('pedArea').innerHTML = '<p style="font-family:IBM Plex Sans,sans-serif; color:var(--ink-soft); font-size:13px;">Selecione um medicamento na lista abaixo para abrir a calculadora.</p>';
 
 buildPedIndex();
 
