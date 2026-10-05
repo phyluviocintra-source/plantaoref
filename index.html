@@ -493,6 +493,91 @@
   }
   #lockError{ color:#9B2226; font-size:12px; margin-top:10px; min-height:14px; }
   body.locked > *:not(#lockScreen){ display:none !important; }
+
+  /* ============ MODO SEPSE ============ */
+  .sep-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin:22px 0 4px; flex-wrap:wrap;}
+  .sep-head h2{font-family:'Space Grotesk', sans-serif; font-size:24px; margin:0; line-height:1.15;}
+  .sep-sub{font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+  .sep-timerbox{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .sep-timer{
+    font-family:'IBM Plex Mono', monospace; font-size:15px; font-weight:600; padding:6px 11px;
+    border-radius:8px; border:1px solid var(--line); background:var(--chip-bg); color:var(--ink);
+  }
+  .sep-timer.amber{background:#FBF0E3; border-color:#E7C79A; color:#7A4413;}
+  .sep-timer.red{background:#FBEAEA; border-color:#E7ABAB; color:#7A1F22;}
+  .sep-ghost{
+    font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; font-weight:600; cursor:pointer;
+    background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:7px 12px;
+  }
+  .sep-ghost:hover{border-color:var(--ink);}
+  .sep-stepper{display:flex; align-items:flex-start; margin:20px 0 16px;}
+  .sep-step{
+    flex:0 0 auto; width:62px; display:flex; flex-direction:column; align-items:center; gap:6px;
+    cursor:pointer; background:none; border:none; padding:0;
+    font-family:'IBM Plex Sans', sans-serif; font-size:11.5px; color:var(--ink-soft);
+  }
+  .sep-dot{
+    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:15px;
+    border:2px solid var(--line); background:var(--chip-bg); color:var(--ink-soft);
+  }
+  .sep-step.urg .sep-dot{background:#9A4A1C; border-color:#9A4A1C; color:#fff;}
+  .sep-step.cur .sep-dot{background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:0 0 0 4px rgba(15,92,78,0.18);}
+  .sep-step.cur.urg .sep-dot{background:#9A4A1C; border-color:#9A4A1C; box-shadow:0 0 0 4px rgba(154,74,28,0.22);}
+  .sep-step.done .sep-dot{background:#E6F4EE; border-color:var(--accent); color:var(--accent);}
+  .sep-step.cur .sep-lbl{color:var(--ink); font-weight:600;}
+  .sep-line{flex:1 1 8px; height:2px; background:var(--line); margin-top:18px; min-width:6px;}
+  .sep-panel{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 18px 20px; margin-bottom:18px;}
+  .sep-panel h3{font-family:'Space Grotesk', sans-serif; font-size:18px; margin:0 0 4px;}
+  .sep-lead{font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; color:var(--ink-soft); margin:0 0 12px; line-height:1.5;}
+  .sep-item{display:flex; gap:10px; padding:10px 0; border-top:1px solid var(--line); font-family:'IBM Plex Sans', sans-serif; cursor:pointer;}
+  .sep-item input{margin-top:2px; width:18px; height:18px; flex:0 0 auto; accent-color:var(--accent); cursor:pointer;}
+  .sep-t{font-weight:600; font-size:13.5px; color:var(--ink); line-height:1.4;}
+  .sep-d{font-size:12px; color:var(--ink-soft); margin-top:2px; line-height:1.5;}
+  .sep-item.done .sep-t{text-decoration:line-through; opacity:.55;}
+  .sep-tag{
+    display:inline-block; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    padding:1px 6px; border-radius:4px; margin-left:6px; vertical-align:middle;
+    background:#EAF0F8; color:#2A5688;
+  }
+  .sep-tag.hot{background:#FBEAEA; color:#7A1F22;}
+  .sep-note{border-radius:8px; padding:10px 12px; margin:12px 0; font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; line-height:1.5; border:1px solid var(--line); background:var(--chip-bg); color:var(--ink);}
+  .sep-note.warn{background:#FBF0E3; border-color:#E7C79A; color:#7A4413;}
+  .sep-note.crit{background:#FBEAEA; border-color:#E7ABAB; color:#7A1F22;}
+  .sep-note.info{background:#EAF0F8; border-color:#C5D3E6; color:#244A75;}
+  [data-theme="dark"] .sep-note.warn, [data-theme="dark"] .sep-timer.amber{background:#2B2115; border-color:#5C4321; color:#E0C89A;}
+  [data-theme="dark"] .sep-note.crit, [data-theme="dark"] .sep-timer.red{background:#2E1A1B; border-color:#5C2528; color:#F0AEAF;}
+  [data-theme="dark"] .sep-note.info{background:#1C2733; border-color:#2E4157; color:#A9C4E4;}
+  [data-theme="dark"] .sep-step.done .sep-dot{background:#1A2622;}
+  [data-theme="dark"] .sep-tag{background:#1C2733; color:#A9C4E4;}
+  [data-theme="dark"] .sep-tag.hot{background:#2E1A1B; color:#F0AEAF;}
+  .sep-nav{display:flex; justify-content:space-between; gap:10px; margin-top:16px;}
+  .sep-nav .calcbtn{margin-top:0;}
+  .sep-tabs{display:flex; gap:4px; background:var(--chip-bg); border:1px solid var(--line); border-radius:10px; padding:4px; margin:12px 0 14px;}
+  .sep-tab{
+    flex:1; padding:9px 4px; border:none; background:transparent; border-radius:7px; cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:13px; color:var(--ink-soft);
+  }
+  .sep-tab.active{background:var(--card); color:var(--accent); box-shadow:0 1px 4px rgba(0,0,0,0.12);}
+  .sep-scores{margin-top:18px; padding-top:6px; border-top:2px solid var(--ink);}
+  .sep-scores h4{font-family:'Space Grotesk', sans-serif; font-size:17px; margin:12px 0 0;}
+  .sep-sources{font-family:'IBM Plex Sans', sans-serif; font-size:11.5px; color:var(--ink-soft); line-height:1.55; margin-top:10px;}
+  .sep-sources summary{cursor:pointer; font-weight:600; color:var(--ink);}
+  .calcfield .chkrow{display:flex; gap:8px; align-items:flex-start; font-weight:500; cursor:pointer;}
+  .calcfield .chkrow input{width:auto; margin-top:3px;}
+
+  /* ============ INSULINA AMBULATORIAL ============ */
+  .ins-flags{border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:6px 0 14px; background:var(--chip-bg);}
+  .ins-flags .ttl{font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; font-weight:700; margin-bottom:6px; color:var(--ink);}
+  .ins-flags label{display:flex; gap:8px; align-items:flex-start; font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; padding:4px 0; cursor:pointer; line-height:1.4;}
+  .ins-flags input{margin-top:2px; accent-color:var(--accent);}
+  .ins-table{width:100%; border-collapse:collapse; font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; margin:8px 0;}
+  .ins-table th, .ins-table td{border:1px solid var(--line); padding:7px 9px; text-align:left; vertical-align:top;}
+  .ins-table th{background:var(--chip-bg); font-weight:600;}
+  .ins-sec{margin-top:18px;}
+  .ins-sec h4{font-family:'Space Grotesk', sans-serif; font-size:15px; margin:0 0 6px;}
+  .ins-sec p, .ins-sec li{font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; line-height:1.55; color:var(--ink);}
+  .ins-sec ul{margin:4px 0 4px 18px; padding:0;}
 </style>
 </head>
 <body class="locked">
@@ -530,6 +615,7 @@
     <button class="navtab" data-view="home">🏠 Início</button>
     <button class="navtab" data-view="prescricoes">📋 Prescrições do PS</button>
     <button class="navtab" data-view="salavermelha">🚨 Sala Vermelha e Internação</button>
+    <button class="navtab" data-view="sepse">🩸 Modo Sepse</button>
     <button class="navtab" data-view="pediatria">👶 Pediatria</button>
     <button class="navtab" data-view="calculadoras">🧮 Calculadoras</button>
   </nav>
@@ -550,6 +636,11 @@
         <h3>Sala Vermelha e Internação</h3>
         <p>Prescrições completas de internação por diagnóstico — dieta, acesso, medicações com dose/via/diluição, monitorização.</p>
       </div>
+      <div class="homecard" data-view="sepse" style="--hc:#9A4A1C">
+        <div class="homecard-icon">🩸</div>
+        <h3>Modo Sepse</h3>
+        <p>Protocolo guiado em 5 etapas (triagem, 1ª hora, antibiótico, vasopressor, metas), cronômetro de hora zero e escores SIRS, NEWS2, MEWS e SOFA.</p>
+      </div>
       <div class="homecard" data-view="pediatria" style="--hc:#C9705A">
         <div class="homecard-icon">👶</div>
         <h3>Pediatria</h3>
@@ -558,7 +649,7 @@
       <div class="homecard" data-view="calculadoras" style="--hc:#4A6FA5">
         <div class="homecard-icon">🧮</div>
         <h3>Calculadoras</h3>
-        <p>Escores clínicos com cálculo automático — Glasgow, CHA₂DS₂-VASc, HEART, CURB-65, Wells, NIHSS, Framingham.</p>
+        <p>Escores clínicos com cálculo automático — Glasgow, CHA₂DS₂-VASc, HEART, CURB-65, Wells, NIHSS, Framingham — e início de insulina ambulatorial (DM2).</p>
       </div>
     </div>
   </div>
@@ -606,6 +697,11 @@
     <div class="content-title" style="margin-top:20px;">Calculadora por Peso</div>
     <div id="pedArea"></div>
     <div id="pedIndexWrap" class="index-wrap" style="margin-top:8px;"></div>
+  </div>
+
+  <!-- ============ MODO SEPSE ============ -->
+  <div id="viewSepse" class="viewpanel" style="display:none;">
+    <div id="sepArea"></div>
   </div>
 
   <!-- ============ CALCULADORAS ============ -->
@@ -1264,7 +1360,7 @@ async function init(forceRemote){
 
 /* ============ NAVEGAÇÃO ENTRE VIEWS ============ */
 function setView(view){
-  const ids = {home:'viewHome', prescricoes:'viewPrescricoes', salavermelha:'viewSalaVermelha', pediatria:'viewPediatria', calculadoras:'viewCalculadoras'};
+  const ids = {home:'viewHome', prescricoes:'viewPrescricoes', salavermelha:'viewSalaVermelha', sepse:'viewSepse', pediatria:'viewPediatria', calculadoras:'viewCalculadoras'};
   Object.keys(ids).forEach(v=>{
     document.getElementById(ids[v]).style.display = (v===view) ? 'block' : 'none';
   });
@@ -1614,7 +1710,8 @@ const CALCULATORS = [
   {id:'wellsdvt', label:'Wells (TVP)'},
   {id:'wellspe', label:'Wells (TEP)'},
   {id:'nihss', label:'NIHSS'},
-  {id:'heart', label:'HEART Score'}
+  {id:'heart', label:'HEART Score'},
+  {id:'insulina', label:'Insulina ambulatorial (DM2)'}
 ];
 
 function buildCalcIndex(){
@@ -1644,7 +1741,8 @@ function renderCalculator(id){
     wellsdvt: calcWellsDvt,
     wellspe: calcWellsPe,
     nihss: calcNihss,
-    heart: calcHeart
+    heart: calcHeart,
+    insulina: calcInsulina
   };
   area.innerHTML = '';
   if(fns[id]) fns[id](area);
@@ -1942,6 +2040,7 @@ async function tryUnlock(){
     document.getElementById('lockScreen').remove();
     setView('home');
     buildCalcIndex();
+    renderSepsis();
     init(false);
   } else {
     errEl.textContent = 'Senha incorreta.';
@@ -2001,6 +2100,578 @@ document.getElementById('updateBtn').addEventListener('click', () => {
   hideUpdateBanner();
 });
 document.getElementById('updateDismiss').addEventListener('click', hideUpdateBanner);
+
+/* ============ MÓDULOS NOVOS: MODO SEPSE + INSULINA AMBULATORIAL ============ */
+/* ---- Funções de cálculo (puras, sem DOM) ---- */
+
+/* NEWS2 — Royal College of Physicians, 2017. Escala 2 de SpO2 só para falência respiratória hipercápnica (alvo 88-92%). */
+function newsScore(p){
+  const fr = Math.round(p.fr), spo2 = Math.round(p.spo2), pas = Math.round(p.pas), fc = Math.round(p.fc);
+  const temp = Math.round(p.temp*10)/10;
+  const pts = {};
+  pts.fr = fr<=8 ? 3 : fr<=11 ? 1 : fr<=20 ? 0 : fr<=24 ? 2 : 3;
+  if(!p.scale2){
+    pts.spo2 = spo2<=91 ? 3 : spo2<=93 ? 2 : spo2<=95 ? 1 : 0;
+  } else {
+    if(spo2<=83) pts.spo2 = 3;
+    else if(spo2<=85) pts.spo2 = 2;
+    else if(spo2<=87) pts.spo2 = 1;
+    else if(spo2<=92) pts.spo2 = 0;
+    else if(!p.o2) pts.spo2 = 0;
+    else pts.spo2 = spo2<=94 ? 1 : spo2<=96 ? 2 : 3;
+  }
+  pts.o2 = p.o2 ? 2 : 0;
+  pts.pas = pas<=90 ? 3 : pas<=100 ? 2 : pas<=110 ? 1 : pas<=219 ? 0 : 3;
+  pts.fc = fc<=40 ? 3 : fc<=50 ? 1 : fc<=90 ? 0 : fc<=110 ? 1 : fc<=130 ? 2 : 3;
+  pts.consc = p.consc ? 3 : 0;
+  pts.temp = temp<=35.0 ? 3 : temp<=36.0 ? 1 : temp<=38.0 ? 0 : temp<=39.0 ? 1 : 2;
+  const total = Object.values(pts).reduce((a,b)=>a+b,0);
+  const redParam = ['fr','spo2','pas','fc','consc','temp'].some(k=>pts[k]===3);
+  let level, text;
+  if(total>=7){ level='high'; text='Risco ALTO (≥7): resposta de emergência — avaliação imediata por equipe de cuidados críticos; considerar UTI/transferência.'; }
+  else if(total>=5){ level='mod'; text='Risco MÉDIO (5–6): resposta urgente — avaliação por médico experiente em paciente agudo; monitorização pelo menos de hora em hora.'; }
+  else if(redParam){ level='mod'; text='Escore total baixo (0–4), mas há um parâmetro com 3 pontos: avaliação urgente por clínico experiente.'; }
+  else if(total===0){ level='low'; text='Risco BAIXO (0): monitorização no mínimo de 12/12h.'; }
+  else { level='low'; text='Risco BAIXO (1–4): monitorização no mínimo de 4–6/6h; reavaliar se piora clínica.'; }
+  return {pts, total, redParam, level, text};
+}
+
+/* MEWS — Subbe et al., QJM 2001. */
+function mewsScore(p){
+  const pas = Math.round(p.pas), fc = Math.round(p.fc), fr = Math.round(p.fr);
+  const temp = Math.round(p.temp*10)/10;
+  const pts = {};
+  pts.pas = pas<=70 ? 3 : pas<=80 ? 2 : pas<=100 ? 1 : pas<=199 ? 0 : 2;
+  pts.fc = fc<=40 ? 2 : fc<=50 ? 1 : fc<=100 ? 0 : fc<=110 ? 1 : fc<=129 ? 2 : 3;
+  pts.fr = fr<9 ? 2 : fr<=14 ? 0 : fr<=20 ? 1 : fr<=29 ? 2 : 3;
+  pts.temp = temp<35 ? 2 : temp<=38.4 ? 0 : 2;
+  pts.avpu = p.avpu; // 0 alerta, 1 voz, 2 dor, 3 sem resposta
+  const total = pts.pas + pts.fc + pts.fr + pts.temp + pts.avpu;
+  let level, text;
+  if(total>=5){ level='high'; text='MEWS ≥5: risco elevado de deterioração e de internação em UTI (Subbe 2001) — avaliação médica urgente.'; }
+  else if(total>=3){ level='mod'; text='MEWS 3–4: atenção — aumentar frequência de monitorização e reavaliar em breve.'; }
+  else { level='low'; text='MEWS 0–2: baixo risco de deterioração imediata; manter monitorização de rotina.'; }
+  return {pts, total, level, text};
+}
+
+/* SIRS — critérios clássicos (ACCP/SCCM 1992). Campos nulos não pontuam. */
+function sirsCount(p){
+  const crit = [];
+  const t = p.temp;
+  crit.push({ok: t!=null && (t>38 || t<36), t:'Temperatura >38 °C ou <36 °C'});
+  crit.push({ok: p.fc!=null && p.fc>90, t:'FC >90 bpm'});
+  crit.push({ok: (p.fr!=null && p.fr>20) || (p.paco2!=null && p.paco2<32), t:'FR >20 irpm ou PaCO₂ <32 mmHg'});
+  crit.push({ok: (p.leuc!=null && (p.leuc>12000 || p.leuc<4000)) || (p.bast!=null && p.bast>10), t:'Leucócitos >12.000 ou <4.000/mm³, ou >10% de bastões'});
+  const total = crit.filter(c=>c.ok).length;
+  return {crit, total, positive: total>=2};
+}
+
+/* SOFA — Vincent 1996 / Sepsis-3 (Singer, JAMA 2016). Recebe os pontos já escolhidos por sistema. */
+function sofaTotal(p){
+  const total = p.resp + p.coag + p.liver + p.cv + p.cns + p.renal;
+  const delta = total - (p.baseline||0);
+  let text;
+  if(delta>=2) text = 'Variação ≥2 pontos em relação ao basal: com suspeita de infecção, preenche critério de SEPSE (Sepsis-3). Mortalidade hospitalar estimada ≈10% ou mais.';
+  else text = 'Variação <2 pontos em relação ao basal: não preenche critério de disfunção orgânica de sepse pelo SOFA. Reavalie se o quadro evoluir.';
+  return {total, delta, text, level: delta>=2 ? (total>=11 ? 'high' : 'mod') : 'low'};
+}
+
+/* Volume de cristaloide: 30 mL/kg (pacote da 1ª hora SSC 2021). */
+function sepVolume(peso){ return Math.round(peso*30); }
+
+/* ---- Insulina basal: início ambulatorial no DM2 ---- */
+/* Faixa 0,1–0,2 UI/kg/dia (UNA-SUS/UFMA; Afya/Glic). Estratificação em 3 níveis = extrapolação prática dentro dessa faixa. */
+function insulinStart(p){
+  const risco = !!(p.idoso || p.risco);
+  const alta = (p.a1c!=null && p.a1c>=10) || p.fj>=250;
+  const factor = risco ? 0.1 : (alta ? 0.2 : 0.15);
+  const dose = Math.max(1, Math.round(p.peso*factor));
+  return {factor, dose, min: Math.max(1, Math.round(p.peso*0.1)), max: Math.max(1, Math.round(p.peso*0.2)), risco, alta};
+}
+
+/* Titulação conforme glicemia de jejum (média dos últimos ~3 dias). cautious = idoso/risco de hipoglicemia. */
+function insulinTitrate(p){
+  const dose = p.dose, fj = p.fj;
+  const peso = p.peso || null;
+  let action, newDose, text;
+  if(p.hypo || fj<70){
+    const lo = Math.min(Math.round(dose*0.8), dose-1), hi = Math.min(Math.round(dose*0.9), dose-1);
+    newDose = Math.max(1, hi);
+    action = 'reduzir';
+    text = 'Hipoglicemia ou jejum <70 mg/dL: reduzir 10–20% (entre '+Math.max(1,lo)+' e '+Math.max(1,hi)+' UI; ≈2–4 UI) e investigar causa (jantar, álcool, exercício, sulfonilureia, função renal).';
+  } else if(fj<80){
+    newDose = Math.max(1, dose-2); action = 'reduzir';
+    text = 'Jejum 70–79 mg/dL: reduzir 2 UI (conduta do protocolo SMS Curitiba/MS) e reavaliar em 3 dias.';
+  } else if(fj<=130){
+    newDose = dose; action = 'manter';
+    text = 'Jejum na meta (80–130 mg/dL): manter a dose. Se HbA1c ainda fora da meta, avaliar glicemia pós-prandial (esquema basal-plus).';
+  } else if(fj<=180){
+    const step = p.cautious ? 1 : 2;
+    newDose = dose+step; action = 'aumentar';
+    text = 'Jejum 131–180 mg/dL: aumentar '+step+' UI e reavaliar em 3 dias.';
+  } else {
+    const step = p.cautious ? 2 : 4;
+    newDose = dose+step; action = 'aumentar';
+    text = 'Jejum >180 mg/dL: aumentar '+step+' UI (faixa descrita de 2–4 UI a cada 3–7 dias) e reavaliar em 3 dias.';
+  }
+  let overbasal = false;
+  if(peso && newDose/peso>=0.5) overbasal = true;
+  return {action, newDose, text, overbasal};
+}
+
+/* Sinais que contraindicam o início ambulatorial (stop) ou pedem cautela (caution). */
+function insulinFlags(f){
+  const stop = [], caution = [];
+  if(f.cetose) stop.push('Suspeita de cetose/CAD/EHH (náuseas, vômitos, dor abdominal, desidratação, hálito cetônico, taquipneia).');
+  if(f.cetonuria) stop.push('Cetonúria/cetonemia presente.');
+  if(f.dm1) stop.push('Suspeita de DM1/LADA (jovem/magro, início abrupto, perda de peso rápida): precisa de esquema basal-bolus e avaliação especializada.');
+  if(f.gestante) stop.push('Gestação ou amamentação: manejo específico com obstetrícia/endocrinologia.');
+  if(f.aguda) stop.push('Doença aguda grave (infecção grave, IAM, AVC, cirurgia recente): tratar a causa e considerar insulinização em ambiente monitorizado.');
+  if(f.autocuidado) caution.push('Sem condições de autocuidado (cognição, visão, destreza, suporte) ou sem glicosímetro/insumos: resolver antes de iniciar.');
+  if(f.hipograve) caution.push('Hipoglicemia grave prévia: iniciar com dose mais baixa, meta de jejum menos rígida e acompanhamento próximo.');
+  return {stop, caution};
+}
+
+
+/* ---- Auxiliares de formulário ---- */
+function numIn(id, label, ph, step, help){
+  return `<div class="calcfield"><label for="${id}">${label}</label><input type="number" inputmode="decimal" id="${id}" step="${step||1}" placeholder="${ph||''}">${help?`<div class="cp-title" style="margin-top:4px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">${help}</div>`:''}</div>`;
+}
+function selIn(id, label, opts, help){
+  const o = opts.map(x=>`<option value="${x.v}">${x.t}</option>`).join('');
+  return `<div class="calcfield"><label for="${id}">${label}</label><select id="${id}">${o}</select>${help?`<div class="cp-title" style="margin-top:4px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">${help}</div>`:''}</div>`;
+}
+function readNum(id){
+  const el = document.getElementById(id);
+  if(!el) return null;
+  const v = String(el.value).replace(',', '.').trim();
+  if(v==='') return null;
+  const n = parseFloat(v);
+  return isNaN(n) ? null : n;
+}
+
+/* ============ MODO SEPSE ============ */
+const SEP_STEPS = [
+  {key:'triagem', label:'Triagem', urgent:false,
+   title:'1. Triagem e reconhecimento',
+   lead:'Suspeita de infecção + sinais de disfunção orgânica. Se o quadro é evidente (choque, hipoperfusão), não espere o escore para tratar.',
+   items:[
+     {t:'Foco infeccioso suspeito?', d:'Pulmonar, urinário, abdominal, pele/partes moles, SNC, dispositivo/cateter.'},
+     {t:'Triagem com NEWS2, MEWS ou SIRS', d:'A SSC 2026 recomenda esses escores em vez do qSOFA isolado em adultos internados. Use a calculadora abaixo.', tag:'SSC 2026'},
+     {t:'Procurar disfunção orgânica', d:'PAS <90 ou PAM <65, rebaixamento de consciência, ↑FR / ↓SpO₂, oligúria, icterícia, plaquetopenia, lactato elevado.'},
+     {t:'Definir se há choque séptico', d:'Necessidade de vasopressor para PAM ≥65 mmHg + lactato >2 mmol/L apesar de volume adequado (Sepsis-3).'},
+     {t:'Marcar a hora zero (reconhecimento)', d:'Use o cronômetro no topo: ele avisa aos 45 e aos 60 minutos.', tag:'tempo', hot:true}
+   ],
+   extra:'scores'},
+  {key:'hora1', label:'1ª hora', urgent:true,
+   title:'2. Pacote da 1ª hora',
+   lead:'Executar em paralelo, sem esperar confirmação diagnóstica completa.',
+   items:[
+     {t:'Lactato', d:'Repetir se inicial >2 mmol/L.', tag:'tempo', hot:true},
+     {t:'Hemoculturas ×2 antes do antibiótico', d:'Sem atrasar o antibiótico por mais de ~45 min se a coleta demorar.', tag:'tempo', hot:true},
+     {t:'2 acessos venosos calibrosos', d:'Acesso central não deve atrasar o início do tratamento.'},
+     {t:'Cristaloide balanceado (ex.: Ringer lactato)', d:'SSC 2026 prefere cristaloide balanceado ao SF 0,9%. Reavalie após cada bolus (PA, TEC, ausculta, SpO₂, POCUS) e pare se houver sobrecarga.', tag:'SSC 2026'},
+     {t:'Exames: gasometria, hemograma, creatinina, bilirrubina, coagulograma, glicemia', d:'Também alimentam o SOFA. Imagem e urina conforme o foco.'},
+     {t:'Monitorização: PA, FC, FR, SpO₂, diurese', d:'Sonda vesical se choque, para medir diurese horária.'},
+     {t:'Oxigênio se hipoxemia', d:'Titular para SpO₂ alvo; considerar suporte ventilatório se piora.'}
+   ],
+   extra:'volume'},
+  {key:'atb', label:'ATB', urgent:true,
+   title:'3. Antibiótico',
+   lead:'Choque séptico: antibiótico imediato (idealmente em até 1 h). Sepse sem choque: o mais cedo possível, equilibrando com cautela diagnóstica.',
+   items:[
+     {t:'Checar alergias e função renal antes de prescrever', d:'A 1ª dose é cheia mesmo na insuficiência renal; ajuste a partir das doses seguintes.'},
+     {t:'Foco indeterminado/comunitário', d:'Piperacilina-tazobactam 4,5 g EV 6/6h OU ceftriaxona 2 g EV 1x/dia (se baixo risco de Pseudomonas).', tag:'Padronização do site'},
+     {t:'Foco abdominal', d:'Cobrir anaeróbios (metronidazol), se não usar piperacilina-tazobactam.'},
+     {t:'Suspeita de MRSA (dispositivos, pele/partes moles grave, ATB prévio)', d:'Associar vancomicina.'},
+     {t:'Betalactâmico: dose de ataque rápida e manutenção em infusão prolongada', d:'A SSC 2026 recomenda infusão prolongada (recomendação forte, segundo resumo secundário). Seguir o protocolo e a disponibilidade da instituição.', tag:'SSC 2026'},
+     {t:'Controle do foco', d:'Drenagem de abscesso, remoção de dispositivo infectado, desbridamento — o quanto antes.'}
+   ]},
+  {key:'vaso', label:'Vaso', urgent:false,
+   title:'4. Vasopressor',
+   lead:'Hipotensão persistente durante ou após o volume: iniciar vasopressor. Em hipotensão grave, não espere o volume terminar.',
+   items:[
+     {t:'Reavaliar PAM, TEC e lactato após o volume', d:'Meta: PAM ≥65 mmHg.'},
+     {t:'Noradrenalina como 1ª linha', d:'Diluição conforme padronização da Santa Casa (ver o protocolo "Sepse / Choque Séptico" na Sala Vermelha).', tag:'SSC 2026'},
+     {t:'Pode iniciar em veia periférica calibrosa', d:'Enquanto se obtém acesso central; vigiar o local de infusão. Central assim que possível.'},
+     {t:'Dose de noradrenalina em escalada: considerar vasopressina', d:'SSC 2021: adicionar vasopressina em vez de escalar a noradrenalina, a partir de ~0,25–0,5 mcg/kg/min. Conferir se mudou na 2026.', tag:'SSC 2021'},
+     {t:'Choque refratário: considerar hidrocortisona', d:'SSC 2021: 200 mg/dia (50 mg EV 6/6h) se noradrenalina ≥0,25 mcg/kg/min por ≥4 h. Conferir se mudou na 2026.', tag:'SSC 2021'},
+     {t:'Solicitar vaga de UTI', d:'Choque séptico ou necessidade de vasopressor.'}
+   ]},
+  {key:'metas', label:'Metas', urgent:false,
+   title:'5. Metas e reavaliação',
+   lead:'Reavaliar continuamente e registrar a evolução.',
+   items:[
+     {t:'PAM ≥65 mmHg', d:'', tag:'SSC 2026'},
+     {t:'Lactato em queda', d:'Reavaliar em 2–4 h se inicial ≥2 mmol/L.'},
+     {t:'Tempo de enchimento capilar normal e diurese ≥0,5 mL/kg/h', d:'Sinais de perfusão para guiar a ressuscitação.'},
+     {t:'Glicemia: iniciar insulina se ≥180 mg/dL', d:'', tag:'SSC 2026'},
+     {t:'Profilaxia de TEV com heparina de baixo peso molecular', d:'HBPM é preferida (SSC 2026, segundo resumo secundário).', tag:'SSC 2026'},
+     {t:'Estratégia transfusional restritiva', d:'Em geral, transfundir com Hb <7 g/dL na ausência de condições especiais.'},
+     {t:'Reavaliar o antibiótico diariamente', d:'Descalonar conforme culturas e evolução.'},
+     {t:'Definir destino', d:'UTI, enfermaria monitorizada ou transferência.'}
+   ]}
+];
+
+let sepCur = 0;
+let sepTick = null;
+
+function sepKey(step, idx){ return 'sep:' + step + ':' + idx; }
+function sepIsDone(step, idx){ return sessionStorage.getItem(sepKey(step, idx)) === '1'; }
+function sepStepAllDone(si){ return SEP_STEPS[si].items.every((_, i)=>sepIsDone(si, i)); }
+function sepFmt(ms){
+  const s = Math.max(0, Math.floor(ms/1000));
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), ss = s%60;
+  return h + ':' + String(m).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+}
+function sepT0(){ const v = sessionStorage.getItem('sep:t0'); return v ? parseInt(v) : null; }
+
+function sepUpdateTimer(){
+  const el = document.getElementById('sepTimer');
+  const lbl = document.getElementById('sepTimerMsg');
+  const t0 = sepT0();
+  if(!el) return;
+  if(!t0){ el.textContent = '0:00:00'; el.className = 'sep-timer'; if(lbl) lbl.textContent = ''; return; }
+  const ms = Date.now() - t0;
+  el.textContent = sepFmt(ms);
+  const min = ms/60000;
+  el.className = 'sep-timer' + (min>=60 ? ' red' : (min>=45 ? ' amber' : ''));
+  if(lbl) lbl.textContent = min>=60 ? '1ª hora ultrapassada' : (min>=45 ? 'Faltam menos de 15 min' : '');
+}
+function sepStartTick(){
+  if(sepTick) clearInterval(sepTick);
+  sepTick = setInterval(()=>{ if(document.getElementById('sepTimer')) sepUpdateTimer(); }, 1000);
+}
+
+function sepRefreshDots(){
+  SEP_STEPS.forEach((s, i)=>{
+    const btn = document.querySelector('.sep-step[data-i="' + i + '"]');
+    if(!btn) return;
+    const done = sepStepAllDone(i);
+    btn.classList.toggle('done', done);
+    btn.classList.toggle('cur', i===sepCur);
+    const dot = btn.querySelector('.sep-dot');
+    dot.textContent = done ? '✓' : (s.urgent ? '!' : String(i+1));
+  });
+}
+
+function renderSepsis(){
+  const area = document.getElementById('sepArea');
+  if(!area) return;
+  const s = SEP_STEPS[sepCur];
+  const stepper = SEP_STEPS.map((st, i)=>{
+    const piece = `<button class="sep-step${st.urgent?' urg':''}" data-i="${i}" aria-label="Etapa ${i+1}: ${st.label}"><span class="sep-dot">${i+1}</span><span class="sep-lbl">${st.label}</span></button>`;
+    return piece + (i<SEP_STEPS.length-1 ? '<div class="sep-line"></div>' : '');
+  }).join('');
+  const items = s.items.map((it, i)=>{
+    const done = sepIsDone(sepCur, i);
+    const tag = it.tag ? `<span class="sep-tag${it.hot?' hot':''}">${it.tag}</span>` : '';
+    return `<label class="sep-item${done?' done':''}" data-idx="${i}"><input type="checkbox" ${done?'checked':''}><div><div class="sep-t">${it.t}${tag}</div>${it.d?`<div class="sep-d">${it.d}</div>`:''}</div></label>`;
+  }).join('');
+  const prev = sepCur>0 ? `<button class="sep-ghost" id="sepPrev">← ${SEP_STEPS[sepCur-1].label}</button>` : '<span></span>';
+  const next = sepCur<SEP_STEPS.length-1 ? `<button class="calcbtn" id="sepNext">${SEP_STEPS[sepCur+1].label} →</button>` : '<button class="sep-ghost" id="sepReset">Reiniciar protocolo</button>';
+  area.innerHTML = `
+    <div class="sep-head">
+      <div><h2>Modo Sepse</h2><div class="sep-sub">Protocolo de sepse · baseado na Surviving Sepsis Campaign 2026</div></div>
+      <div class="sep-timerbox">
+        <span class="sep-timer" id="sepTimer">0:00:00</span>
+        <button class="sep-ghost" id="sepT0Btn">${sepT0() ? 'Zerar' : '⏱ Hora zero'}</button>
+      </div>
+    </div>
+    <div class="sep-sub" id="sepTimerMsg" style="min-height:16px; font-weight:600;"></div>
+    <div class="sep-stepper">${stepper}</div>
+    <div class="sep-panel">
+      <h3>${s.title}</h3>
+      <p class="sep-lead">${s.lead}</p>
+      ${items}
+      <div id="sepExtra"></div>
+      <div class="sep-nav">${prev}${next}</div>
+    </div>
+    <div class="sep-note info"><b>Aviso:</b> apoio à decisão clínica, não substitui o julgamento médico nem o protocolo da instituição. Itens marcados "SSC 2026" foram conferidos em resumos secundários da diretriz (o texto original não pôde ser aberto); os marcados "SSC 2021" vêm da versão anterior. Confirme no documento original antes de adotar como norma.</div>`;
+
+  sepRefreshDots();
+  sepUpdateTimer();
+  sepStartTick();
+
+  area.querySelectorAll('.sep-step').forEach(b=>b.onclick = ()=>{ sepCur = parseInt(b.dataset.i); renderSepsis(); });
+  area.querySelectorAll('.sep-item').forEach(row=>{
+    const cb = row.querySelector('input');
+    cb.onchange = ()=>{
+      const idx = parseInt(row.dataset.idx);
+      if(cb.checked) sessionStorage.setItem(sepKey(sepCur, idx), '1'); else sessionStorage.removeItem(sepKey(sepCur, idx));
+      row.classList.toggle('done', cb.checked);
+      sepRefreshDots();
+    };
+  });
+  const pv = document.getElementById('sepPrev'); if(pv) pv.onclick = ()=>{ sepCur--; renderSepsis(); window.scrollTo({top:0}); };
+  const nx = document.getElementById('sepNext'); if(nx) nx.onclick = ()=>{ sepCur++; renderSepsis(); window.scrollTo({top:0}); };
+  const rs = document.getElementById('sepReset');
+  if(rs) rs.onclick = ()=>{
+    if(!confirm('Reiniciar o protocolo? Isso desmarca todos os itens e zera o cronômetro.')) return;
+    Object.keys(sessionStorage).filter(k=>k.indexOf('sep:')===0).forEach(k=>sessionStorage.removeItem(k));
+    sepCur = 0; renderSepsis();
+  };
+  document.getElementById('sepT0Btn').onclick = ()=>{
+    if(sepT0()) sessionStorage.removeItem('sep:t0'); else sessionStorage.setItem('sep:t0', String(Date.now()));
+    renderSepsis();
+  };
+
+  if(s.extra==='scores') renderSepScores(document.getElementById('sepExtra'));
+  if(s.extra==='volume') renderSepVolume(document.getElementById('sepExtra'));
+}
+
+function renderSepVolume(box){
+  box.innerHTML = `<div class="sep-scores">
+    <h4>Volume de cristaloide</h4>
+    <div class="sep-note warn" style="margin-top:8px;">Pacote da 1ª hora: 30 mL/kg se hipotensão ou lactato ≥4 mmol/L (SSC 2021, recomendação fraca). Não consegui confirmar a redação do volume na SSC 2026 — confira no texto original. Cautela em insuficiência cardíaca e doença renal dialítica.</div>
+    <div class="calcgrid">${numIn('sepPeso','Peso (kg)','Ex: 70',0.1)}<div class="calcfield"><label>&nbsp;</label><button class="calcbtn" id="sepVolBtn" style="margin-top:0; width:100%;">Calcular 30 mL/kg</button></div></div>
+    <div id="sepVolRes"></div>
+  </div>`;
+  document.getElementById('sepVolBtn').onclick = ()=>{
+    const p = readNum('sepPeso');
+    const res = document.getElementById('sepVolRes');
+    if(!p || p<=0){ res.innerHTML = calcResultHtml('—', null, 'Informe um peso válido.', 'risk-mod'); return; }
+    const v = sepVolume(p);
+    res.innerHTML = calcResultHtml(v.toLocaleString('pt-BR') + ' mL', null, '30 mL/kg × ' + p + ' kg. Em bolus de ~500 mL, reavaliando após cada um.', 'risk-low');
+  };
+}
+
+function renderSepScores(box){
+  const tabs = [['sirs','SIRS'],['news','NEWS2'],['mews','MEWS'],['sofa','SOFA']];
+  box.innerHTML = `<div class="sep-scores">
+    <h4>Escores</h4>
+    <div class="sep-tabs" role="tablist">${tabs.map((t,i)=>`<button class="sep-tab${i===1?' active':''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
+    <div id="sepScoreBody"></div>
+  </div>`;
+  const show = (k)=>{
+    box.querySelectorAll('.sep-tab').forEach(b=>b.classList.toggle('active', b.dataset.t===k));
+    const body = document.getElementById('sepScoreBody');
+    ({sirs:sepFormSirs, news:sepFormNews, mews:sepFormMews, sofa:sepFormSofa})[k](body);
+  };
+  box.querySelectorAll('.sep-tab').forEach(b=>b.onclick = ()=>show(b.dataset.t));
+  show('news');
+}
+
+function sepFormSirs(body){
+  body.innerHTML = `<div class="sep-note info"><b>SIRS (critérios clássicos).</b> ≥2 dos 4 critérios = SIRS positivo. Baixa especificidade: interprete junto com a suspeita de infecção. Campos vazios não pontuam.</div>
+    <div class="calcgrid">
+      ${numIn('sirsTemp','Temperatura (°C)','Ex: 38,5',0.1)}
+      ${numIn('sirsFc','FC (bpm)','Ex: 110')}
+      ${numIn('sirsFr','FR (irpm)','Ex: 24')}
+      ${numIn('sirsPaco2','PaCO₂ (mmHg) — opcional','Ex: 30')}
+      ${numIn('sirsLeuc','Leucócitos (/mm³)','Ex: 14000')}
+      ${numIn('sirsBast','Bastões (%) — opcional','Ex: 12')}
+    </div>
+    <button class="calcbtn" id="sirsBtn">Calcular SIRS</button><div id="sirsRes"></div>`;
+  document.getElementById('sirsBtn').onclick = ()=>{
+    const r = sirsCount({temp:readNum('sirsTemp'), fc:readNum('sirsFc'), fr:readNum('sirsFr'), paco2:readNum('sirsPaco2'), leuc:readNum('sirsLeuc'), bast:readNum('sirsBast')});
+    const list = r.crit.map(c=>`${c.ok?'✅':'⬜'} ${c.t}`).join('<br>');
+    document.getElementById('sirsRes').innerHTML = calcResultHtml(r.total, 4, (r.positive ? '<b>SIRS positivo (≥2 critérios).</b>' : 'SIRS negativo (<2 critérios).') + '<br><br>' + list, r.positive ? 'risk-mod' : 'risk-low');
+  };
+}
+
+function sepFormNews(body){
+  body.innerHTML = `<div class="sep-note info"><b>NEWS2 (SSC 2026).</b> Ferramenta de alerta precoce. Escore ≥5 = risco moderado/alto; integre à avaliação clínica. Pontuação do Royal College of Physicians (2017). Preencha todos os campos.</div>
+    <div class="sep-note warn">Não consegui abrir o gráfico oficial do RCP para conferir cada faixa. Confira a pontuação com o gráfico oficial (rcp.ac.uk) antes de depender dela.</div>
+    <div class="calcgrid">
+      ${numIn('nwFr','Frequência respiratória (irpm)','Ex: 22')}
+      ${numIn('nwSpo2','SpO₂ (%)','Ex: 94')}
+      ${selIn('nwScale','Escala de SpO₂',[{v:'1',t:'Escala 1 (padrão)'},{v:'2',t:'Escala 2 (falência respiratória hipercápnica, alvo 88–92%)'}])}
+      ${selIn('nwO2','Ar ambiente ou oxigênio suplementar',[{v:'0',t:'Ar ambiente'},{v:'1',t:'Oxigênio suplementar'}])}
+      ${numIn('nwPas','PA sistólica (mmHg)','Ex: 105')}
+      ${numIn('nwFc','Frequência cardíaca (bpm)','Ex: 115')}
+      ${selIn('nwConsc','Consciência',[{v:'0',t:'Alerta'},{v:'1',t:'Confusão nova, voz, dor ou sem resposta'}])}
+      ${numIn('nwTemp','Temperatura (°C)','Ex: 38,5',0.1)}
+    </div>
+    <button class="calcbtn" id="nwBtn">Calcular NEWS2</button><div id="nwRes"></div>`;
+  document.getElementById('nwBtn').onclick = ()=>{
+    const v = {fr:readNum('nwFr'), spo2:readNum('nwSpo2'), pas:readNum('nwPas'), fc:readNum('nwFc'), temp:readNum('nwTemp')};
+    const res = document.getElementById('nwRes');
+    if(Object.values(v).some(x=>x===null)){ res.innerHTML = calcResultHtml('—', null, 'Preencha FR, SpO₂, PA sistólica, FC e temperatura.', 'risk-mod'); return; }
+    const r = newsScore({fr:v.fr, spo2:v.spo2, pas:v.pas, fc:v.fc, temp:v.temp, scale2: document.getElementById('nwScale').value==='2', o2: document.getElementById('nwO2').value==='1', consc: document.getElementById('nwConsc').value==='1'});
+    const det = `FR ${r.pts.fr} · SpO₂ ${r.pts.spo2} · O₂ ${r.pts.o2} · PAS ${r.pts.pas} · FC ${r.pts.fc} · Consciência ${r.pts.consc} · Temp ${r.pts.temp}`;
+    res.innerHTML = calcResultHtml(r.total, 20, r.text + '<br><br><span style="font-size:11.5px;">' + det + '</span>', r.level==='high' ? 'risk-high' : (r.level==='mod' ? 'risk-mod' : 'risk-low'));
+  };
+}
+
+function sepFormMews(body){
+  body.innerHTML = `<div class="sep-note info"><b>MEWS (Subbe, 2001).</b> Escore ≥5 indica risco elevado de deterioração e de internação em UTI. Preencha todos os campos.</div>
+    <div class="calcgrid">
+      ${numIn('mwPas','PA sistólica (mmHg)','Ex: 95')}
+      ${numIn('mwFc','Frequência cardíaca (bpm)','Ex: 105')}
+      ${numIn('mwFr','Frequência respiratória (irpm)','Ex: 22')}
+      ${numIn('mwTemp','Temperatura (°C)','Ex: 38,6',0.1)}
+      ${selIn('mwAvpu','Nível de consciência (AVPU)',[{v:'0',t:'Alerta'},{v:'1',t:'Responde à voz'},{v:'2',t:'Responde à dor'},{v:'3',t:'Sem resposta'}])}
+    </div>
+    <button class="calcbtn" id="mwBtn">Calcular MEWS</button><div id="mwRes"></div>`;
+  document.getElementById('mwBtn').onclick = ()=>{
+    const v = {pas:readNum('mwPas'), fc:readNum('mwFc'), fr:readNum('mwFr'), temp:readNum('mwTemp')};
+    const res = document.getElementById('mwRes');
+    if(Object.values(v).some(x=>x===null)){ res.innerHTML = calcResultHtml('—', null, 'Preencha PA sistólica, FC, FR e temperatura.', 'risk-mod'); return; }
+    const r = mewsScore({pas:v.pas, fc:v.fc, fr:v.fr, temp:v.temp, avpu:parseInt(document.getElementById('mwAvpu').value)});
+    res.innerHTML = calcResultHtml(r.total, 14, r.text, r.level==='high' ? 'risk-high' : (r.level==='mod' ? 'risk-mod' : 'risk-low'));
+  };
+}
+
+function sepFormSofa(body){
+  body.innerHTML = `<div class="sep-note info"><b>SOFA (Sepsis-3).</b> Com infecção suspeita, variação ≥2 pontos em relação ao basal define sepse. Se não há disfunção prévia conhecida, o basal é 0.</div>
+    <div class="calcgrid">
+      ${selIn('sfResp','Respiração — PaO₂/FiO₂',[{v:0,t:'0 — ≥400'},{v:1,t:'1 — <400'},{v:2,t:'2 — <300'},{v:3,t:'3 — <200 com suporte ventilatório'},{v:4,t:'4 — <100 com suporte ventilatório'}])}
+      ${selIn('sfCoag','Coagulação — plaquetas (×10³/µL)',[{v:0,t:'0 — ≥150'},{v:1,t:'1 — <150'},{v:2,t:'2 — <100'},{v:3,t:'3 — <50'},{v:4,t:'4 — <20'}])}
+      ${selIn('sfLiver','Fígado — bilirrubina (mg/dL)',[{v:0,t:'0 — <1,2'},{v:1,t:'1 — 1,2 a 1,9'},{v:2,t:'2 — 2,0 a 5,9'},{v:3,t:'3 — 6,0 a 11,9'},{v:4,t:'4 — ≥12,0'}])}
+      ${selIn('sfCv','Cardiovascular',[{v:0,t:'0 — PAM ≥70 mmHg'},{v:1,t:'1 — PAM <70 mmHg'},{v:2,t:'2 — dopamina ≤5 ou dobutamina (qualquer dose)'},{v:3,t:'3 — dopamina >5, ou adrenalina/noradrenalina ≤0,1 mcg/kg/min'},{v:4,t:'4 — dopamina >15, ou adrenalina/noradrenalina >0,1 mcg/kg/min'}])}
+      ${selIn('sfCns','Neurológico — Glasgow',[{v:0,t:'0 — 15'},{v:1,t:'1 — 13 a 14'},{v:2,t:'2 — 10 a 12'},{v:3,t:'3 — 6 a 9'},{v:4,t:'4 — <6'}])}
+      ${selIn('sfRenal','Rim — creatinina (mg/dL) ou diurese',[{v:0,t:'0 — <1,2'},{v:1,t:'1 — 1,2 a 1,9'},{v:2,t:'2 — 2,0 a 3,4'},{v:3,t:'3 — 3,5 a 4,9 ou diurese <500 mL/dia'},{v:4,t:'4 — ≥5,0 ou diurese <200 mL/dia'}])}
+      ${numIn('sfBase','SOFA basal (se disfunção prévia)','0',1)}
+    </div>
+    <button class="calcbtn" id="sfBtn">Calcular SOFA</button><div id="sfRes"></div>`;
+  document.getElementById('sfBtn').onclick = ()=>{
+    const g = id=>parseInt(document.getElementById(id).value);
+    const base = readNum('sfBase') || 0;
+    const r = sofaTotal({resp:g('sfResp'), coag:g('sfCoag'), liver:g('sfLiver'), cv:g('sfCv'), cns:g('sfCns'), renal:g('sfRenal'), baseline:base});
+    document.getElementById('sfRes').innerHTML = calcResultHtml(r.total, 24, 'Variação em relação ao basal: <b>' + (r.delta>=0?'+':'') + r.delta + '</b><br>' + r.text, r.level==='high' ? 'risk-high' : (r.level==='mod' ? 'risk-mod' : 'risk-low'));
+  };
+}
+
+/* ============ INSULINA AMBULATORIAL (DM2) ============ */
+const INS_PRODUTOS = {
+  nph:     {nome:'Insulina NPH humana', apres:'INSULINA NPH HUMANA 100 UI/ML — FRASCO 10 ML', horario:'ao deitar (cerca de 22h), 1x/dia', copia:'AO DEITAR (22H)', insumo:'SERINGA DE INSULINA 100 UI/ML COM AGULHA ACOPLADA'},
+  glargina:{nome:'Insulina glargina U100', apres:'INSULINA GLARGINA 100 UI/ML — CANETA OU REFIL 3 ML', horario:'1x/dia, sempre no mesmo horário (noite ou manhã)', copia:'1X AO DIA, SEMPRE NO MESMO HORÁRIO', insumo:'AGULHAS PARA CANETA DE INSULINA 4 MM'},
+  degludeca:{nome:'Insulina degludeca', apres:'INSULINA DEGLUDECA 100 UI/ML — CANETA 3 ML', horario:'1x/dia, em qualquer horário, mas com pelo menos 8 h entre as doses', copia:'1X AO DIA, COM INTERVALO MÍNIMO DE 8 HORAS ENTRE AS DOSES', insumo:'AGULHAS PARA CANETA DE INSULINA 4 MM'},
+  detemir: {nome:'Insulina detemir', apres:'INSULINA DETEMIR 100 UI/ML — CANETA 3 ML', horario:'1x/dia à noite (pode ser necessário dividir em 2x/dia em doses maiores)', copia:'1X AO DIA, À NOITE', insumo:'AGULHAS PARA CANETA DE INSULINA 4 MM'}
+};
+
+function insulinCopyText(prod, dose){
+  const p = INS_PRODUTOS[prod];
+  return [
+    p.apres,
+    'APLICAR ' + dose + ' UI VIA SUBCUTÂNEA ' + p.copia + '.',
+    'AJUSTAR A DOSE SOMENTE CONFORME ORIENTAÇÃO MÉDICA. RETORNO EM 7 DIAS COM O REGISTRO DAS GLICEMIAS DE JEJUM.',
+    '',
+    p.insumo + ' — USO DIÁRIO.',
+    'TIRAS REAGENTES E LANCETAS PARA GLICEMIA CAPILAR — MEDIR A GLICEMIA EM JEJUM TODOS OS DIAS E ANOTAR.',
+    '',
+    'SE GLICEMIA <70 MG/DL OU SINTOMAS DE HIPOGLICEMIA (SUOR FRIO, TREMOR, FOME, CONFUSÃO): INGERIR 15 G DE CARBOIDRATO DE AÇÃO RÁPIDA (EX.: 150 ML DE SUCO DE FRUTA OU 1 COLHER DE SOPA DE AÇÚCAR EM ÁGUA), REPETIR A GLICEMIA EM 15 MINUTOS E REPETIR O CARBOIDRATO SE CONTINUAR <70 MG/DL. SE NÃO MELHORAR OU HOUVER PERDA DE CONSCIÊNCIA, PROCURAR ATENDIMENTO (SAMU 192).'
+  ].join('\n');
+}
+
+function calcInsulina(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>Início de insulina ambulatorial — DM2</h2>
+    <div class="calcdesc">Insulina basal em adulto com DM2: dose inicial, titulação, hipoglicemia e quando associar insulina prandial. Não serve para DM1, gestação ou descompensação aguda.</div>
+    <div class="calcgrid">
+      ${numIn('insPeso','Peso (kg)','Ex: 78',0.1)}
+      ${numIn('insFj','Glicemia de jejum atual (mg/dL)','Ex: 210')}
+      ${numIn('insA1c','HbA1c (%) — opcional','Ex: 9,5',0.1)}
+      ${selIn('insProd','Insulina basal disponível',[{v:'nph',t:'NPH humana (SUS)'},{v:'glargina',t:'Glargina U100'},{v:'degludeca',t:'Degludeca'},{v:'detemir',t:'Detemir'}],'Disponibilidade das análogas varia conforme o serviço.')}
+      ${selIn('insIdoso','Idade',[{v:'0',t:'<65 anos'},{v:'1',t:'≥65 anos ou idoso frágil'}])}
+      ${selIn('insRisco','Risco aumentado de hipoglicemia?',[{v:'0',t:'Não'},{v:'1',t:'Sim — TFG <60, hepatopatia, hipoglicemias prévias, uso de sulfonilureia'}])}
+    </div>
+    <div class="ins-flags"><div class="ttl">Marque se presente (sinais de alerta)</div>
+      <label><input type="checkbox" id="fCetose"> Náuseas/vômitos, dor abdominal, desidratação, hálito cetônico ou taquipneia (suspeita de cetose/CAD/EHH)</label>
+      <label><input type="checkbox" id="fCetonuria"> Cetonúria ou cetonemia positiva</label>
+      <label><input type="checkbox" id="fDm1"> Suspeita de DM1/LADA (jovem ou magro, início abrupto, perda de peso rápida)</label>
+      <label><input type="checkbox" id="fGest"> Gestação ou amamentação</label>
+      <label><input type="checkbox" id="fAguda"> Doença aguda grave (infecção grave, IAM, AVC, cirurgia recente)</label>
+      <label><input type="checkbox" id="fAuto"> Sem condições de autocuidado ou sem glicosímetro/insumos</label>
+      <label><input type="checkbox" id="fHipo"> Hipoglicemia grave prévia</label>
+    </div>
+    <button class="calcbtn" id="insBtn">Calcular</button>
+    <div id="insRes"></div>
+  </div>`;
+  document.getElementById('insBtn').onclick = ()=>renderInsulinResult();
+}
+
+function renderInsulinResult(){
+  const res = document.getElementById('insRes');
+  const peso = readNum('insPeso'), fj = readNum('insFj'), a1c = readNum('insA1c');
+  if(!peso || peso<=0 || peso>400 || fj===null || fj<=0){ res.innerHTML = calcResultHtml('—', null, 'Informe peso e glicemia de jejum válidos.', 'risk-mod'); return; }
+  const prod = document.getElementById('insProd').value;
+  const idoso = document.getElementById('insIdoso').value==='1';
+  const risco = document.getElementById('insRisco').value==='1';
+  const chk = id=>document.getElementById(id).checked;
+  const fl = insulinFlags({cetose:chk('fCetose'), cetonuria:chk('fCetonuria'), dm1:chk('fDm1'), gestante:chk('fGest'), aguda:chk('fAguda'), autocuidado:chk('fAuto'), hipograve:chk('fHipo')});
+  const extraStop = [];
+  if(fj<70) extraStop.push('Glicemia de jejum <70 mg/dL: não é momento de iniciar insulina. Trate a hipoglicemia e investigue a causa.');
+  const stop = fl.stop.concat(extraStop);
+  const caution = fl.caution.slice();
+  if(fj>=300) caution.push('Glicemia ≥300 mg/dL: descarte cetose e desidratação (cetonúria/cetonemia, gasometria se sintomático) antes de iniciar em ambulatório.');
+
+  if(stop.length){
+    res.innerHTML = `<div class="calcresult risk-high"><div class="score">NÃO iniciar ambulatorialmente</div><div class="interp"><ul style="margin:6px 0 0 18px; padding:0;">${stop.map(s=>`<li>${s}</li>`).join('')}</ul><br><b>Conduta:</b> encaminhar para avaliação em serviço de urgência/emergência ou especialista, conforme o caso.</div></div>`;
+    return;
+  }
+
+  const st = insulinStart({peso, fj, a1c, idoso, risco});
+  const prodInfo = INS_PRODUTOS[prod];
+  let indic;
+  if((a1c!==null && a1c>=10) || fj>=300) indic = '<b>Indicação forte</b> (HbA1c ≥10% ou glicemia ≥300 mg/dL): iniciar insulina, em geral associada à metformina se tolerada.';
+  else if((a1c!==null && a1c>=9) || fj>=250) indic = '<b>Indicação</b> (HbA1c ≥9% ou jejum ≥250 mg/dL, critério do protocolo SMS Curitiba/MS).';
+  else indic = 'Sem critério de gravidade: a indicação é por <b>falha dos antidiabéticos orais</b> em doses efetivas (HbA1c acima da meta apesar de 2–3 drogas). Confirme adesão e técnica antes.';
+  const fatores = [];
+  if(idoso) fatores.push('idade ≥65/frágil');
+  if(risco) fatores.push('risco de hipoglicemia');
+  if(fl.caution.some(x=>x.indexOf('Hipoglicemia grave')===0)) fatores.push('hipoglicemia grave prévia');
+  // hipoglicemia grave prévia também reduz a dose
+  let factor = st.factor, dose = st.dose;
+  if(chk('fHipo') && factor>0.1){ factor = 0.1; dose = Math.max(1, Math.round(peso*0.1)); }
+
+  const cautious = idoso || risco || chk('fHipo');
+  const cp = insulinCopyText(prod, dose);
+  const cpId = 'ins-cp-' + (++cpCounter);
+  const flagBoxes = caution.map(c=>`<div class="sep-note warn">⚠️ ${c}</div>`).join('');
+
+  const tbl = `<table class="ins-table"><tr><th>Glicemia de jejum (média de ~3 dias)</th><th>Conduta na dose basal</th></tr>
+    <tr><td>&lt;70 mg/dL ou qualquer hipoglicemia</td><td>Reduzir 10–20% (≈2–4 UI) e investigar a causa</td></tr>
+    <tr><td>70–79</td><td>Reduzir 2 UI</td></tr>
+    <tr><td>80–130 (meta)</td><td>Manter</td></tr>
+    <tr><td>131–180</td><td>Aumentar ${cautious?'1':'2'} UI a cada 3 dias</td></tr>
+    <tr><td>&gt;180</td><td>Aumentar ${cautious?'2':'4'} UI a cada 3 dias</td></tr></table>`;
+
+  res.innerHTML = `
+    <div class="calcresult risk-low"><div class="score">${dose} UI/dia</div>
+      <div class="interp"><b>${prodInfo.nome}</b>, ${prodInfo.horario}.<br>
+      Cálculo: ${factor.toString().replace('.',',')} UI/kg × ${peso} kg. Faixa descrita: 0,1–0,2 UI/kg/dia (${st.min}–${st.max} UI); alternativa fixa de 10 UI/dia.${fatores.length?'<br>Dose no limite inferior da faixa por: '+fatores.join(', ')+'.':''}<br>
+      ${indic}</div></div>
+    ${flagBoxes}
+    <div class="ins-sec"><h4>Titulação</h4>
+      <p>Medir a glicemia de jejum todos os dias. Meta de jejum: 80–130 mg/dL, sem hipoglicemia. Reajustar a cada 3 dias (faixa descrita: 3–7 dias).${cautious?' Como há fator de risco, use passos menores.':''}</p>${tbl}
+      <div class="calcgrid" style="margin-top:10px;">${numIn('insDoseAtual','Dose atual (UI)','Ex: '+dose)}${numIn('insFjMedia','Glicemia de jejum média (mg/dL)','Ex: 150')}</div>
+      <label class="chkrow" style="font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; margin:4px 0 8px;"><input type="checkbox" id="insHipoPeriodo"> Houve hipoglicemia ou sintomas no período</label>
+      <button class="calcbtn" id="insTitBtn" style="margin-top:0;">Calcular nova dose</button><div id="insTitRes"></div>
+    </div>
+    <div class="ins-sec"><h4>Hipoglicemia (&lt;70 mg/dL)</h4><ul>
+      <li>Consciente: 15 g de carboidrato de ação rápida (ex.: 150 mL de suco de fruta ou 1 colher de sopa de açúcar), repetir a glicemia em 15 minutos e repetir o carboidrato se persistir &lt;70.</li>
+      <li>Sem consciência ou sem melhora: urgência/SAMU 192 (glicose EV ou glucagon IM no serviço).</li>
+      <li>Hipoglicemia noturna: reduzir a dose em 2–4 UI e revisar o jantar e a sulfonilureia.</li></ul></div>
+    <div class="ins-sec"><h4>Quando associar insulina prandial (basal-plus)</h4><ul>
+      <li>Quando o jejum está na meta (ou a dose basal se aproxima de 0,5 UI/kg/dia) e a HbA1c continua acima da meta, com hiperglicemia pós-prandial.</li>
+      <li>Início: <b>4 UI</b> (faixa descrita 2–4 UI) de insulina rápida antes da refeição que gera maior glicemia; ajustar 1–2 UI a cada 3 dias até glicemia pré/pós-prandial na meta.</li>
+      <li>Regular: 30 min antes da refeição. Análoga ultrarrápida (asparte, lispro, glulisina): até 15 min antes.</li>
+      <li>Dose basal ≥0,5 UI/kg/dia: evite escalar só a basal (risco de sobrebasalização); considere prandial ou outro agente (referência ADA, não confirmada aqui).</li></ul></div>
+    <div class="ins-sec"><h4>Orientações e seguimento</h4><ul>
+      <li>Manter metformina se não houver contraindicação. Revisar sulfonilureia (risco de hipoglicemia; considerar reduzir ou suspender).</li>
+      <li>Aplicação subcutânea (abdome, coxa), com rodízio dos locais; conservar frasco/caneta em uso em temperatura ambiente e o restante na geladeira.</li>
+      <li>Ensinar sinais de hipoglicemia e o que fazer. Retorno em 3–7 dias com o diário de glicemias; HbA1c em 3 meses.</li></ul></div>
+    <div class="copybox"><div class="cp-title">Receita pronta para copiar (dose inicial)</div>
+      <div class="cp-text" id="${cpId}">${esc(cp)}</div>
+      <button class="cp-btn" onclick="copyCP('${cpId}', this)">Copiar</button></div>
+    <details class="sep-sources"><summary>Fontes e limitações</summary>
+      Dose inicial (10 UI ou 0,1–0,2 UI/kg/dia), titulação e hipoglicemia: UNA-SUS/UFMA "Insulina no Diabetes tipo 2" e Portal Afya/Glic "Insulinoterapia no DM2". Critérios de indicação, NPH ao deitar, titulação por jejum, hipoglicemia (regra dos 15 g) e basal-plus: SMS Curitiba "Recomendações para Insulinização no DM2" (jul/2023), baseado em material do Ministério da Saúde.<br>
+      <b>Limitações:</b> não consegui abrir a diretriz da SBD nem as Standards of Care da ADA diretamente. A estratificação em 0,1 / 0,15 / 0,2 UI/kg é uma extrapolação prática dentro da faixa descrita; o passo de +4 UI com jejum &gt;180 e o limiar de 0,5 UI/kg vêm de referência ADA que não pude confirmar. Detalhes de posologia das análogas seguem a bula. Confira nas diretrizes antes de adotar como norma.
+    </details>`;
+
+  document.getElementById('insTitBtn').onclick = ()=>{
+    const d = readNum('insDoseAtual'), f = readNum('insFjMedia');
+    const out = document.getElementById('insTitRes');
+    if(!d || d<=0 || f===null){ out.innerHTML = calcResultHtml('—', null, 'Informe a dose atual e a glicemia de jejum média.', 'risk-mod'); return; }
+    const t = insulinTitrate({dose:d, fj:f, hypo:document.getElementById('insHipoPeriodo').checked, peso, cautious});
+    let msg = t.text;
+    if(t.overbasal) msg += '<br><br>⚠️ A nova dose chega a ≥0,5 UI/kg/dia: avalie sobrebasalização e considere insulina prandial ou outro agente em vez de escalar só a basal.';
+    out.innerHTML = calcResultHtml(t.newDose + ' UI/dia', null, msg, t.action==='reduzir' ? 'risk-mod' : 'risk-low');
+  };
+}
+
 </script>
 </body>
 </html>
