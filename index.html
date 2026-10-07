@@ -578,6 +578,12 @@
   .ins-sec h4{font-family:'Space Grotesk', sans-serif; font-size:15px; margin:0 0 6px;}
   .ins-sec p, .ins-sec li{font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; line-height:1.55; color:var(--ink);}
   .ins-sec ul{margin:4px 0 4px 18px; padding:0;}
+  .rc{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft); margin-top:6px;}
+  .pill.cm{opacity:.78; border-style:dashed;}
+  .rnhead th{background:var(--chip-bg); font-size:11px; text-transform:uppercase; letter-spacing:.05em;}
+  .rnrow.rnwarn td:first-child{border-left:3px solid #C1440E;}
+  .iconbtn:disabled{opacity:.35; cursor:default;}
+  #fontDown,#fontUp{font-weight:700; min-width:34px;}
 </style>
 </head>
 <body class="locked">
@@ -605,6 +611,8 @@
     <div class="brandright">
       <div class="doctorname">Dr. Phylúvio Cintra<span class="role">Santa Casa de Capivari</span></div>
       <div style="display:flex; gap:6px;">
+        <button class="iconbtn" id="fontDown" title="Diminuir fonte" aria-label="Diminuir fonte">A−</button>
+        <button class="iconbtn" id="fontUp" title="Aumentar fonte" aria-label="Aumentar fonte">A+</button>
         <button class="iconbtn" id="themeBtn" title="Alternar tema claro/escuro">🌙</button>
         <button class="iconbtn" id="editModeBtn" title="Modo edição">✎ Editar</button>
         <button class="iconbtn" id="settingsBtn" title="Configurações de sincronização">⚙︎</button>
@@ -649,7 +657,7 @@
       <div class="homecard" data-view="calculadoras" style="--hc:#4A6FA5">
         <div class="homecard-icon">🧮</div>
         <h3>Calculadoras</h3>
-        <p>Escores clínicos com cálculo automático — Glasgow, CHA₂DS₂-VASc, HEART, CURB-65, Wells, NIHSS, Framingham — e início de insulina ambulatorial (DM2).</p>
+        <p>Escores clínicos e ferramentas de cálculo — Glasgow, CHA₂DS₂-VASc, HEART, CURB-65, Wells, NIHSS, Framingham, função renal, infusões e início de insulina ambulatorial.</p>
       </div>
     </div>
   </div>
@@ -658,7 +666,7 @@
   <div id="viewPrescricoes" class="viewpanel" style="display:none;">
     <div class="searchbar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="searchInput" type="text" placeholder="Buscar tema (ex: dengue, gota, nitrofurantoína...)" autocomplete="off">
+      <input id="searchInput" type="text" placeholder="Buscar tema, sigla ou sinônimo (ex: infarto, AVE, gripe, ITU...)" autocomplete="off">
     </div>
     <div id="resultCount"></div>
     <div class="catbar" id="catbar"></div>
@@ -679,8 +687,9 @@
   <div id="viewSalaVermelha" class="viewpanel" style="display:none;">
     <div class="searchbar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="svSearchInput" type="text" placeholder="Buscar diagnóstico (ex: asma, AVC, sepse...)" autocomplete="off">
+      <input id="svSearchInput" type="text" placeholder="Buscar diagnóstico ou sinônimo (ex: asma, AVE, choque...)" autocomplete="off">
     </div>
+    <div id="svResultCount" class="rc"></div>
     <div class="catbar" id="svCatbar" style="margin-top:12px;"></div>
     <div class="content-title" style="margin-top:20px;">Prescrições de Internação</div>
     <div id="svIndexWrap" class="index-wrap" style="margin-top:0;"></div>
@@ -692,7 +701,13 @@
     <div class="legalbanner">⚠️ <b>ATENÇÃO:</b> calculadora de apoio baseada em fórmulas práticas de referência ("peso ÷ X"), não substitui a bula do medicamento nem o julgamento clínico. Sempre conferir a concentração real do produto disponível antes de prescrever — o resultado já aplica o teto de dose de segurança quando informado na referência.<br><br><b>Excluídos intencionalmente</b> por contraindicação/restrição pediátrica formal em bula: Nimesulida (contraindicada &lt;12 anos), Metoclopramida gotas e injetável (contraindicada &lt;1 ano e não recomendada até os 18 anos, risco de reação extrapiramidal).</div>
     <div class="searchbar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="pedSearchInput" type="text" placeholder="Buscar medicamento (ex: amoxicilina, dipirona...)" autocomplete="off">
+      <input id="pedSearchInput" type="text" placeholder="Buscar medicamento ou conduta (ex: amoxicilina, febre, bronquiolite...)" autocomplete="off">
+    </div>
+    <div id="pedResultCount" class="rc"></div>
+    <div id="pedClinBlock" style="display:none;">
+      <div class="content-title" style="margin-top:20px;">Condutas clínicas pediátricas</div>
+      <div class="sep-sources" style="margin:4px 0 8px;">Toque em um tema para abrir a conduta completa (opção SUS e opção padrão, doses por kg).</div>
+      <div id="pedClinWrap" class="pillrow" style="margin:8px 0 8px;"></div>
     </div>
     <div class="content-title" style="margin-top:20px;">Calculadora por Peso</div>
     <div id="pedArea"></div>
@@ -1225,30 +1240,6 @@ function jumpTo(id){
 
 function normalize(str){ return str.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
 
-function applyFilters(){
-  const q = normalize(document.getElementById('searchInput').value.trim());
-  let visibleCount = 0;
-  document.querySelectorAll('.pill').forEach(pill=>{
-    const sec = SECTIONS.find(s=>s.id===pill.dataset.id);
-    if(!sec) return;
-    const matchesCat = (activeCat===null || sec.cat===activeCat);
-    const matchesQuery = q==='' || normalize(pill.dataset.title).includes(q);
-    const show = matchesCat && matchesQuery;
-    pill.classList.toggle('hidden', !show);
-    if(show) visibleCount++;
-  });
-  document.querySelectorAll('.index-group').forEach(g=>{
-    const anyVisible = [...g.querySelectorAll('.pill')].some(p=>!p.classList.contains('hidden'));
-    g.classList.toggle('hidden', !anyVisible);
-  });
-  document.querySelectorAll('.card').forEach(card=>{
-    const matchesCat = (activeCat===null || card.dataset.cat===activeCat);
-    const matchesQuery = q==='' || normalize(card.dataset.title).includes(q);
-    card.classList.toggle('hidden', !(matchesCat && matchesQuery));
-  });
-  document.getElementById('resultCount').textContent = q ? `${visibleCount} tema(s) encontrado(s)` : '';
-}
-
 function renderAll(){
   buildCatbar();
   buildIndex();
@@ -1425,6 +1416,7 @@ function renderSalaVermelha(){
       pill.style.borderLeftColor = color;
       pill.textContent = os.title;
       pill.dataset.title = os.title.toLowerCase();
+      pill.dataset.osid = os.id;
       pill.onclick = ()=> svJumpTo(os.id);
       row.appendChild(pill);
     });
@@ -1471,6 +1463,7 @@ function renderSalaVermelha(){
       };
     });
   });
+  if(typeof svApplySearch==='function') svApplySearch();
 }
 function svJumpTo(id){
   const el = document.getElementById('sv-'+id);
@@ -1479,15 +1472,6 @@ function svJumpTo(id){
   el.scrollIntoView({behavior:'smooth', block:'start'});
   el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
 }
-document.getElementById('svSearchInput').addEventListener('input', function(){
-  const q = normalize(this.value.trim());
-  document.querySelectorAll('#svIndexWrap .pill').forEach(p=>{
-    p.classList.toggle('hidden', q!=='' && !normalize(p.dataset.title).includes(q));
-  });
-  document.querySelectorAll('.svcard').forEach(c=>{
-    c.classList.toggle('hidden', q!=='' && !normalize(c.dataset.title).includes(q));
-  });
-});
 
 /* ============ PEDIATRIA — CALCULADORA POR PESO ============ */
 // Fórmulas conferidas contra a tabela de referência (símbolo ÷ confirmado por zoom da imagem original).
@@ -1618,6 +1602,7 @@ function buildPedIndex(){
       pill.style.borderLeftColor = '#C9705A';
       pill.textContent = d.name;
       pill.dataset.title = d.name.toLowerCase();
+      pill.dataset.pid = d.id;
       pill.onclick = () => renderPedDrug(d.id);
       row.appendChild(pill);
     });
@@ -1686,16 +1671,6 @@ function renderPedDrug(id){
   area.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-document.getElementById('pedSearchInput').addEventListener('input', function(){
-  const q = normalize(this.value.trim());
-  document.querySelectorAll('#pedIndexWrap .pill').forEach(p=>{
-    p.classList.toggle('hidden', q!=='' && !normalize(p.dataset.title).includes(q));
-  });
-  document.querySelectorAll('#pedIndexWrap .index-group').forEach(g=>{
-    const anyVisible = [...g.querySelectorAll('.pill')].some(p=>!p.classList.contains('hidden'));
-    g.classList.toggle('hidden', !anyVisible);
-  });
-});
 
 document.getElementById('pedArea').innerHTML = '<p style="font-family:IBM Plex Sans,sans-serif; color:var(--ink-soft); font-size:13px;">Selecione um medicamento na lista abaixo para abrir a calculadora.</p>';
 
@@ -1711,6 +1686,8 @@ const CALCULATORS = [
   {id:'wellspe', label:'Wells (TEP)'},
   {id:'nihss', label:'NIHSS'},
   {id:'heart', label:'HEART Score'},
+  {id:'renal', label:'Função renal (TFG)'},
+  {id:'infusao', label:'Infusões (mL/h)'},
   {id:'insulina', label:'Insulina ambulatorial (DM2)'}
 ];
 
@@ -1742,6 +1719,8 @@ function renderCalculator(id){
     wellspe: calcWellsPe,
     nihss: calcNihss,
     heart: calcHeart,
+    renal: calcRenal,
+    infusao: calcInfusao,
     insulina: calcInsulina
   };
   area.innerHTML = '';
@@ -2233,6 +2212,347 @@ function insulinFlags(f){
 }
 
 
+/* ============ FUNÇÃO RENAL, INFUSÕES E BUSCA (funções puras) ============ */
+
+/* Peso ideal (Devine) em kg; altura em cm. */
+function pesoIdeal(sexo, alturaCm){
+  const pol = alturaCm/2.54;
+  const base = sexo==='F' ? 45.5 : 50;
+  return base + 2.3*Math.max(0, pol-60);
+}
+
+/* Cockcroft-Gault (mL/min). Se altura informada: usa peso real se ≤ ideal; peso ajustado (ideal + 0,4×excesso) se real >120% do ideal; senão peso ideal. */
+function cockcroftGault(p){
+  const idade = p.idade, scr = p.scr, sexo = p.sexo;
+  let peso = p.peso, usado = 'peso real';
+  let ideal = null;
+  if(p.altura){
+    ideal = pesoIdeal(sexo, p.altura);
+    if(p.peso > 1.2*ideal){ peso = ideal + 0.4*(p.peso-ideal); usado = 'peso ajustado ('+peso.toFixed(1).replace('.',',')+' kg)'; }
+    else if(p.peso < ideal){ peso = p.peso; usado = 'peso real (abaixo do ideal)'; }
+    else { peso = ideal; usado = 'peso ideal ('+ideal.toFixed(1).replace('.',',')+' kg)'; }
+  }
+  let v = ((140-idade)*peso)/(72*scr);
+  if(sexo==='F') v *= 0.85;
+  return {clcr: v, usado, ideal};
+}
+
+/* CKD-EPI 2021 sem raça (mL/min/1,73 m²). */
+function ckdEpi2021(p){
+  const f = p.sexo==='F';
+  const k = f ? 0.7 : 0.9, a = f ? -0.241 : -0.302;
+  const r = p.scr/k;
+  return 142 * Math.pow(Math.min(r,1), a) * Math.pow(Math.max(r,1), -1.200) * Math.pow(0.9938, p.idade) * (f ? 1.012 : 1);
+}
+
+function kdigoStage(tfg){
+  if(tfg>=90) return 'G1 (≥90) — normal ou alta';
+  if(tfg>=60) return 'G2 (60–89) — levemente diminuída';
+  if(tfg>=45) return 'G3a (45–59) — leve a moderadamente diminuída';
+  if(tfg>=30) return 'G3b (30–44) — moderada a gravemente diminuída';
+  if(tfg>=15) return 'G4 (15–29) — gravemente diminuída';
+  return 'G5 (<15) — falência renal';
+}
+
+/* Referência rápida de ajuste por ClCr (mL/min). rules: [min(incl), max(excl), texto]. Confirmar sempre na bula. */
+const RENAL_ADJ = [
+  {drug:'NITROFURANTOÍNA 100 MG', cls:'ATB', warn:true, rules:[[0,60,'CONTRAINDICADA na bula brasileira (ClCr <60). Alguns guidelines (Beers/IDSA) aceitam ClCr ≥30–45 em cistite não complicada, mas é uso fora da bula — preferir fosfomicina.'],[60,9999,'Sem ajuste.']]},
+  {drug:'FOSFOMICINA 3 G (DOSE ÚNICA)', cls:'ATB', rules:[[0,10,'Evitar (acúmulo, eficácia urinária reduzida).'],[10,9999,'Sem ajuste (dose única).']]},
+  {drug:'CEFALEXINA 500 MG', cls:'ATB', rules:[[50,9999,'Sem ajuste (500 mg 6/6h).'],[10,50,'Espaçar o intervalo (ex.: 8/8h a 12/12h) conforme gravidade.'],[0,10,'Espaçar mais (12/12h a 24/24h). Considerar outra opção.']]},
+  {drug:'AMOXICILINA + CLAVULANATO', cls:'ATB', warn:true, rules:[[30,9999,'Sem ajuste (500/125 8/8h ou 875/125 12/12h).'],[10,30,'NÃO usar a apresentação 875/125. Usar 500/125 12/12h.'],[0,10,'500/125 24/24h. Não usar 875/125.']]},
+  {drug:'CIPROFLOXACINO', cls:'ATB', rules:[[50,9999,'Sem ajuste.'],[30,50,'250–500 mg VO 12/12h.'],[5,30,'250–500 mg VO 18/18h (ou 24/24h).'],[0,5,'250–500 mg VO 24/24h; dose após HD.']]},
+  {drug:'LEVOFLOXACINO 500 MG', cls:'ATB', rules:[[50,9999,'Sem ajuste (500 mg 24/24h).'],[20,50,'500 mg na 1ª dose, depois 250 mg 24/24h.'],[0,20,'500 mg na 1ª dose, depois 250 mg 48/48h.']]},
+  {drug:'SULFAMETOXAZOL + TRIMETOPRIMA', cls:'ATB', rules:[[30,9999,'Sem ajuste.'],[15,30,'Reduzir a dose em 50%.'],[0,15,'Uso não recomendado (se imprescindível, 50% da dose com monitorização).']]},
+  {drug:'PIPERACILINA + TAZOBACTAM 4,5 G 6/6H', cls:'ATB', rules:[[40,9999,'4,5 g EV 6/6h (sem ajuste).'],[20,40,'3,375 g EV 6/6h (pneumonia nosocomial) ou 2,25 g 6/6h nas demais indicações.'],[0,20,'2,25 g EV 6/6h (pneumonia nosocomial) ou 2,25 g 8/8h nas demais; HD: 2,25 g 12/12h.']]},
+  {drug:'CEFEPIMA 2 G 8/8H', cls:'ATB', rules:[[60,9999,'2 g EV 8/8h (sem ajuste).'],[30,60,'2 g EV 12/12h.'],[11,30,'2 g EV 24/24h.'],[0,11,'1 g EV 24/24h.']]},
+  {drug:'MEROPENEM 1 G 8/8H', cls:'ATB', rules:[[50,9999,'1 g EV 8/8h (sem ajuste).'],[26,50,'1 g EV 12/12h.'],[10,26,'500 mg EV 12/12h.'],[0,10,'500 mg EV 24/24h.']]},
+  {drug:'CEFTRIAXONA', cls:'ATB', rules:[[0,9999,'Sem ajuste isolado por função renal (cautela se disfunção hepática associada: máx. 2 g/dia).']]},
+  {drug:'AMPICILINA + SULBACTAM', cls:'ATB', rules:[[30,9999,'Sem ajuste.'],[15,30,'1,5–3 g EV 12/12h.'],[0,15,'1,5–3 g EV 24/24h.']]},
+  {drug:'FLUCONAZOL', cls:'ATB', rules:[[50,9999,'Sem ajuste.'],[0,50,'Dose de ataque normal; manutenção com 50% da dose.']]},
+  {drug:'ACICLOVIR VO (ZOSTER 800 MG)', cls:'ATB', rules:[[25,9999,'800 mg 5×/dia (sem ajuste).'],[10,25,'800 mg VO 8/8h.'],[0,10,'800 mg VO 12/12h.']]},
+  {drug:'ACICLOVIR EV', cls:'ATB', rules:[[50,9999,'Sem ajuste.'],[25,50,'Mesma dose 12/12h.'],[10,25,'Mesma dose 24/24h.'],[0,10,'50% da dose 24/24h.']]},
+  {drug:'VANCOMICINA', cls:'ATB', rules:[[0,9999,'Dose de ataque 25–30 mg/kg (peso real); manutenção e intervalo pela função renal + nível sérico/AUC. Evitar associar a pip-tazo se possível (risco de LRA).']]},
+  {drug:'ENOXAPARINA', cls:'ANTICOAG', warn:true, rules:[[30,9999,'Sem ajuste (profilaxia 40 mg 1×/dia; terapêutica 1 mg/kg 12/12h).'],[0,30,'Profilaxia 30 mg SC 1×/dia; terapêutica 1 mg/kg SC 1×/dia. Considerar heparina não fracionada se ClCr <15–20 ou instável.']]},
+  {drug:'RIVAROXABANA (FA)', cls:'ANTICOAG', rules:[[50,9999,'20 mg 1×/dia com refeição.'],[15,50,'15 mg 1×/dia com refeição.'],[0,15,'Evitar.']]},
+  {drug:'DABIGATRANA', cls:'ANTICOAG', warn:true, rules:[[50,9999,'Sem ajuste pela função renal (ajustar por idade/risco).'],[30,50,'Cautela; considerar 110 mg 12/12h conforme risco de sangramento.'],[0,30,'CONTRAINDICADA.']]},
+  {drug:'APIXABANA (FA)', cls:'ANTICOAG', rules:[[0,9999,'5 mg 12/12h; reduzir para 2,5 mg 12/12h se ≥2 de: idade ≥80, peso ≤60 kg, creatinina ≥1,5 mg/dL. ClCr 15–29: usar com cautela; <15: evitar.']]},
+  {drug:'METFORMINA', cls:'OUTROS', warn:true, rules:[[45,9999,'Sem ajuste (suspender temporariamente em contraste iodado/LRA/sepse).'],[30,45,'Não iniciar; se já em uso, reduzir a dose (máx. ~1 g/dia) e reavaliar.'],[0,30,'CONTRAINDICADA.']]},
+  {drug:'GABAPENTINA', cls:'OUTROS', rules:[[60,9999,'900–3600 mg/dia em 3 doses.'],[30,60,'400–1400 mg/dia em 2 doses.'],[15,30,'200–700 mg/dia em 1 dose.'],[0,15,'100–300 mg/dia em 1 dose.']]},
+  {drug:'TRAMADOL', cls:'OUTROS', rules:[[30,9999,'Sem ajuste (máx. 400 mg/dia).'],[0,30,'Intervalo mínimo de 12/12h; máx. 200 mg/dia.']]},
+  {drug:'METOCLOPRAMIDA', cls:'OUTROS', rules:[[40,9999,'Sem ajuste.'],[0,40,'Reduzir a dose em 50%.']]},
+  {drug:'MORFINA', cls:'OUTROS', warn:true, rules:[[30,9999,'Usar com cautela.'],[0,30,'Metabólitos ativos acumulam: reduzir dose/espaçar ou preferir fentanil.']]},
+  {drug:'AINEs (DICLOFENACO, CETOPROFENO, IBUPROFENO, CETOROLACO)', cls:'OUTROS', warn:true, rules:[[60,9999,'Uso curto, menor dose, hidratação.'],[30,60,'Evitar se possível (risco de LRA); se necessário, curta duração.'],[0,30,'EVITAR — preferir dipirona/paracetamol.']]},
+  {drug:'DIPIRONA', cls:'OUTROS', rules:[[0,9999,'Sem ajuste formal; cautela com doses altas e repetidas em ClCr muito baixo.']]},
+  {drug:'DIGOXINA', cls:'OUTROS', warn:true, rules:[[60,9999,'Dose habitual; checar nível sérico.'],[0,60,'Reduzir dose e monitorar nível sérico (risco de intoxicação).']]},
+  {drug:'ESPIRONOLACTONA / IECA / BRA', cls:'OUTROS', warn:true, rules:[[30,9999,'Monitorar K⁺ e creatinina.'],[0,30,'Risco alto de hipercalemia — evitar iniciar sem controle laboratorial.']]},
+  {drug:'CLARITROMICINA', cls:'ATB', rules:[[30,9999,'Sem ajuste.'],[0,30,'Reduzir a dose em 50%.']]}
+];
+
+function renalAdjFor(clcr){
+  return RENAL_ADJ.map(e=>{
+    const r = e.rules.find(x=>clcr>=x[0] && clcr<x[1]);
+    return {drug:e.drug, cls:e.cls, warn:!!e.warn, text: r?r[2]:'—'};
+  });
+}
+
+/* ---- Infusão contínua ---- */
+const INF_UNITS = {
+  'mcg/kg/min':{amt:'mcg', kg:true,  per:'min'},
+  'mcg/kg/h':  {amt:'mcg', kg:true,  per:'h'},
+  'mg/kg/h':   {amt:'mg',  kg:true,  per:'h'},
+  'UI/kg/h':   {amt:'UI',  kg:true,  per:'h'},
+  'mcg/min':   {amt:'mcg', kg:false, per:'min'},
+  'mg/min':    {amt:'mg',  kg:false, per:'min'},
+  'mg/h':      {amt:'mg',  kg:false, per:'h'},
+  'UI/min':    {amt:'UI',  kg:false, per:'min'},
+  'UI/h':      {amt:'UI',  kg:false, per:'h'}
+};
+function amtFactor(from, to){ // quanto vale 1 'from' em 'to'
+  if(from===to) return 1;
+  if(from==='mg' && to==='mcg') return 1000;
+  if(from==='mcg' && to==='mg') return 0.001;
+  return NaN;
+}
+/* conc: quantidade por mL, na unidade concAmt ('mcg'|'mg'|'UI'). */
+function infMlH(p){
+  const u = INF_UNITS[p.unit];
+  const perHour = p.dose * (u.kg ? p.peso : 1) * (u.per==='min' ? 60 : 1);
+  return perHour * amtFactor(u.amt, p.concAmt) / p.conc;
+}
+function infDose(p){
+  const u = INF_UNITS[p.unit];
+  const amtPerHour = p.mlh * p.conc * amtFactor(p.concAmt, u.amt);
+  return amtPerHour / (u.per==='min' ? 60 : 1) / (u.kg ? p.peso : 1);
+}
+/* Concentração a partir de quantidade total do fármaco e volume final. */
+function concFrom(amount, volumeMl){ return amount/volumeMl; }
+
+/* Gotejamento: macrogotas (20 gts/mL) e microgotas (60). */
+function gotejo(volMl, minutos){
+  return {mlh: volMl/(minutos/60), macro: volMl*20/minutos, micro: volMl*60/minutos};
+}
+
+/* Trombolíticos por peso (AVC isquêmico). */
+function alteplaseAVC(peso){
+  const total = Math.min(0.9*peso, 90);
+  return {total, bolus: total*0.1, infusao: total*0.9, teto: 0.9*peso>90};
+}
+function tenecteplaseAVC(peso){
+  const dose = Math.min(0.25*peso, 25);
+  return {dose, teto: 0.25*peso>25};
+}
+
+/* ============ BUSCA COM SINÔNIMOS E TOLERÂNCIA A ERROS ============ */
+function nrm(s){ return String(s==null?'':s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
+
+const SYN_GROUPS = [
+  ['infarto','iam','sca','sindrome coronariana','sindrome coronariana aguda','dor toracica','dor no peito','angina','coronaria'],
+  ['avc','ave','acidente vascular','acidente vascular cerebral','derrame','isquemia cerebral','avc isquemico','avc hemorragico'],
+  ['gripe','influenza','ivas','resfriado','virose','sindrome gripal','h1n1'],
+  ['hipertensao','has','pressao alta','crise hipertensiva','urgencia hipertensiva','emergencia hipertensiva'],
+  ['diabetes','dm','hiperglicemia','glicemia alta','cetoacidose','cad','descompensacao diabetica','insulina'],
+  ['hipoglicemia','glicemia baixa'],
+  ['itu','infeccao urinaria','cistite','pielonefrite','disuria','infeccao de urina'],
+  ['pneumonia','pac','broncopneumonia','pneumonia comunitaria'],
+  ['asma','broncoespasmo','sibilancia','chiado','bombinha','crise asmatica'],
+  ['dpoc','enfisema','bronquite cronica','exacerbacao dpoc'],
+  ['bronquite','bronquite aguda','tosse'],
+  ['ic','insuficiencia cardiaca','icc','edema agudo de pulmao','eap','congestao'],
+  ['fa','fibrilacao atrial','arritmia','palpitacao','taquiarritmia'],
+  ['tep','embolia pulmonar','tromboembolismo pulmonar'],
+  ['tvp','trombose','trombose venosa profunda','trombose venosa'],
+  ['ira','lesao renal aguda','lra','insuficiencia renal','insuficiencia renal aguda','aki'],
+  ['colica renal','litiase','litiase urinaria','calculo renal','pedra no rim','nefrolitiase','calculo urinario'],
+  ['gota','artrite gotosa','hiperuricemia','acido urico','podagra'],
+  ['lombalgia','dor lombar','dor nas costas','lombar','ciatica','lumbago'],
+  ['dengue','arbovirose','febre hemorragica'],
+  ['diarreia','geca','gastroenterite','gastroenterocolite','disenteria'],
+  ['vomito','nausea','emese','enjoo'],
+  ['dispepsia','gastrite','azia','refluxo','epigastralgia','dor no estomago','queimacao','drge'],
+  ['hda','hdb','hemorragia digestiva','hemorragia digestiva alta','melena','hematemese','sangramento digestivo','varizes esofagicas'],
+  ['abdome agudo','dor abdominal','barriga','abdominal'],
+  ['pancreatite','pancreas'],
+  ['colecistite','colica biliar','colangite','vesicula','calculo biliar','colelitiase'],
+  ['convulsao','crise convulsiva','epilepsia','status epilepticus','estado de mal epileptico','crise epileptica'],
+  ['cefaleia','dor de cabeca','enxaqueca','migranea'],
+  ['vertigem','tontura','labirintite','vppb'],
+  ['sincope','desmaio','lipotimia','perda de consciencia','pre sincope'],
+  ['anafilaxia','choque anafilatico','reacao alergica grave','angioedema','alergia grave'],
+  ['urticaria','alergia','coceira','prurido','reacao alergica'],
+  ['celulite','erisipela','infeccao de pele','infeccao de partes moles'],
+  ['abscesso','furunculo','carbunculo','furunculose'],
+  ['queimadura','queimado','escaldadura'],
+  ['intoxicacao','overdose','envenenamento','antidoto','toxicologia'],
+  ['abstinencia','etilismo','alcool','alcoolismo','delirium tremens','abstinencia alcoolica'],
+  ['agitacao','agitacao psicomotora','psicose','surto','contencao'],
+  ['suicida','suicidio','autolesao','tentativa de suicidio','risco suicida'],
+  ['sepse','choque septico','septicemia','infeccao grave','qsofa'],
+  ['sodio','hiponatremia','hipernatremia'],
+  ['potassio','hipercalemia','hipocalemia','hipercalcemia'],
+  ['calcio','magnesio','hipocalcemia','hipomagnesemia'],
+  ['meningite','rigidez de nuca','meningoencefalite','liquor'],
+  ['escorpiao','picada de escorpiao','escorpionismo'],
+  ['mordedura','mordida','mordedura de cao','mordida de cachorro','raiva','animal'],
+  ['zoster','herpes zoster','cobreiro'],
+  ['herpes labial','herpes simples','herpes'],
+  ['conjuntivite','olho vermelho','olho inflamado','remela'],
+  ['ceratite','ulcera de cornea','ulcera corneana','cornea'],
+  ['hordeolo','terçol','tercol','calazio'],
+  ['otite','dor de ouvido','otalgia','otite media','oma','ouvido'],
+  ['sinusite','rinossinusite','seio da face'],
+  ['amigdalite','faringite','dor de garganta','faringoamigdalite','garganta','odinofagia'],
+  ['epistaxe','sangramento nasal','sangue no nariz'],
+  ['hemorroida','hemorroidas','dor anal','fissura anal'],
+  ['constipacao','prisao de ventre','intestino preso','obstipacao','fecaloma'],
+  ['candidiase','corrimento','monilia','candida'],
+  ['vaginose','vaginose bacteriana','gardnerella'],
+  ['ist','dst','uretrite','cervicite','gonorreia','clamidia','corrimento uretral'],
+  ['dip','doenca inflamatoria pelvica','salpingite'],
+  ['ectopica','gravidez ectopica','gestacao ectopica'],
+  ['hiperemese','vomitos da gravidez','hiperemese gravidica'],
+  ['sangramento vaginal','metrorragia','hemorragia uterina','sangramento uterino'],
+  ['escabiose','sarna'],
+  ['impetigo','impetigem'],
+  ['tce','traumatismo cranioencefalico','trauma de cranio','trauma craniano','batida na cabeca'],
+  ['imobilizacao','gesso','tala','fratura','entorse'],
+  ['ferimento','sutura','laceracao','corte','ferida'],
+  ['paralisia facial','bell','paralisia de bell'],
+  ['perfurocortante','acidente com agulha','exposicao a material biologico','hiv','profilaxia pos exposicao'],
+  ['tireoide','tireotoxicose','hipertireoidismo'],
+  ['encefalopatia hepatica','confusao cirrotico','cirrose'],
+  ['delirium','confusao mental','rebaixamento','rebaixamento de consciencia'],
+  ['orquiepididimite','epididimite','dor testicular','testiculo','torcao testicular'],
+  ['prostatite','prostata'],
+  ['varizes','insuficiencia venosa','ulcera venosa','pernas inchadas'],
+  ['fasciite necrosante','gangrena de fournier','fournier'],
+  ['sjs','ten','stevens johnson','necrolise epidermica'],
+  ['intubacao','sri','sequencia rapida','via aerea','iot'],
+  ['sedacao','bomba de infusao','droga vasoativa','dva','vasoativa'],
+  // fármacos e nomes comerciais
+  ['dipirona','metamizol','novalgina','analgin'],
+  ['paracetamol','acetaminofeno','tylenol'],
+  ['ibuprofeno','alivium','advil'],
+  ['diclofenaco','voltaren','cataflam'],
+  ['cetoprofeno','profenid'],
+  ['nimesulida','nisulid'],
+  ['amoxicilina','amoxil','novocilin'],
+  ['clavulanato','clavulin','augmentin','amoxicilina clavulanato'],
+  ['azitromicina','zitromax'],
+  ['ceftriaxona','rocefin','ceftriaxone'],
+  ['cefalexina','keflex','cefalexina'],
+  ['nitrofurantoina','macrodantina','macrobid'],
+  ['omeprazol','omeprazole','losec'],
+  ['ondansetrona','vonau','zofran'],
+  ['hioscina','buscopan','escopolamina','butilescopolamina'],
+  ['dexametasona','decadron'],
+  ['prednisona','meticorten','prednisolona','predsim','predisolona'],
+  ['salbutamol','aerolin','albuterol'],
+  ['beclometasona','clenil'],
+  ['loratadina','claritin'],
+  ['desloratadina','desalex'],
+  ['tramadol','tramal'],
+  ['metoclopramida','plasil'],
+  ['noradrenalina','norepinefrina','levophed'],
+  ['adrenalina','epinefrina'],
+  ['midazolam','dormonid'],
+  ['fentanil','fentanila'],
+  ['propofol','diprivan'],
+  ['dexmedetomidina','precedex'],
+  ['nitroprussiato','nipride'],
+  ['nitroglicerina','tridil'],
+  ['enoxaparina','clexane'],
+  ['heparina','liquemine'],
+  ['vancomicina','vancocina'],
+  ['rivaroxabana','xarelto'],
+  ['ciprofloxacino','cipro','ciproflox']
+];
+const SYN_MAP = (function(){
+  const m = {};
+  SYN_GROUPS.forEach((g,gi)=>{ g.forEach(t=>{ const k = nrm(t); (m[k] = m[k]||[]).push(gi); }); });
+  return m;
+})();
+function synForms(term){
+  const gs = SYN_MAP[nrm(term)];
+  if(!gs) return [nrm(term)];
+  const out = new Set([nrm(term)]);
+  gs.forEach(gi=> SYN_GROUPS[gi].forEach(t=> out.add(nrm(t))));
+  return [...out];
+}
+
+function lev(a,b,maxd){
+  if(Math.abs(a.length-b.length)>maxd) return maxd+1;
+  const m=a.length,n=b.length; let prev=[]; for(let j=0;j<=n;j++) prev[j]=j;
+  for(let i=1;i<=m;i++){
+    const cur=[i]; let rowMin=i;
+    for(let j=1;j<=n;j++){
+      const c = a[i-1]===b[j-1]?0:1;
+      cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+c);
+      if(cur[j]<rowMin) rowMin=cur[j];
+    }
+    if(rowMin>maxd) return maxd+1;
+    prev=cur;
+  }
+  return prev[n];
+}
+
+/* Converte a consulta em cláusulas (E entre cláusulas; OU entre as formas de cada cláusula). */
+function buildClauses(query){
+  let q = nrm(query).replace(/[^a-z0-9\s\-\/]/g,' ').replace(/\s+/g,' ').trim();
+  if(!q) return [];
+  const clauses = [];
+  // 1) expressões de várias palavras conhecidas (mais longas primeiro)
+  const multi = Object.keys(SYN_MAP).filter(k=>k.indexOf(' ')>-1).sort((a,b)=>b.length-a.length);
+  multi.forEach(k=>{
+    const re = new RegExp('(^| )'+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'( |$)');
+    if(re.test(q)){
+      clauses.push({word:k, forms:synForms(k), fuzzy:false});
+      q = q.replace(re,' ').replace(/\s+/g,' ').trim();
+    }
+  });
+  // 2) palavras soltas
+  q.split(' ').filter(Boolean).forEach(w=>{
+    clauses.push({word:w, forms:synForms(w), fuzzy:w.length>=5});
+  });
+  return clauses;
+}
+
+/* doc: {title (normalizado), text (normalizado), words:Set}. Retorna 0 (não), 1 (texto), 2 (título). */
+function matchDoc(clauses, doc){
+  if(!clauses.length) return 3;
+  let best = 2;
+  for(const c of clauses){
+    let hit = 0;
+    for(const f of c.forms){
+      const re = f.length<=3 ? new RegExp('(^|[^a-z0-9])'+f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z0-9]|$)') : null;
+      const inTitle = re ? re.test(doc.title) : doc.title.indexOf(f)>-1;
+      if(inTitle){ hit = 2; break; }
+      const inText = re ? re.test(doc.text) : doc.text.indexOf(f)>-1;
+      if(inText) hit = Math.max(hit,1);
+    }
+    if(!hit && c.fuzzy){
+      const maxd = c.word.length>=9 ? 2 : 1;
+      for(const w of doc.words){
+        if(w.length<4) continue;
+        if(lev(c.word, w.slice(0, c.word.length+1), maxd)<=maxd || lev(c.word, w, maxd)<=maxd){
+          hit = (doc.titleWords && doc.titleWords.has(w)) ? 2 : 1; break;
+        }
+      }
+    }
+    if(!hit) return 0;
+    best = Math.min(best, hit);
+  }
+  return best;
+}
+function makeDoc(title, text){
+  const t = nrm(title), x = nrm(text);
+  const wordsOf = s=> new Set(s.split(/[^a-z0-9]+/).filter(w=>w.length>=4));
+  return {title:t, text:t+' '+x, words:wordsOf(t+' '+x), titleWords:wordsOf(t)};
+}
+function rawToPlain(raw){
+  return String(raw||'').split('\n').map(l=>l.replace(/^(RT|SH|MD|DS|TX|LI|WN|CR|RF|CP|CL|LB):/,'')).join(' ').replace(/\*\*/g,'');
+}
+
+
 /* ---- Auxiliares de formulário ---- */
 function numIn(id, label, ph, step, help){
   return `<div class="calcfield"><label for="${id}">${label}</label><input type="number" inputmode="decimal" id="${id}" step="${step||1}" placeholder="${ph||''}">${help?`<div class="cp-title" style="margin-top:4px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;">${help}</div>`:''}</div>`;
@@ -2268,9 +2588,9 @@ const SEP_STEPS = [
    lead:'Executar em paralelo, sem esperar confirmação diagnóstica completa.',
    items:[
      {t:'Lactato', d:'Repetir se inicial >2 mmol/L.', tag:'tempo', hot:true},
-     {t:'Hemoculturas ×2 antes do antibiótico', d:'Sem atrasar o antibiótico por mais de ~45 min se a coleta demorar.', tag:'tempo', hot:true},
+     {t:'Hemoculturas ×2 (aeróbio e anaeróbio) antes do antibiótico', d:'Sem atrasar o antibiótico por mais de ~45 min se a coleta demorar.', tag:'tempo', hot:true},
      {t:'2 acessos venosos calibrosos', d:'Acesso central não deve atrasar o início do tratamento.'},
-     {t:'Cristaloide balanceado (ex.: Ringer lactato)', d:'SSC 2026 prefere cristaloide balanceado ao SF 0,9%. Reavalie após cada bolus (PA, TEC, ausculta, SpO₂, POCUS) e pare se houver sobrecarga.', tag:'SSC 2026'},
+     {t:'Cristaloide balanceado (ex.: Ringer lactato) — 30 mL/kg se hipotensão ou lactato ≥4 mmol/L', d:'A SSC 2026 prefere cristaloide balanceado ao SF 0,9%. CLOVERS e CLASSIC mostraram que estratégias mais restritivas de fluido, com vasopressor precoce, são seguras. Reavalie após cada bolus (PA, TEC, ausculta, SpO₂, POCUS) e pare se houver sobrecarga.', tag:'SSC 2026'},
      {t:'Exames: gasometria, hemograma, creatinina, bilirrubina, coagulograma, glicemia', d:'Também alimentam o SOFA. Imagem e urina conforme o foco.'},
      {t:'Monitorização: PA, FC, FR, SpO₂, diurese', d:'Sonda vesical se choque, para medir diurese horária.'},
      {t:'Oxigênio se hipoxemia', d:'Titular para SpO₂ alvo; considerar suporte ventilatório se piora.'}
@@ -2278,7 +2598,7 @@ const SEP_STEPS = [
    extra:'volume'},
   {key:'atb', label:'ATB', urgent:true,
    title:'3. Antibiótico',
-   lead:'Choque séptico: antibiótico imediato (idealmente em até 1 h). Sepse sem choque: o mais cedo possível, equilibrando com cautela diagnóstica.',
+   lead:'Choque séptico ou sepse provável: antibiótico imediato, idealmente em até 1 h. Sepse apenas possível, sem choque: até 3 h de investigação diagnóstica rápida, para evitar antibiótico desnecessário (SSC 2026, conforme revisão de Souza et al., 2026).',
    items:[
      {t:'Checar alergias e função renal antes de prescrever', d:'A 1ª dose é cheia mesmo na insuficiência renal; ajuste a partir das doses seguintes.'},
      {t:'Foco indeterminado/comunitário', d:'Piperacilina-tazobactam 4,5 g EV 6/6h OU ceftriaxona 2 g EV 1x/dia (se baixo risco de Pseudomonas).', tag:'Padronização do site'},
@@ -2292,8 +2612,8 @@ const SEP_STEPS = [
    lead:'Hipotensão persistente durante ou após o volume: iniciar vasopressor. Em hipotensão grave, não espere o volume terminar.',
    items:[
      {t:'Reavaliar PAM, TEC e lactato após o volume', d:'Meta: PAM ≥65 mmHg.'},
-     {t:'Noradrenalina como 1ª linha', d:'Diluição conforme padronização da Santa Casa (ver o protocolo "Sepse / Choque Séptico" na Sala Vermelha).', tag:'SSC 2026'},
-     {t:'Pode iniciar em veia periférica calibrosa', d:'Enquanto se obtém acesso central; vigiar o local de infusão. Central assim que possível.'},
+     {t:'Noradrenalina como 1ª linha', d:'Iniciar precocemente; em hipotensão grave, não espere o volume terminar. Diluição conforme padronização da Santa Casa (ver o protocolo "Sepse / Choque Séptico" na Sala Vermelha).', tag:'SSC 2026'},
+     {t:'Pode iniciar em acesso venoso periférico seguro', d:'A SSC 2026 aceita iniciar por via periférica para não atrasar a ressuscitação. Vigie o local de infusão e passe para acesso central assim que possível.', tag:'SSC 2026'},
      {t:'Dose de noradrenalina em escalada: considerar vasopressina', d:'SSC 2021: adicionar vasopressina em vez de escalar a noradrenalina, a partir de ~0,25–0,5 mcg/kg/min. Conferir se mudou na 2026.', tag:'SSC 2021'},
      {t:'Choque refratário: considerar hidrocortisona', d:'SSC 2021: 200 mg/dia (50 mg EV 6/6h) se noradrenalina ≥0,25 mcg/kg/min por ≥4 h. Conferir se mudou na 2026.', tag:'SSC 2021'},
      {t:'Solicitar vaga de UTI', d:'Choque séptico ou necessidade de vasopressor.'}
@@ -2304,11 +2624,12 @@ const SEP_STEPS = [
    items:[
      {t:'PAM ≥65 mmHg', d:'', tag:'SSC 2026'},
      {t:'Lactato em queda', d:'Reavaliar em 2–4 h se inicial ≥2 mmol/L.'},
-     {t:'Tempo de enchimento capilar normal e diurese ≥0,5 mL/kg/h', d:'Sinais de perfusão para guiar a ressuscitação.'},
+     {t:'Tempo de enchimento capilar normal (≤3 s) e diurese ≥0,5 mL/kg/h', d:'O TEC é um marcador dinâmico de perfusão, sem custo, usado para guiar o desmame de fluido e vasopressor (ANDROMEDA-SHOCK).', tag:'SSC 2026'},
      {t:'Glicemia: iniciar insulina se ≥180 mg/dL', d:'', tag:'SSC 2026'},
      {t:'Profilaxia de TEV com heparina de baixo peso molecular', d:'HBPM é preferida (SSC 2026, segundo resumo secundário).', tag:'SSC 2026'},
      {t:'Estratégia transfusional restritiva', d:'Em geral, transfundir com Hb <7 g/dL na ausência de condições especiais.'},
      {t:'Reavaliar o antibiótico diariamente', d:'Descalonar conforme culturas e evolução.'},
+     {t:'Não usar vitamina C em altas doses (nem associada a tiamina/hidrocortisona)', d:'LOVIT (2022): maior risco de morte ou disfunção orgânica persistente em 28 dias. VICTAS (2021): sem benefício.', tag:'SSC 2026'},
      {t:'Definir destino', d:'UTI, enfermaria monitorizada ou transferência.'}
    ]}
 ];
@@ -2387,7 +2708,7 @@ function renderSepsis(){
       <div id="sepExtra"></div>
       <div class="sep-nav">${prev}${next}</div>
     </div>
-    <div class="sep-note info"><b>Aviso:</b> apoio à decisão clínica, não substitui o julgamento médico nem o protocolo da instituição. Itens marcados "SSC 2026" foram conferidos em resumos secundários da diretriz (o texto original não pôde ser aberto); os marcados "SSC 2021" vêm da versão anterior. Confirme no documento original antes de adotar como norma.</div>`;
+    <div class="sep-note info"><b>Aviso:</b> apoio à decisão clínica, não substitui o julgamento médico nem o protocolo da instituição. Itens "SSC 2026" vêm do artigo de revisão de Souza et al. (J Med Biosci Res, 2026) e de resumos secundários; o texto original da diretriz não pôde ser aberto. Itens "SSC 2021" vêm da versão anterior e não foram reconfirmados. Confirme no documento original antes de adotar como norma.</div>`;
 
   sepRefreshDots();
   sepUpdateTimer();
@@ -2423,7 +2744,7 @@ function renderSepsis(){
 function renderSepVolume(box){
   box.innerHTML = `<div class="sep-scores">
     <h4>Volume de cristaloide</h4>
-    <div class="sep-note warn" style="margin-top:8px;">Pacote da 1ª hora: 30 mL/kg se hipotensão ou lactato ≥4 mmol/L (SSC 2021, recomendação fraca). Não consegui confirmar a redação do volume na SSC 2026 — confira no texto original. Cautela em insuficiência cardíaca e doença renal dialítica.</div>
+    <div class="sep-note info" style="margin-top:8px;">Pacote da 1ª hora: 30 mL/kg de cristaloide balanceado se hipotensão ou lactato ≥4 mmol/L (SSC 2021 e 2026, conforme revisão de Souza et al., 2026). Cautela em insuficiência cardíaca e doença renal dialítica; reavalie após cada bolus.</div>
     <div class="calcgrid">${numIn('sepPeso','Peso (kg)','Ex: 70',0.1)}<div class="calcfield"><label>&nbsp;</label><button class="calcbtn" id="sepVolBtn" style="margin-top:0; width:100%;">Calcular 30 mL/kg</button></div></div>
     <div id="sepVolRes"></div>
   </div>`;
@@ -2471,8 +2792,7 @@ function sepFormSirs(body){
 }
 
 function sepFormNews(body){
-  body.innerHTML = `<div class="sep-note info"><b>NEWS2 (SSC 2026).</b> Ferramenta de alerta precoce. Escore ≥5 = risco moderado/alto; integre à avaliação clínica. Pontuação do Royal College of Physicians (2017). Preencha todos os campos.</div>
-    <div class="sep-note warn">Não consegui abrir o gráfico oficial do RCP para conferir cada faixa. Confira a pontuação com o gráfico oficial (rcp.ac.uk) antes de depender dela.</div>
+  body.innerHTML = `<div class="sep-note info"><b>NEWS2 (SSC 2026).</b> Ferramenta de alerta precoce. Escore ≥5 = risco moderado/alto; integre à avaliação clínica. Pontuação do Royal College of Physicians (2017), conferida com a tabela publicada pelo Estratégia Med. Use a escala 2 de SpO₂ só em falência respiratória hipercápnica com alvo de 88–92% definido por médico. Preencha todos os campos.</div>
     <div class="calcgrid">
       ${numIn('nwFr','Frequência respiratória (irpm)','Ex: 22')}
       ${numIn('nwSpo2','SpO₂ (%)','Ex: 94')}
@@ -2671,6 +2991,321 @@ function renderInsulinResult(){
     out.innerHTML = calcResultHtml(t.newDose + ' UI/dia', null, msg, t.action==='reduzir' ? 'risk-mod' : 'risk-low');
   };
 }
+
+
+/* ============ UI: FUNÇÃO RENAL ============ */
+function fmt1(n){ return (Math.round(n*10)/10).toString().replace('.',','); }
+
+function calcRenal(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>Função renal (TFG / ClCr)</h2>
+    <div class="calcdesc">Cockcroft-Gault (usado nas bulas para ajuste de dose) e CKD-EPI 2021 (estadiamento KDIGO), mais referência rápida de ajuste de medicamentos.</div>
+    <div class="calcgrid">
+      ${numIn('rnIdade','Idade (anos)','Ex: 72')}
+      ${selIn('rnSexo','Sexo',[{v:'M',t:'Masculino'},{v:'F',t:'Feminino'}])}
+      ${numIn('rnPeso','Peso real (kg)','Ex: 70',0.1)}
+      ${numIn('rnAlt','Altura (cm) — opcional','Ex: 170',1,'Com a altura, o cálculo usa peso ideal/ajustado (obesidade, desnutrição).')}
+      ${numIn('rnScr','Creatinina sérica (mg/dL)','Ex: 1,2',0.01)}
+    </div>
+    <button class="calcbtn" id="rnBtn">Calcular</button>
+    <div id="rnRes"></div>
+  </div>`;
+  document.getElementById('rnBtn').onclick = ()=>{
+    const idade = readNum('rnIdade'), peso = readNum('rnPeso'), alt = readNum('rnAlt'), scr = readNum('rnScr');
+    const sexo = document.getElementById('rnSexo').value;
+    const res = document.getElementById('rnRes');
+    if(!idade || !peso || !scr || idade<18 || idade>120 || peso<20 || peso>350 || scr<=0 || scr>30 || (alt && (alt<100 || alt>230))){
+      res.innerHTML = calcResultHtml('—', null, 'Informe idade (≥18 anos), peso, creatinina e, se usar, altura em valores válidos.', 'risk-mod');
+      return;
+    }
+    const cg = cockcroftGault({idade, scr, sexo, peso, altura: alt});
+    const ck = ckdEpi2021({idade, scr, sexo});
+    const cls = cg.clcr>=60 ? 'risk-low' : (cg.clcr>=30 ? 'risk-mod' : 'risk-high');
+    let html = calcResultHtml(fmt1(cg.clcr)+' mL/min', null,
+      `<b>Cockcroft-Gault</b> (${esc(cg.usado)})<br><b>CKD-EPI 2021:</b> ${fmt1(ck)} mL/min/1,73 m² — ${esc(kdigoStage(ck))}`, cls);
+    html += `<div class="sep-note warn">Fórmulas válidas apenas com creatinina em <b>estado estável</b>. Em LRA (creatinina subindo/descendo, sepse, rabdomiólise, contraste), idosos muito frágeis, sarcopenia, amputados, gestantes ou extremos de peso, o valor pode estar muito errado — usar como estimativa e reavaliar. Para ajuste de dose de medicamentos, usar o ClCr de Cockcroft-Gault (é o que as bulas utilizam).</div>`;
+    const adj = renalAdjFor(cg.clcr);
+    const groups = {ATB:'Antimicrobianos', ANTICOAG:'Anticoagulantes', OUTROS:'Outros'};
+    html += `<div class="ins-sec"><h4>Ajuste de dose para ClCr ≈ ${fmt1(cg.clcr)} mL/min</h4>
+      <div class="sep-sources">Referência rápida baseada em bulas brasileiras e no Guia Farmacêutico do Hospital Sírio-Libanês — <b>confirmar sempre na bula/serviço de farmácia</b>; dose de ataque geralmente não se ajusta.</div>
+      <div class="searchbar" style="margin:8px 0;"><input id="rnFilter" type="text" placeholder="Filtrar medicamento (ex: cipro, metformina...)" autocomplete="off"></div>
+      <table class="ins-table" id="rnTable"><tbody>`;
+    Object.keys(groups).forEach(g=>{
+      html += `<tr class="rnhead"><th colspan="2">${groups[g]}</th></tr>`;
+      adj.filter(a=>a.cls===g).forEach(a=>{
+        html += `<tr class="rnrow${a.warn?' rnwarn':''}" data-k="${esc(nrm(a.drug+' '+a.text))}"><td style="width:38%"><b>${esc(a.drug)}</b></td><td>${esc(a.text)}</td></tr>`;
+      });
+    });
+    html += `</tbody></table></div>`;
+    res.innerHTML = html;
+    const flt = document.getElementById('rnFilter');
+    flt.addEventListener('input', ()=>{
+      const cl = buildClauses(flt.value);
+      document.querySelectorAll('#rnTable .rnrow').forEach(r=>{
+        r.style.display = (!cl.length || matchDoc(cl, makeDoc(r.dataset.k, ''))) ? '' : 'none';
+      });
+    });
+  };
+}
+
+/* ============ UI: INFUSÕES ============ */
+/* Presets alinhados à tabela "Padronização de Medicações" do próprio site (conc = quantidade/mL). */
+const INF_PRESETS = [
+  {id:'nora1', n:'Noradrenalina — 4 amp (16 mL) + 234 mL SG5% = 128 mcg/mL', conc:128, ca:'mcg', u:'mcg/kg/min', hint:'Faixa usual 0,01–1 mcg/kg/min; inicial 0,05 (meta PAM ≥65).'},
+  {id:'nora2', n:'Noradrenalina — 8 amp (32 mL) + 218 mL SG5% = 256 mcg/mL', conc:256, ca:'mcg', u:'mcg/kg/min', hint:'Concentração dobrada (restrição de volume).'},
+  {id:'nora3', n:'Noradrenalina — 16 amp (64 mL) + 186 mL SG5% = 512 mcg/mL', conc:512, ca:'mcg', u:'mcg/kg/min', hint:'Concentração alta — preferir acesso central.'},
+  {id:'dobu1', n:'Dobutamina — 1 amp (20 mL) + 230 mL SF = 1.000 mcg/mL', conc:1000, ca:'mcg', u:'mcg/kg/min', hint:'Faixa usual 2,5–20 mcg/kg/min.'},
+  {id:'dobu2', n:'Dobutamina — 4 amp (80 mL) + 170 mL SF = 4.000 mcg/mL', conc:4000, ca:'mcg', u:'mcg/kg/min', hint:'Faixa usual 2,5–20 mcg/kg/min.'},
+  {id:'nipr', n:'Nitroprussiato (Nipride) — 1 amp 50 mg + 250 mL SG5% = 200 mcg/mL', conc:200, ca:'mcg', u:'mcg/kg/min', hint:'Faixa usual 0,3–10 mcg/kg/min; proteger da luz.'},
+  {id:'nitro', n:'Nitroglicerina (Tridil) — 1 amp 50 mg + 240 mL SF = 200 mcg/mL', conc:200, ca:'mcg', u:'mcg/min', hint:'Inicial 5–10 mcg/min; titular a cada 3–5 min.'},
+  {id:'amio', n:'Amiodarona — 6 amp (900 mg) + 232 mL SG5% = 3,6 mg/mL', conc:3.6, ca:'mg', u:'mg/min', hint:'Ataque 150 mg em 10 min; manutenção 1 mg/min por 6 h, depois 0,5 mg/min.'},
+  {id:'vaso1', n:'Vasopressina — 1 amp (20 UI) + 99 mL SG5% = 0,2 UI/mL', conc:0.2, ca:'UI', u:'UI/min', hint:'Choque séptico: 0,03 UI/min (dose fixa, adjuvante à noradrenalina).'},
+  {id:'vaso2', n:'Vasopressina — 2 amp (40 UI) + 248 mL SG5% = 0,16 UI/mL', conc:0.16, ca:'UI', u:'UI/min', hint:'Choque séptico: 0,03 UI/min.'},
+  {id:'mida1', n:'Midazolam — 2 amp (100 mg) + 80 mL SF = 1 mg/mL', conc:1, ca:'mg', u:'mg/kg/h', hint:'Faixa 0,02–0,2 mg/kg/h conforme RASS.'},
+  {id:'mida2', n:'Midazolam — 4 amp (200 mg) + 60 mL SF = 2 mg/mL', conc:2, ca:'mg', u:'mg/kg/h', hint:'Faixa 0,02–0,2 mg/kg/h conforme RASS.'},
+  {id:'fent1', n:'Fentanil 50 mcg/mL — puro (5 amp, 50 mL)', conc:50, ca:'mcg', u:'mcg/kg/h', hint:'Analgesia 0,7–10 mcg/kg/h. Conferir a concentração da ampola.'},
+  {id:'fent2', n:'Fentanil — 2 amp (20 mL) + 80 mL SF = 10 mcg/mL', conc:10, ca:'mcg', u:'mcg/kg/h', hint:'Analgesia 0,7–10 mcg/kg/h.'},
+  {id:'fent3', n:'Fentanil — 4 amp (40 mL) + 60 mL SF = 20 mcg/mL', conc:20, ca:'mcg', u:'mcg/kg/h', hint:'Analgesia 0,7–10 mcg/kg/h.'},
+  {id:'dex', n:'Dexmedetomidina (Precedex) — 1 amp (200 mcg) + 48 mL SF = 4 mcg/mL', conc:4, ca:'mcg', u:'mcg/kg/h', hint:'Faixa 0,2–1,4 mcg/kg/h. Conferir a concentração da ampola.'},
+  {id:'prop', n:'Propofol 10 mg/mL — puro', conc:10, ca:'mg', u:'mg/kg/h', hint:'Sedação 0,3–3 mg/kg/h (≈5–50 mcg/kg/min). Conferir a concentração (1% = 10 mg/mL).'},
+  {id:'ins', n:'Insulina regular — 50 UI + 50 mL SF = 1 UI/mL', conc:1, ca:'UI', u:'UI/kg/h', hint:'CAD: 0,1 UI/kg/h (após K⁺ ≥3,3).'},
+  {id:'adre', n:'Adrenalina — 4 mg + 246 mL SF = 16 mcg/mL (padrão comum, não consta na tabela do site)', conc:16, ca:'mcg', u:'mcg/kg/min', hint:'Faixa usual 0,01–0,5 mcg/kg/min. Conferir o preparo do seu serviço.'},
+  {id:'hep', n:'Heparina — 25.000 UI + 245 mL SF = 100 UI/mL (padrão comum)', conc:100, ca:'UI', u:'UI/kg/h', hint:'Protocolo SCA/TEP: 12–18 UI/kg/h (ataque 60–80 UI/kg); seguir nomograma por TTPa/anti-Xa.'},
+  {id:'custom', n:'Personalizada (informar concentração)', conc:null, ca:'mg', u:'mcg/kg/min', hint:''}
+];
+
+function calcInfusao(area){
+  const presetOpts = INF_PRESETS.map((p,i)=>`<option value="${i}">${esc(p.n)}</option>`).join('');
+  const unitOpts = Object.keys(INF_UNITS).map(u=>`<option value="${u}">${u}</option>`).join('');
+  area.innerHTML = `<div class="calccard">
+    <h2>Infusão contínua (bomba)</h2>
+    <div class="calcdesc">Converte dose ↔ velocidade (mL/h). Os presets seguem as diluições da tabela “Padronização de Medicações” deste site — <b>confirme sempre a concentração real da ampola e do preparo na sua unidade</b>.</div>
+    <div class="sep-tabs"><button class="sep-tab active" id="infT1" type="button">Dose → mL/h</button><button class="sep-tab" id="infT2" type="button">mL/h → dose</button></div>
+    <div class="calcfield"><label for="infPreset">Medicamento / diluição</label><select id="infPreset">${presetOpts}</select><div id="infHint" class="cp-title" style="margin-top:4px; text-transform:none; font-weight:400; color:var(--ink-soft); font-size:11px;"></div></div>
+    <div class="calcgrid">
+      ${numIn('infConc','Concentração final','Ex: 128',0.0001)}
+      ${selIn('infConcAmt','Unidade da concentração',[{v:'mcg',t:'mcg/mL'},{v:'mg',t:'mg/mL'},{v:'UI',t:'UI/mL'}])}
+      ${numIn('infPeso','Peso (kg)','Ex: 70',0.1)}
+      ${selIn('infUnit','Unidade da dose',Object.keys(INF_UNITS).map(u=>({v:u,t:u})))}
+      <div id="infDoseWrap">${numIn('infDose','Dose desejada','Ex: 0,05',0.0001)}</div>
+      <div id="infMlhWrap" style="display:none;">${numIn('infMlh','Velocidade atual (mL/h)','Ex: 5',0.1)}</div>
+    </div>
+    <details class="sep-sources" style="margin:0 0 10px;"><summary>Calcular concentração a partir do preparo</summary>
+      <div class="calcgrid" style="margin-top:8px;">${numIn('infAmt','Quantidade total do fármaco na bolsa','Ex: 32',0.01)}${numIn('infVol','Volume final (mL)','Ex: 250',1)}</div>
+      <button class="sep-ghost" id="infConcBtn" type="button">Usar como concentração</button>
+    </details>
+    <button class="calcbtn" id="infBtn">Calcular</button>
+    <div id="infRes"></div>
+    <div class="ins-sec" style="margin-top:22px;"><h4>Soro: volume e tempo → mL/h e gotas/min</h4>
+      <div class="calcgrid">${numIn('gtVol','Volume (mL)','Ex: 500')}${numIn('gtMin','Tempo (min)','Ex: 60')}</div>
+      <button class="calcbtn" id="gtBtn">Calcular gotejamento</button><div id="gtRes"></div></div>
+    <div class="ins-sec" style="margin-top:22px;"><h4>Trombolítico por peso — AVC isquêmico</h4>
+      <div class="calcgrid">${numIn('trPeso','Peso (kg)','Ex: 78',0.1)}</div>
+      <button class="calcbtn" id="trBtn">Calcular doses</button><div id="trRes"></div></div>
+  </div>`;
+  let mode = 1;
+  const sel = document.getElementById('infPreset');
+  function applyPreset(){
+    const p = INF_PRESETS[sel.value];
+    document.getElementById('infHint').textContent = p.hint || '';
+    if(p.conc!=null){
+      document.getElementById('infConc').value = String(p.conc);
+      document.getElementById('infConcAmt').value = p.ca;
+    }
+    document.getElementById('infUnit').value = p.u;
+  }
+  sel.onchange = applyPreset; applyPreset();
+  function setMode(m){
+    mode = m;
+    document.getElementById('infDoseWrap').style.display = m===1 ? '' : 'none';
+    document.getElementById('infMlhWrap').style.display = m===2 ? '' : 'none';
+    document.getElementById('infT1').classList.toggle('active', m===1);
+    document.getElementById('infT2').classList.toggle('active', m===2);
+    document.getElementById('infRes').innerHTML = '';
+  }
+  document.getElementById('infT1').onclick = ()=>setMode(1);
+  document.getElementById('infT2').onclick = ()=>setMode(2);
+  document.getElementById('infConcBtn').onclick = ()=>{
+    const a = readNum('infAmt'), v = readNum('infVol');
+    if(!a || !v || a<=0 || v<=0) return;
+    const c = concFrom(a, v);
+    document.getElementById('infConc').value = String(Math.round(c*10000)/10000);
+    document.getElementById('infPreset').value = String(INF_PRESETS.length-1);
+    document.getElementById('infHint').textContent = 'Concentração calculada: '+fmt1(c)+' por mL (confira a unidade selecionada).';
+  };
+  document.getElementById('infBtn').onclick = ()=>{
+    const conc = readNum('infConc'), peso = readNum('infPeso'), unit = document.getElementById('infUnit').value, concAmt = document.getElementById('infConcAmt').value;
+    const res = document.getElementById('infRes');
+    const u = INF_UNITS[unit];
+    if(!conc || conc<=0 || (u.kg && (!peso || peso<=0 || peso>350))){
+      res.innerHTML = calcResultHtml('—', null, 'Informe a concentração'+(u.kg?' e o peso (kg)':'')+'.', 'risk-mod'); return;
+    }
+    if(isNaN(amtFactor(u.amt, concAmt))){
+      res.innerHTML = calcResultHtml('—', null, 'Unidade da dose ('+u.amt+') incompatível com a da concentração ('+concAmt+'/mL).', 'risk-high'); return;
+    }
+    if(mode===1){
+      const dose = readNum('infDose');
+      if(dose==null || dose<=0){ res.innerHTML = calcResultHtml('—', null, 'Informe a dose desejada.', 'risk-mod'); return; }
+      const mlh = infMlH({dose, unit, peso, conc, concAmt});
+      const note = mlh>200 ? ' Velocidade muito alta — revisar dose, concentração e unidade.' : '';
+      res.innerHTML = calcResultHtml((Math.round(mlh*100)/100).toString().replace('.',',')+' mL/h', null,
+        `Dose ${String(dose).replace('.',',')} ${unit}${u.kg?' × '+fmt1(peso)+' kg':''} com ${String(conc).replace('.',',')} ${concAmt}/mL.${note}`, mlh>200?'risk-high':'risk-low');
+    } else {
+      const mlh = readNum('infMlh');
+      if(mlh==null || mlh<0){ res.innerHTML = calcResultHtml('—', null, 'Informe a velocidade (mL/h).', 'risk-mod'); return; }
+      const d = infDose({mlh, unit, peso, conc, concAmt});
+      res.innerHTML = calcResultHtml((Math.round(d*10000)/10000).toString().replace('.',',')+' '+unit, null,
+        `${String(mlh).replace('.',',')} mL/h com ${String(conc).replace('.',',')} ${concAmt}/mL${u.kg?' · '+fmt1(peso)+' kg':''}.`, 'risk-low');
+    }
+  };
+  document.getElementById('gtBtn').onclick = ()=>{
+    const v = readNum('gtVol'), m = readNum('gtMin'), r = document.getElementById('gtRes');
+    if(!v || !m || v<=0 || m<=0){ r.innerHTML = calcResultHtml('—', null, 'Informe volume e tempo.', 'risk-mod'); return; }
+    const g = gotejo(v, m);
+    r.innerHTML = calcResultHtml(fmt1(g.mlh)+' mL/h', null, `Macrogotas (20 gts/mL): <b>${fmt1(g.macro)} gts/min</b> · Microgotas: <b>${fmt1(g.micro)} mcgts/min</b> (= mL/h).`, 'risk-low');
+  };
+  document.getElementById('trBtn').onclick = ()=>{
+    const p = readNum('trPeso'), r = document.getElementById('trRes');
+    if(!p || p<=0 || p>350){ r.innerHTML = calcResultHtml('—', null, 'Informe o peso (kg).', 'risk-mod'); return; }
+    const a = alteplaseAVC(p), t = tenecteplaseAVC(p);
+    r.innerHTML = calcResultHtml(fmt1(a.total)+' mg alteplase', null,
+      `<b>Alteplase</b> 0,9 mg/kg (máx. 90 mg): bolus 10% = <b>${fmt1(a.bolus)} mg</b> EV em 1 min; restante <b>${fmt1(a.infusao)} mg</b> em 60 min.${a.teto?' (teto de 90 mg aplicado)':''}<br><b>Tenecteplase</b> 0,25 mg/kg (máx. 25 mg): <b>${fmt1(t.dose)} mg</b> EV em bolus único (~5 s).${t.teto?' (teto de 25 mg aplicado)':''}<br>Só para AVC isquêmico dentro da janela e sem contraindicações — NÃO usar esta dose para IAM/TEP.`, 'risk-mod');
+  };
+}
+
+
+/* ============ BUSCA (UI) + FONTE AJUSTÁVEL + CONDUTAS PEDIÁTRICAS ============ */
+const _docCache = {};
+function secDoc(sec){
+  const key = sec.title+'|'+(sec.raw||'').length;
+  const c = _docCache[sec.id];
+  if(c && c.key===key) return c.doc;
+  const doc = makeDoc(sec.title, rawToPlain(sec.raw));
+  _docCache[sec.id] = {key, doc};
+  return doc;
+}
+function setCountMsg(el, q, shown, title, text){
+  if(!el) return;
+  if(!q){ el.textContent = ''; return; }
+  if(!shown){ el.textContent = 'Nada encontrado para “'+q+'”. Tente outro termo, sinônimo ou a sigla (ex.: infarto, SCA, IAM).'; return; }
+  el.textContent = shown+' resultado(s)'+(text ? ' — '+title+' no título, '+text+' no texto' : '');
+}
+
+function applyFilters(){
+  const q = document.getElementById('searchInput').value.trim();
+  const cl = buildClauses(q);
+  const score = {};
+  SECTIONS.forEach(s=>{ score[s.id] = matchDoc(cl, secDoc(s)); });
+  let nTitle = 0, nText = 0;
+  document.querySelectorAll('#indexWrap .pill').forEach(pill=>{
+    const sec = SECTIONS.find(s=>s.id===pill.dataset.id);
+    if(!sec) return;
+    const sc = score[sec.id];
+    const show = (activeCat===null || sec.cat===activeCat) && sc>0;
+    pill.classList.toggle('hidden', !show);
+    pill.classList.toggle('cm', !!q && sc===1);
+    if(show && pill.closest('.index-group').dataset.cat!=='__favoritos__'){ if(sc===1 && q) nText++; else nTitle++; }
+  });
+  document.querySelectorAll('#indexWrap .index-group').forEach(g=>{
+    g.classList.toggle('hidden', ![...g.querySelectorAll('.pill')].some(p=>!p.classList.contains('hidden')));
+  });
+  document.querySelectorAll('#cardsWrap .card').forEach(card=>{
+    const sc = score[card.id] ?? 0;
+    card.classList.toggle('hidden', !((activeCat===null || card.dataset.cat===activeCat) && sc>0));
+  });
+  setCountMsg(document.getElementById('resultCount'), q, nTitle+nText, nTitle, nText);
+}
+
+/* ---- Sala vermelha ---- */
+function osDoc(os){
+  const key = os.title+'|'+os.items.length;
+  const c = _docCache['os:'+os.id];
+  if(c && c.key===key) return c.doc;
+  const doc = makeDoc(os.title, os.items.map(i=>(i.title||'')+' '+(i.detail||'')).join(' '));
+  _docCache['os:'+os.id] = {key, doc};
+  return doc;
+}
+function svApplySearch(){
+  const inp = document.getElementById('svSearchInput'); if(!inp) return;
+  const q = inp.value.trim(), cl = buildClauses(q), sc = {};
+  ORDERSETS.forEach(o=>{ sc[o.id] = matchDoc(cl, osDoc(o)); });
+  let n = 0;
+  document.querySelectorAll('#svIndexWrap .pill').forEach(p=>{
+    const s = sc[p.dataset.osid] ?? 0; p.classList.toggle('hidden', s===0); p.classList.toggle('cm', !!q && s===1); if(s) n++;
+  });
+  document.querySelectorAll('#svIndexWrap .index-group').forEach(g=>{
+    g.classList.toggle('hidden', ![...g.querySelectorAll('.pill')].some(p=>!p.classList.contains('hidden')));
+  });
+  document.querySelectorAll('#svCardsWrap .svcard').forEach(c=>{
+    c.classList.toggle('hidden', (sc[c.id.replace(/^sv-/,'')] ?? 0)===0);
+  });
+  setCountMsg(document.getElementById('svResultCount'), q, n, n, 0);
+}
+document.getElementById('svSearchInput').addEventListener('input', svApplySearch);
+
+/* ---- Pediatria ---- */
+function pedApplySearch(){
+  const q = document.getElementById('pedSearchInput').value.trim(), cl = buildClauses(q);
+  let n = 0;
+  document.querySelectorAll('#pedIndexWrap .pill').forEach(p=>{
+    const d = PEDIATRIC_DRUGS.find(x=>x.id===p.dataset.pid);
+    const s = d ? matchDoc(cl, makeDoc(d.name, (PED_CATS[d.cat]||'')+' '+(d.freq||''))) : 1;
+    p.classList.toggle('hidden', s===0); if(s) n++;
+  });
+  document.querySelectorAll('#pedIndexWrap .index-group').forEach(g=>{
+    g.classList.toggle('hidden', ![...g.querySelectorAll('.pill')].some(p=>!p.classList.contains('hidden')));
+  });
+  let nc = 0;
+  document.querySelectorAll('#pedClinWrap .pill').forEach(p=>{
+    const sec = SECTIONS.find(s=>s.id===p.dataset.id);
+    const s = sec ? matchDoc(cl, secDoc(sec)) : 1;
+    p.classList.toggle('hidden', s===0); p.classList.toggle('cm', !!q && s===1); if(s) nc++;
+  });
+  const cw = document.getElementById('pedClinBlock'); if(cw) cw.classList.toggle('hidden', !!q && nc===0);
+  setCountMsg(document.getElementById('pedResultCount'), q, n+nc, n+nc, 0);
+}
+document.getElementById('pedSearchInput').addEventListener('input', pedApplySearch);
+
+function renderPedClin(){
+  const wrap = document.getElementById('pedClinWrap'); if(!wrap) return;
+  wrap.innerHTML = '';
+  const secs = SECTIONS.filter(s=>s.cat==='pediatria');
+  document.getElementById('pedClinBlock').style.display = secs.length ? '' : 'none';
+  secs.forEach(sec=>{
+    const pill = document.createElement('button');
+    pill.className = 'pill';
+    pill.style.borderLeftColor = '#C9705A';
+    pill.textContent = sec.title;
+    pill.dataset.id = sec.id;
+    pill.onclick = ()=>{
+      document.getElementById('searchInput').value = '';
+      activeCat = 'pediatria';
+      setView('prescricoes');
+      buildCatbar(); applyFilters();
+      setTimeout(()=>jumpTo(sec.id), 60);
+    };
+    wrap.appendChild(pill);
+  });
+}
+const _renderAllOrig = renderAll;
+renderAll = function(){ _renderAllOrig(); renderPedClin(); };
+
+/* ---- Tamanho da fonte ---- */
+(function(){
+  const KEY = 'plantaoref_zoom', Z = [0.85, 0.95, 1, 1.12, 1.25, 1.4, 1.6];
+  let i = 2;
+  try{ const s = parseInt(localStorage.getItem(KEY)); if(s>=0 && s<Z.length) i = s; }catch(e){}
+  function apply(){
+    document.body.style.zoom = Z[i];
+    const dn = document.getElementById('fontDown'), up = document.getElementById('fontUp');
+    if(dn){ dn.disabled = i===0; dn.title = 'Diminuir fonte (atual '+Math.round(Z[i]*100)+'%)'; }
+    if(up){ up.disabled = i===Z.length-1; up.title = 'Aumentar fonte (atual '+Math.round(Z[i]*100)+'%)'; }
+    try{ localStorage.setItem(KEY, String(i)); }catch(e){}
+  }
+  document.getElementById('fontDown').onclick = ()=>{ if(i>0){ i--; apply(); } };
+  document.getElementById('fontUp').onclick = ()=>{ if(i<Z.length-1){ i++; apply(); } };
+  apply();
+})();
 
 </script>
 </body>

@@ -2,7 +2,7 @@
 // Permite abrir o app e consultar o conteúdo sem internet, depois da 1ª visita.
 // Também avisa quando há uma versão nova do app disponível (ver CACHE_NAME abaixo).
 
-const CACHE_NAME = 'plantaoref-v3';
+const CACHE_NAME = 'plantaoref-v4';
 const CORE_ASSETS = [
   './',
   './index.html',
