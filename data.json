@@ -3425,5 +3425,643 @@
     }
    ]
   }
- ]
+ ],
+ "packages": {
+  "geca": {
+   "cid": "A09 — Diarreia e gastroenterite de origem infecciosa presumível",
+   "exames": [
+    "Creatinina",
+    "Sódio e potássio"
+   ],
+   "obs": "Exames só se desidratação moderada/grave, comorbidades ou sinais de gravidade."
+  },
+  "diarreia": {
+   "cid": "A09 — Diarreia e gastroenterite de origem infecciosa presumível",
+   "exames": [
+    "Creatinina",
+    "Sódio e potássio"
+   ],
+   "obs": "Exames só se desidratação, sangue nas fezes, febre alta ou comorbidades."
+  },
+  "dengue": {
+   "cid": "A90 — Dengue [dengue clássico]",
+   "exames": [
+    "Hemograma completo (hematócrito e plaquetas)"
+   ],
+   "obs": "Conforme classificação de risco (grupos B-D); NS1/sorologia conforme dia de doença e protocolo local."
+  },
+  "ivas": {
+   "cid": "J06.9 — Infecção aguda das vias aéreas superiores não especificada"
+  },
+  "sinusite": {
+   "cid": "J01.9 — Sinusite aguda não especificada",
+   "obs": "Diagnóstico clínico; exames de imagem só se complicação suspeita."
+  },
+  "bronquite": {
+   "cid": "J20.9 — Bronquite aguda não especificada",
+   "exames": [
+    "RX de tórax PA e perfil"
+   ],
+   "obs": "RX só se suspeita de pneumonia (febre persistente, taquipneia, hipoxemia, achados focais)."
+  },
+  "lombar": {
+   "cid": "M54.5 — Dor lombar baixa",
+   "obs": "Sem exames de imagem na lombalgia mecânica sem sinais de alarme."
+  },
+  "gota": {
+   "cid": "M10.9 — Gota não especificada",
+   "exames": [
+    "Creatinina",
+    "Ácido úrico"
+   ],
+   "obs": "Ácido úrico pode estar normal na crise; não exclui gota."
+  },
+  "conj-bact": {
+   "cid": "H10.3 — Conjuntivite aguda não especificada"
+  },
+  "conj-viral": {
+   "cid": "B30.9 — Conjuntivite viral não especificada"
+  },
+  "hordeolo": {
+   "cid": "H00.0 — Hordéolo"
+  },
+  "hemorroida": {
+   "cid": "K64.9 — Hemorroidas não especificadas"
+  },
+  "ferimentos": {
+   "cid": "T14.1 — Ferimento aberto de região não especificada do corpo",
+   "obs": "Avaliar situação vacinal antitetânica."
+  },
+  "amigdalite": {
+   "cid": "J03.0 — Amigdalite estreptocócica",
+   "exames": [
+    "Teste rápido para estreptococo (se disponível)"
+   ]
+  },
+  "urticaria1": {
+   "cid": "L50.9 — Urticária não especificada"
+  },
+  "urticaria2": {
+   "cid": "L50.9 — Urticária não especificada"
+  },
+  "escabiose": {
+   "cid": "B86 — Escabiose"
+  },
+  "pac": {
+   "cid": "J18.9 — Pneumonia não especificada",
+   "exames": [
+    "RX de tórax PA e perfil",
+    "Hemograma completo",
+    "PCR",
+    "Ureia",
+    "Creatinina"
+   ],
+   "obs": "Ureia/creatinina compõem o CURB-65; oximetria de pulso obrigatória."
+  },
+  "asma": {
+   "cid": "J45.9 — Asma não especificada",
+   "exames": [
+    "RX de tórax PA e perfil"
+   ],
+   "obs": "RX só se suspeita de pneumonia/pneumotórax; gasometria se crise grave."
+  },
+  "dpoc": {
+   "cid": "J44.1 — DPOC com exacerbação aguda não especificada",
+   "exames": [
+    "RX de tórax PA e perfil",
+    "Hemograma completo",
+    "ECG",
+    "Gasometria"
+   ],
+   "obs": "Gasometria se SpO2 baixa, sonolência ou crise grave."
+  },
+  "ic": {
+   "cid": "I50.9 — Insuficiência cardíaca não especificada",
+   "exames": [
+    "BNP ou NT-proBNP",
+    "ECG",
+    "RX de tórax PA e perfil",
+    "Creatinina",
+    "Sódio e potássio",
+    "Troponina",
+    "Hemograma completo"
+   ]
+  },
+  "perfurocortante": {
+   "cid": "Z20.8 — Contato com e exposição a outras doenças transmissíveis",
+   "exames": [
+    "Teste rápido HIV/sífilis/hepatites",
+    "HBsAg",
+    "Anti-HBs",
+    "Anti-HCV"
+   ],
+   "obs": "Testar o paciente-fonte quando possível. Verificar prazo da PEP (até 72h)."
+  },
+  "cistite": {
+   "cid": "N30.0 — Cistite aguda",
+   "exames": [
+    "EAS (urina tipo 1)",
+    "Urocultura"
+   ],
+   "obs": "Urocultura se recorrência, falha terapêutica, gestante ou fatores de risco."
+  },
+  "pielonefrite": {
+   "cid": "N10 — Pielonefrite aguda",
+   "exames": [
+    "EAS (urina tipo 1)",
+    "Urocultura",
+    "Hemograma completo",
+    "Creatinina"
+   ]
+  },
+  "celulite": {
+   "cid": "L03.9 — Celulite não especificada",
+   "obs": "Exames se febre alta, toxemia, comorbidades ou suspeita de abscesso/fasceíte."
+  },
+  "erisipela": {
+   "cid": "A46 — Erisipela"
+  },
+  "abscesso": {
+   "cid": "L02.9 — Abscesso cutâneo, furúnculo e carbúnculo não especificados"
+  },
+  "furunculo": {
+   "cid": "L02.9 — Abscesso cutâneo, furúnculo e carbúnculo não especificados"
+  },
+  "impetigo": {
+   "cid": "L01.0 — Impetigo"
+  },
+  "oma": {
+   "cid": "H66.9 — Otite média não especificada"
+  },
+  "otite-ext": {
+   "cid": "H60.9 — Otite externa não especificada"
+  },
+  "colica-renal": {
+   "cid": "N23 — Cólica nefrética não especificada",
+   "exames": [
+    "EAS (urina tipo 1)",
+    "Creatinina",
+    "USG de abdome total",
+    "Beta-HCG"
+   ],
+   "obs": "TC de baixa dose sem contraste se dúvida diagnóstica ou complicação."
+  },
+  "vertigem": {
+   "cid": "R42 — Tontura e instabilidade",
+   "obs": "Sinais de alarme neurológicos: investigar causa central."
+  },
+  "tontura": {
+   "cid": "R42 — Tontura e instabilidade",
+   "exames": [
+    "Glicemia",
+    "ECG"
+   ]
+  },
+  "enxaqueca": {
+   "cid": "G43.9 — Enxaqueca não especificada"
+  },
+  "crise-hipertensiva": {
+   "cid": "I10 — Hipertensão essencial (primária)",
+   "exames": [
+    "Creatinina",
+    "EAS (urina tipo 1)",
+    "ECG"
+   ],
+   "obs": "Exames para pesquisa de lesão de órgão-alvo, se indicado."
+  },
+  "hiperglicemia": {
+   "cid": "R73.9 — Hiperglicemia não especificada",
+   "exames": [
+    "Glicemia",
+    "Cetonúria",
+    "Creatinina",
+    "Sódio e potássio"
+   ],
+   "obs": "Gasometria se suspeita de cetoacidose."
+  },
+  "hipoglicemia": {
+   "cid": "E16.2 — Hipoglicemia não especificada",
+   "exames": [
+    "Glicemia"
+   ]
+  },
+  "constipacao": {
+   "cid": "K59.0 — Constipação"
+  },
+  "dispepsia": {
+   "cid": "K30 — Dispepsia"
+  },
+  "zoster": {
+   "cid": "B02.9 — Herpes zoster sem complicações"
+  },
+  "herpes-labial": {
+   "cid": "B00.1 — Dermatite vesicular por herpesvírus"
+  },
+  "epistaxe": {
+   "cid": "R04.0 — Epistaxe"
+  },
+  "candidiase": {
+   "cid": "B37.3 — Candidíase da vulva e da vagina"
+  },
+  "vaginose": {
+   "cid": "N76.0 — Vaginite aguda"
+  },
+  "cervicite": {
+   "cid": "N72 — Doença inflamatória do colo do útero",
+   "exames": [
+    "Pesquisa de gonococo e clamídia (PCR/cultura)",
+    "Teste rápido HIV/sífilis/hepatites"
+   ]
+  },
+  "uretrite": {
+   "cid": "N34.1 — Uretrite não específica",
+   "exames": [
+    "Pesquisa de gonococo e clamídia (PCR/cultura)",
+    "Teste rápido HIV/sífilis/hepatites"
+   ]
+  },
+  "violencia-sexual": {
+   "exames": [
+    "Teste rápido HIV/sífilis/hepatites",
+    "HBsAg",
+    "Anti-HBs",
+    "Anti-HBc total",
+    "Anti-HCV",
+    "Beta-HCG",
+    "Hemograma completo",
+    "Creatinina",
+    "TGO/TGP"
+   ],
+   "obs": "Sem CID sugerido: só informar CID com autorização expressa da paciente."
+  },
+  "orquiepididimite": {
+   "cid": "N45.9 — Orquite, epididimite e orquiepididimite sem abscesso",
+   "exames": [
+    "EAS (urina tipo 1)",
+    "Urocultura",
+    "USG de bolsa escrotal com Doppler"
+   ],
+   "obs": "Torção testicular é diagnóstico diferencial tempo-dependente."
+  },
+  "prostatite": {
+   "cid": "N41.0 — Prostatite aguda",
+   "exames": [
+    "EAS (urina tipo 1)",
+    "Urocultura",
+    "Hemograma completo"
+   ]
+  },
+  "influenza": {
+   "cid": "J11.1 — Influenza com outras manifestações respiratórias, vírus não identificado",
+   "obs": "Teste/RT-PCR para vírus respiratórios conforme protocolo e gravidade."
+  },
+  "bell": {
+   "cid": "G51.0 — Paralisia de Bell"
+  },
+  "varizes": {
+   "cid": "I83.9 — Varizes dos membros inferiores sem úlcera ou inflamação"
+  },
+  "sca": {
+   "cid": "R07.4 — Dor torácica não especificada",
+   "exames": [
+    "ECG",
+    "Troponina (seriada)",
+    "Hemograma completo",
+    "Creatinina",
+    "Sódio e potássio",
+    "Glicemia",
+    "Coagulograma (TAP/TTPA)",
+    "RX de tórax PA e perfil"
+   ],
+   "obs": "ECG em até 10 min da chegada."
+  },
+  "fibrilacao-atrial": {
+   "cid": "I48 — Flutter e fibrilação atrial",
+   "exames": [
+    "ECG",
+    "Sódio e potássio",
+    "Creatinina",
+    "TSH",
+    "Hemograma completo",
+    "Troponina"
+   ]
+  },
+  "sincope": {
+   "cid": "R55 — Síncope e colapso",
+   "exames": [
+    "ECG",
+    "Glicemia",
+    "Hemograma completo",
+    "Beta-HCG"
+   ]
+  },
+  "tep": {
+   "cid": "I26.9 — Embolia pulmonar sem menção de cor pulmonale agudo",
+   "exames": [
+    "D-dímero",
+    "Angiotomografia de tórax",
+    "ECG",
+    "Troponina",
+    "Gasometria",
+    "Creatinina"
+   ],
+   "obs": "D-dímero só se probabilidade pré-teste baixa/intermediária."
+  },
+  "eap": {
+   "cid": "I50.1 — Insuficiência ventricular esquerda",
+   "exames": [
+    "BNP ou NT-proBNP",
+    "ECG",
+    "RX de tórax PA e perfil",
+    "Troponina",
+    "Creatinina",
+    "Sódio e potássio",
+    "Gasometria"
+   ]
+  },
+  "avc": {
+   "cid": "I64 — Acidente vascular cerebral não especificado como hemorrágico ou isquêmico",
+   "exames": [
+    "TC de crânio sem contraste",
+    "Glicemia",
+    "ECG",
+    "Hemograma completo",
+    "Coagulograma (TAP/TTPA)",
+    "Troponina",
+    "Creatinina"
+   ],
+   "obs": "Não atrasar a TC/trombólise por exames laboratoriais, exceto glicemia."
+  },
+  "status-epilepticus": {
+   "cid": "R56.8 — Outras convulsões e as não especificadas",
+   "exames": [
+    "Glicemia",
+    "Sódio, cálcio e magnésio",
+    "Hemograma completo",
+    "Creatinina",
+    "TC de crânio sem contraste"
+   ],
+   "obs": "TC se primeira crise, trauma, déficit focal ou cefaleia súbita."
+  },
+  "meningite": {
+   "cid": "G03.9 — Meningite não especificada",
+   "exames": [
+    "Hemocultura (2 amostras)",
+    "Líquor (citologia, bioquímica, cultura)",
+    "Hemograma completo",
+    "PCR",
+    "Glicemia",
+    "Coagulograma (TAP/TTPA)",
+    "TC de crânio sem contraste"
+   ],
+   "obs": "TC antes da punção apenas se indicação (déficit focal, rebaixamento, papiledema...). Não atrasar antibiótico."
+  },
+  "pancreatite": {
+   "cid": "K85.9 — Pancreatite aguda não especificada",
+   "exames": [
+    "Lipase",
+    "Hemograma completo",
+    "PCR",
+    "Ureia",
+    "Creatinina",
+    "Cálcio",
+    "TGO/TGP",
+    "Bilirrubinas",
+    "Triglicerídeos",
+    "USG de abdome total"
+   ]
+  },
+  "hda-hdb": {
+   "cid": "K92.2 — Hemorragia gastrintestinal não especificada",
+   "exames": [
+    "Hemograma completo",
+    "Coagulograma (TAP/TTPA)",
+    "Tipagem sanguínea",
+    "Ureia",
+    "Creatinina",
+    "ECG"
+   ]
+  },
+  "colecistite-colangite": {
+   "cid": "K81.0 — Colecistite aguda",
+   "exames": [
+    "Hemograma completo",
+    "PCR",
+    "TGO/TGP",
+    "Fosfatase alcalina e GGT",
+    "Bilirrubinas",
+    "Lipase",
+    "USG de abdome total"
+   ]
+  },
+  "abstinencia-alcoolica": {
+   "cid": "F10.3 — Síndrome de abstinência alcoólica",
+   "exames": [
+    "Glicemia",
+    "Sódio, potássio e magnésio",
+    "Hemograma completo",
+    "TGO/TGP"
+   ]
+  },
+  "delirium": {
+   "cid": "F05.9 — Delirium não especificado",
+   "exames": [
+    "Glicemia",
+    "Sódio e cálcio",
+    "Hemograma completo",
+    "Creatinina",
+    "EAS (urina tipo 1)",
+    "Gasometria",
+    "ECG"
+   ],
+   "obs": "TC de crânio se trauma, déficit focal ou sem causa evidente."
+  },
+  "anafilaxia": {
+   "cid": "T78.2 — Choque anafilático não especificado",
+   "exames": [
+    "Triptase sérica (se disponível)"
+   ],
+   "obs": "Não atrasar adrenalina para exames."
+  },
+  "tvp": {
+   "cid": "I80.2 — Flebite e tromboflebite de outros vasos profundos dos membros inferiores",
+   "exames": [
+    "USG Doppler venoso de membros inferiores",
+    "D-dímero",
+    "Hemograma completo",
+    "Creatinina"
+   ],
+   "obs": "D-dímero só se probabilidade baixa."
+  },
+  "sangramento-vaginal": {
+   "cid": "N93.9 — Sangramento anormal do útero e da vagina, não especificado",
+   "exames": [
+    "Beta-HCG",
+    "Hemograma completo",
+    "USG pélvica transvaginal"
+   ]
+  },
+  "dip": {
+   "cid": "N73.9 — Doença inflamatória pélvica feminina não especificada",
+   "exames": [
+    "Beta-HCG",
+    "EAS (urina tipo 1)",
+    "Hemograma completo",
+    "PCR",
+    "USG pélvica transvaginal",
+    "Teste rápido HIV/sífilis/hepatites"
+   ]
+  },
+  "ectopica": {
+   "cid": "O00.9 — Gravidez ectópica não especificada",
+   "exames": [
+    "Beta-HCG quantitativo",
+    "USG pélvica transvaginal",
+    "Tipagem sanguínea e Rh",
+    "Hemograma completo"
+   ]
+  },
+  "hiperemese": {
+   "cid": "O21.9 — Vômitos excessivos na gravidez não especificados",
+   "exames": [
+    "EAS (urina tipo 1)",
+    "Sódio e potássio",
+    "Creatinina",
+    "Glicemia",
+    "USG obstétrica"
+   ]
+  },
+  "ira": {
+   "cid": "N17.9 — Insuficiência renal aguda não especificada",
+   "exames": [
+    "Creatinina",
+    "Ureia",
+    "Sódio e potássio",
+    "Gasometria",
+    "EAS (urina tipo 1)",
+    "USG de rins e vias urinárias",
+    "CPK"
+   ],
+   "obs": "CPK se suspeita de rabdomiólise."
+  },
+  "sepse": {
+   "cid": "A41.9 — Septicemia não especificada",
+   "exames": [
+    "Hemocultura (2 amostras)",
+    "Lactato",
+    "Hemograma completo",
+    "PCR",
+    "Creatinina",
+    "Bilirrubinas",
+    "Gasometria",
+    "Coagulograma (TAP/TTPA)",
+    "EAS (urina tipo 1)",
+    "Urocultura",
+    "RX de tórax PA e perfil"
+   ],
+   "obs": "Coletar hemoculturas antes do antibiótico, sem atrasá-lo."
+  },
+  "cad": {
+   "cid": "E14.1 — Diabetes mellitus não especificado com cetoacidose",
+   "exames": [
+    "Glicemia",
+    "Gasometria",
+    "Cetonemia",
+    "Sódio, potássio e cloro",
+    "Creatinina",
+    "Hemograma completo",
+    "ECG",
+    "EAS (urina tipo 1)"
+   ]
+  },
+  "sodio": {
+   "exames": [
+    "Sódio sérico",
+    "Osmolalidade sérica",
+    "Osmolalidade e sódio urinários",
+    "Glicemia",
+    "Creatinina"
+   ]
+  },
+  "abdome-agudo": {
+   "cid": "R10.0 — Abdome agudo",
+   "exames": [
+    "Hemograma completo",
+    "PCR",
+    "Lipase",
+    "EAS (urina tipo 1)",
+    "Creatinina",
+    "Lactato",
+    "Beta-HCG",
+    "USG de abdome total"
+   ]
+  },
+  "escorpiao": {
+   "cid": "T63.2 — Efeito tóxico de veneno de escorpião",
+   "exames": [
+    "ECG",
+    "Glicemia",
+    "Potássio"
+   ],
+   "obs": "Exames principalmente se manifestações sistêmicas/criança."
+  },
+  "ped-febre": {
+   "cid": "R50.9 — Febre não especificada",
+   "obs": "Exames conforme faixa etária e foco; ver seção."
+  },
+  "ped-bronquiolite": {
+   "cid": "J21.9 — Bronquiolite aguda não especificada",
+   "obs": "Diagnóstico clínico; oximetria. RX/exames só se gravidade ou dúvida."
+  },
+  "ped-asma": {
+   "cid": "J45.9 — Asma não especificada"
+  },
+  "ped-laringite": {
+   "cid": "J05.0 — Laringite obstrutiva aguda [crupe]",
+   "obs": "Diagnóstico clínico."
+  },
+  "ped-pneumonia": {
+   "cid": "J18.9 — Pneumonia não especificada",
+   "exames": [
+    "RX de tórax PA e perfil"
+   ]
+  },
+  "ped-oma": {
+   "cid": "H66.9 — Otite média não especificada"
+  },
+  "ped-faringite": {
+   "cid": "J02.9 — Faringite aguda não especificada",
+   "exames": [
+    "Teste rápido para estreptococo (se disponível)"
+   ]
+  },
+  "ped-geca": {
+   "cid": "A09 — Diarreia e gastroenterite de origem infecciosa presumível",
+   "obs": "Exames só se desidratação grave ou sinais de gravidade."
+  },
+  "ped-convulsao": {
+   "cid": "R56.0 — Convulsões febris",
+   "exames": [
+    "Glicemia"
+   ],
+   "obs": "Exames adicionais conforme idade e apresentação (ver seção)."
+  },
+  "ped-itu": {
+   "cid": "N39.0 — Infecção do trato urinário de localização não especificada",
+   "exames": [
+    "EAS (urina tipo 1)",
+    "Urocultura"
+   ],
+   "obs": "Coleta por método adequado à idade."
+  },
+  "ped-dengue": {
+   "cid": "A90 — Dengue [dengue clássico]",
+   "exames": [
+    "Hemograma completo (hematócrito e plaquetas)"
+   ]
+  },
+  "ped-anafilaxia": {
+   "cid": "T78.2 — Choque anafilático não especificado"
+  }
+ }
 }

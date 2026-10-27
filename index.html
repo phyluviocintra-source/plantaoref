@@ -578,6 +578,64 @@
   .ins-sec h4{font-family:'Space Grotesk', sans-serif; font-size:15px; margin:0 0 6px;}
   .ins-sec p, .ins-sec li{font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; line-height:1.55; color:var(--ink);}
   .ins-sec ul{margin:4px 0 4px 18px; padding:0;}
+
+
+  /* ============ RECEITA / DOCUMENTOS / PACOTE ============ */
+  .rxadd{font-family:'IBM Plex Sans', sans-serif; font-size:11.5px; font-weight:600; cursor:pointer; margin-left:6px; padding:2px 8px; border-radius:6px; border:1px solid var(--accent); background:transparent; color:var(--accent); vertical-align:middle;}
+  .rxadd:hover{background:var(--accent); color:#fff;}
+  .rxgrpwrap{margin:6px 0 2px;}
+  .rxgrp{margin-left:0; font-size:12px; padding:4px 10px;}
+  .pkgbox{border:1px dashed var(--line); background:var(--chip-bg); border-radius:10px; padding:10px 12px; margin:0 0 12px; font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; line-height:1.6;}
+  .pkg-title{font-weight:700; margin-bottom:4px;}
+  .pkg-note{font-weight:400; color:var(--ink-soft); font-size:11px;}
+  .pkg-obs{color:var(--ink-soft); font-size:11.5px;}
+  .dcbox{border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:10px 0; background:var(--card);}
+  .dcbox summary{cursor:pointer; font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:13px;}
+  .rxitem{border:1px solid var(--line); border-radius:10px; padding:10px; margin:8px 0; background:var(--card);}
+  .rxrow{display:flex; gap:8px; flex-wrap:wrap;}
+  .rx-name{flex:1 1 220px; font-weight:600;}
+  .rxitem input, .rxitem select, .rxitem textarea, #docsArea textarea, #docsArea input[type=text], #docsArea input[type=date], #docsArea input[type=time]{
+    font-family:'IBM Plex Sans', sans-serif; font-size:13.5px; padding:7px 9px; border:1px solid var(--line); border-radius:8px; background:var(--bg, #fff); color:var(--ink); box-sizing:border-box;}
+  .rx-dose, #atTexto{width:100%; margin-top:6px; resize:vertical;}
+  .rxbtns{display:flex; gap:6px; align-items:center; margin-top:6px; flex-wrap:wrap;}
+  .rxbtns button, .exitem button{border:1px solid var(--line); background:var(--chip-bg); color:var(--ink); border-radius:6px; padding:3px 9px; cursor:pointer;}
+  .rx-src{font-size:11px; color:var(--ink-soft); margin-left:auto;}
+  .rxtools{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:10px 0;}
+  .rxvias{font-family:'IBM Plex Sans', sans-serif; font-size:12.5px;}
+  .exitem{display:flex; justify-content:space-between; gap:8px; border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin:5px 0; font-family:'IBM Plex Sans', sans-serif; font-size:13.5px; background:var(--card);}
+  .exquick{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+  .ppslist{display:flex; flex-direction:column; gap:6px; margin:10px 0;}
+  .ppsrow{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:10px; padding:8px 10px; cursor:pointer; background:var(--card); font-family:'IBM Plex Sans', sans-serif; font-size:12.5px; line-height:1.5;}
+  .ppsrow input{margin-top:4px; accent-color:var(--accent);}
+  .ppsrow:has(input:checked){border-color:var(--accent); background:var(--chip-bg);}
+  .ppsval{font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px;}
+  #printSheet{display:none;}
+  .pr-sheet{font-family:'IBM Plex Sans', Arial, sans-serif; color:#000; font-size:13px; line-height:1.5;}
+  .pr-head{text-align:center; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:12px;}
+  .pr-unit{font-weight:700; font-size:15px;}
+  .pr-addr{font-size:11px;}
+  .pr-title{text-align:center; font-weight:700; letter-spacing:.12em; font-size:15px; margin:10px 0 14px;}
+  .pr-pt{margin:4px 0; font-size:13px;}
+  .pr-body{margin:16px 0 28px; min-height:300px;}
+  .pr-par{font-size:14px; line-height:1.8; text-align:justify;}
+  .pr-route{font-weight:700; margin:12px 0 4px; text-decoration:underline;}
+  .pr-item{margin:7px 0;}
+  .pr-date{margin-top:20px; font-size:13px;}
+  .pr-sign{margin-top:46px; text-align:center; font-size:12px;}
+  .pr-line{border-top:1px solid #000; width:60%; margin:0 auto 4px;}
+  .pr-small{font-size:10px; color:#333;}
+  .pr-via{margin-top:14px; font-size:10px; text-align:right; color:#333;}
+  @media print{
+    html, body{background:#fff !important; color:#000 !important; zoom:1 !important;}
+    body > *:not(#printSheet){display:none !important;}
+    #printSheet{display:block !important;}
+    .pr-sheet{page-break-after:always; break-after:page;}
+    .pr-sheet:last-child{page-break-after:auto; break-after:auto;}
+    @page{size:A4; margin:16mm;}
+  }
+
+  .dctab{flex:1; padding:9px 4px; border:none; background:transparent; border-radius:7px; cursor:pointer; font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:13px; color:var(--ink-soft);}
+  .dctab.active{background:var(--card); color:var(--accent); box-shadow:0 1px 4px rgba(0,0,0,0.12);}
   .rc{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft); margin-top:6px;}
   .pill.cm{opacity:.78; border-style:dashed;}
   .rnhead th{background:var(--chip-bg); font-size:11px; text-transform:uppercase; letter-spacing:.05em;}
@@ -623,6 +681,7 @@
     <button class="navtab" data-view="home">🏠 Início</button>
     <button class="navtab" data-view="prescricoes">📋 Prescrições do PS</button>
     <button class="navtab" data-view="salavermelha">🚨 Sala Vermelha e Internação</button>
+    <button class="navtab" data-view="docs">📄 Receita e Documentos<span id="rxBadge"></span></button>
     <button class="navtab" data-view="sepse">🩸 Modo Sepse</button>
     <button class="navtab" data-view="pediatria">👶 Pediatria</button>
     <button class="navtab" data-view="calculadoras">🧮 Calculadoras</button>
@@ -643,6 +702,11 @@
         <div class="homecard-icon">🚨</div>
         <h3>Sala Vermelha e Internação</h3>
         <p>Prescrições completas de internação por diagnóstico — dieta, acesso, medicações com dose/via/diluição, monitorização.</p>
+      </div>
+      <div class="homecard" data-view="docs" style="--hc:#2A5688">
+        <div class="homecard-icon">📄</div>
+        <h3>Receita e Documentos</h3>
+        <p>Carrinho de medicações das prescrições, receita e pedido de exames em PDF, e modelos de atestado (afastamento, piscina, atividade física).</p>
       </div>
       <div class="homecard" data-view="sepse" style="--hc:#9A4A1C">
         <div class="homecard-icon">🩸</div>
@@ -714,6 +778,11 @@
     <div id="pedIndexWrap" class="index-wrap" style="margin-top:8px;"></div>
   </div>
 
+  <!-- ============ RECEITA E DOCUMENTOS ============ -->
+  <div id="viewDocs" class="viewpanel" style="display:none;">
+    <div id="docsArea"></div>
+  </div>
+
   <!-- ============ MODO SEPSE ============ -->
   <div id="viewSepse" class="viewpanel" style="display:none;">
     <div id="sepArea"></div>
@@ -783,6 +852,7 @@
 
 <div class="toast" id="toast"></div>
 
+<div id="printSheet"></div>
 <script>
 /* ============ TEMA CLARO/ESCURO ============ */
 const LS_THEME = 'psplantao_theme';
@@ -890,9 +960,13 @@ function fallbackCopy(text){
   document.body.removeChild(ta);
 }
 
-function parseRaw(raw){
+function parseRaw(raw, secId){
   const lines = raw.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
   let html=''; let inMed=false; let inList=false; let inRF=false; let inCP=false; let cpLines=[];
+  const rxOn = !!secId && (SECTIONS.find(s=>s.id===secId)||{}).cat!=='padronizacao';
+  const rxSecTitle = rxOn ? ((SECTIONS.find(s=>s.id===secId)||{}).title||'') : '';
+  let rxRT='USO ORAL', rxN=0, rxG=0, rxCur=null;
+  if(rxOn){ RX_GRP[secId+'@0']=[]; html+='<!--G0-->'; }
   function closeMed(){ if(inMed){ html+='</div>'; inMed=false; } }
   function closeList(){ if(inList){ html+='</ul>'; inList=false; } }
   function closeRF(){ if(inRF){ html+='</ul></div>'; inRF=false; } }
@@ -917,10 +991,13 @@ function parseRaw(raw){
     if(code==='CP:'){ closeMed(); closeList(); closeCP(); inCP=true; cpLines=[]; if(val) cpLines.push(val); continue; }
     if(code==='CL:'){ if(inCP){ cpLines.push(val); } continue; }
     closeCP();
-    if(code==='RT:'){ closeMed(); closeList(); html+=`<p class="rt">${inline(val)}</p>`; }
-    else if(code==='SH:'){ closeMed(); closeList(); html+=`<p class="sh">${inline(val)}</p>`; }
-    else if(code==='MD:'){ closeList(); closeMed(); html+=`<div class="med"><p class="med-name">${inline(val)}</p>`; inMed=true; }
-    else if(code==='DS:'){ html+=`<p class="med-dose">${inline(val)}</p>`; }
+    if(code==='RT:'){ closeMed(); closeList(); html+=`<p class="rt">${inline(val)}</p>`; if(rxOn) rxRT = rxStrip(val).toUpperCase() || 'USO ORAL'; }
+    else if(code==='SH:'){ closeMed(); closeList(); html+=`<p class="sh">${inline(val)}</p>`; if(rxOn){ rxG++; RX_GRP[secId+'@'+rxG]=[]; rxRT='USO ORAL'; html+='<!--G'+rxG+'-->'; } }
+    else if(code==='MD:'){ closeList(); closeMed();
+      let rxBtn='';
+      if(rxOn){ rxN++; const k=secId+'#'+rxN; RX_REG[k]={name:val, dose:[], route:rxRT, secTitle:rxSecTitle}; RX_GRP[secId+'@'+rxG].push(k); rxCur=RX_REG[k]; rxBtn=` <button class="rxadd" type="button" onclick="rxAddById('${k}')">＋ receita</button>`; }
+      html+=`<div class="med"><p class="med-name">${inline(val)}${rxBtn}</p>`; inMed=true; }
+    else if(code==='DS:'){ html+=`<p class="med-dose">${inline(val)}</p>`; if(rxOn && rxCur && !/^alternativa/i.test(val)) rxCur.dose.push(val); }
     else if(code==='TX:'){ closeMed(); closeList(); html+=`<p class="tx">${inline(val)}</p>`; }
     else if(code==='LI:'){ closeMed(); if(!inList){ html+='<ul class="rxlist">'; inList=true; } html+=`<li>${inline(val)}</li>`; }
     else if(code==='WN:'){ closeMed(); closeList(); html+=`<p class="note warn">⚠️ ${inline(val)}</p>`; }
@@ -928,7 +1005,7 @@ function parseRaw(raw){
     else if(code==='LB:'){ closeMed(); closeList(); html+=`<div class="legalbanner">⚠️ <b>ATENÇÃO — LEIA ANTES DE USAR ESTE MODELO:</b><br>${inline(val)}</div>`; }
   }
   closeMed(); closeList(); closeRF(); closeCP();
-  return html;
+  return rxOn ? rxFinishHtml(html, secId) : html;
 }
 
 /* ============ GITHUB CONFIG ============ */
@@ -973,7 +1050,7 @@ async function saveDataToGithub(){
   const btn = document.getElementById('saveGithubBtn');
   btn.disabled = true; btn.textContent = 'Salvando…';
   try{
-    const payload = { cats: CATS, sections: SECTIONS };
+    const payload = { cats: CATS, sections: SECTIONS, orderSets: ORDERSETS, packages: PACKAGES };
     const contentB64 = utf8_to_b64(JSON.stringify(payload, null, 2));
     const body = {
       message: 'Atualiza notas de plantão via editor do site',
@@ -1146,7 +1223,7 @@ function buildCards(){
 
     const body = document.createElement('div');
     body.className = 'card-body';
-    body.innerHTML = parseRaw(sec.raw);
+    body.innerHTML = pkgBoxHtml(sec.id) + parseRaw(sec.raw, sec.id);
 
     // anotações pessoais
     const noteWrap = document.createElement('div');
@@ -1334,6 +1411,7 @@ async function init(forceRemote){
     CATS = data.cats;
     SECTIONS = data.sections;
     ORDERSETS = data.orderSets || [];
+    PACKAGES = data.packages || {};
     dirty = false;
     updateUnsavedBar();
 
@@ -1351,7 +1429,7 @@ async function init(forceRemote){
 
 /* ============ NAVEGAÇÃO ENTRE VIEWS ============ */
 function setView(view){
-  const ids = {home:'viewHome', prescricoes:'viewPrescricoes', salavermelha:'viewSalaVermelha', sepse:'viewSepse', pediatria:'viewPediatria', calculadoras:'viewCalculadoras'};
+  const ids = {home:'viewHome', prescricoes:'viewPrescricoes', salavermelha:'viewSalaVermelha', docs:'viewDocs', sepse:'viewSepse', pediatria:'viewPediatria', calculadoras:'viewCalculadoras'};
   Object.keys(ids).forEach(v=>{
     document.getElementById(ids[v]).style.display = (v===view) ? 'block' : 'none';
   });
@@ -1688,7 +1766,10 @@ const CALCULATORS = [
   {id:'heart', label:'HEART Score'},
   {id:'renal', label:'Função renal (TFG)'},
   {id:'infusao', label:'Infusões (mL/h)'},
-  {id:'insulina', label:'Insulina ambulatorial (DM2)'}
+  {id:'insulina', label:'Insulina ambulatorial (DM2)'},
+  {id:'gaso', label:'Gasometria (ácido-base)'},
+  {id:'grace', label:'GRACE (SCA)'},
+  {id:'pps', label:'PPS (paliativos)'}
 ];
 
 function buildCalcIndex(){
@@ -1721,7 +1802,10 @@ function renderCalculator(id){
     heart: calcHeart,
     renal: calcRenal,
     infusao: calcInfusao,
-    insulina: calcInsulina
+    insulina: calcInsulina,
+    gaso: calcGaso,
+    grace: calcGrace,
+    pps: calcPps
   };
   area.innerHTML = '';
   if(fns[id]) fns[id](area);
@@ -3172,6 +3256,638 @@ function calcInfusao(area){
       `<b>Alteplase</b> 0,9 mg/kg (máx. 90 mg): bolus 10% = <b>${fmt1(a.bolus)} mg</b> EV em 1 min; restante <b>${fmt1(a.infusao)} mg</b> em 60 min.${a.teto?' (teto de 90 mg aplicado)':''}<br><b>Tenecteplase</b> 0,25 mg/kg (máx. 25 mg): <b>${fmt1(t.dose)} mg</b> EV em bolus único (~5 s).${t.teto?' (teto de 25 mg aplicado)':''}<br>Só para AVC isquêmico dentro da janela e sem contraindicações — NÃO usar esta dose para IAM/TEP.`, 'risk-mod');
   };
 }
+
+
+/* ============ GASOMETRIA — INTERPRETAÇÃO PASSO A PASSO ============ */
+/* Método clássico: pH → distúrbio primário → compensação esperada (Winter etc.) → ânion gap (corrigido pela albumina) → delta/delta → oxigenação. */
+function gasoAnalyze(p){
+  const W = [], steps = [], diffs = [], dist = [];
+  const venosa = !!p.venosa;
+  const phA = venosa ? p.ph+0.03 : p.ph;
+  const pcoA = venosa ? p.pco2-5 : p.pco2;
+  if(venosa) W.push('Amostra VENOSA: pH e pCO₂ convertidos para equivalente arterial (pH +0,03; pCO₂ −5 mmHg) — é só uma estimativa; as fórmulas de compensação foram validadas em gasometria arterial. Oxigenação não é avaliável.');
+  // consistência (Henderson-Hasselbalch)
+  const hcoHH = 0.03*p.pco2*Math.pow(10, p.ph-6.1);
+  let hco3 = p.hco3, hcoCalc = false;
+  if(hco3==null){ hco3 = hcoHH; hcoCalc = true; steps.push('HCO₃⁻ não informado: calculado por Henderson-Hasselbalch = '+f1(hco3)+' mEq/L.'); }
+  else if(Math.abs(hco3-hcoHH) > 2){
+    W.push('Valores internamente inconsistentes: com pH '+f2(p.ph)+' e pCO₂ '+f1(p.pco2)+', o HCO₃⁻ esperado seria ≈'+f1(hcoHH)+' (informado: '+f1(hco3)+'). Conferir digitação/unidades ou repetir a amostra.');
+  }
+  // 1) pH
+  const acidemia = phA < 7.35, alcalemia = phA > 7.45;
+  steps.push('<b>1) pH '+f2(p.ph)+'</b>: '+(acidemia?'ACIDEMIA (<7,35).':alcalemia?'ALCALEMIA (>7,45).':'dentro da faixa normal (7,35–7,45) — não exclui distúrbio misto ou compensado.')+(venosa?' (equivalente arterial ≈'+f2(phA)+')':''));
+  const pcoHigh = pcoA > 45, pcoLow = pcoA < 35, hcoLow = hco3 < 22, hcoHigh = hco3 > 26;
+  steps.push('<b>2) pCO₂ '+f1(p.pco2)+' mmHg'+(venosa?' (eq. arterial ≈'+f1(pcoA)+')':'')+' / HCO₃⁻ '+f1(hco3)+' mEq/L</b>: pCO₂ '+(pcoHigh?'ALTA':pcoLow?'BAIXA':'normal')+'; HCO₃⁻ '+(hcoLow?'BAIXO':hcoHigh?'ALTO':'normal')+'.');
+  let primary = null;
+  // helpers de compensação
+  const chkResp = (kind)=>{
+    if(kind==='acid'){
+      const a = 24+0.1*(pcoA-40), c = 24+0.35*(pcoA-40);
+      let t = 'Acidose respiratória: HCO₃⁻ esperado ≈'+f1(a)+' (aguda, +1 por 10 mmHg de pCO₂) a ≈'+f1(c)+' (crônica, +3,5 por 10).';
+      if(hco3 < a-2){ dist.push('ACIDOSE METABÓLICA ASSOCIADA'); t += ' HCO₃⁻ abaixo do esperado → acidose metabólica associada.'; }
+      else if(hco3 <= a+2){ t += ' Compatível com ACIDOSE RESPIRATÓRIA AGUDA (sem tempo para compensação renal).'; dist.push('(PROCESSO AGUDO)'); }
+      else if(hco3 < c-2){ t += ' Intermediário → subaguda ou crônica agudizada.'; dist.push('(SUBAGUDA/CRÔNICA AGUDIZADA)'); }
+      else if(hco3 <= c+2){ t += ' Compatível com ACIDOSE RESPIRATÓRIA CRÔNICA compensada.'; dist.push('(CRÔNICA COMPENSADA)'); }
+      else { dist.push('ALCALOSE METABÓLICA ASSOCIADA'); t += ' HCO₃⁻ acima do esperado mesmo para quadro crônico → alcalose metabólica associada.'; }
+      return t;
+    } else {
+      const a = 24-0.2*(40-pcoA), c = 24-0.4*(40-pcoA);
+      let t = 'Alcalose respiratória: HCO₃⁻ esperado ≈'+f1(a)+' (aguda, −2 por 10 mmHg de pCO₂) a ≈'+f1(c)+' (crônica, −4 por 10).';
+      if(hco3 > a+2){ dist.push('ALCALOSE METABÓLICA ASSOCIADA'); t += ' HCO₃⁻ acima do esperado → alcalose metabólica associada.'; }
+      else if(hco3 >= a-2){ t += ' Compatível com ALCALOSE RESPIRATÓRIA AGUDA.'; dist.push('(PROCESSO AGUDO)'); }
+      else if(hco3 > c+2){ t += ' Intermediário → subaguda.'; dist.push('(SUBAGUDA)'); }
+      else if(hco3 >= c-2){ t += ' Compatível com ALCALOSE RESPIRATÓRIA CRÔNICA compensada.'; dist.push('(CRÔNICA COMPENSADA)'); }
+      else { dist.push('ACIDOSE METABÓLICA ASSOCIADA'); t += ' HCO₃⁻ abaixo do esperado mesmo para quadro crônico → acidose metabólica associada.'; }
+      return t;
+    }
+  };
+  const chkMetAcid = ()=>{
+    const e = 1.5*hco3+8;
+    let t = 'Fórmula de Winter: pCO₂ esperada = 1,5×HCO₃⁻ + 8 = '+f1(e)+' ± 2 ('+f1(e-2)+'–'+f1(e+2)+').';
+    if(pcoA > e+2){ dist.push('ACIDOSE RESPIRATÓRIA ASSOCIADA (compensação insuficiente — risco de fadiga ventilatória)'); t += ' pCO₂ ACIMA do esperado → acidose respiratória associada.'; }
+    else if(pcoA < e-2){ dist.push('ALCALOSE RESPIRATÓRIA ASSOCIADA'); t += ' pCO₂ ABAIXO do esperado → alcalose respiratória associada.'; }
+    else { dist.push('(COMPENSAÇÃO RESPIRATÓRIA ADEQUADA)'); t += ' Compensação respiratória adequada.'; }
+    return t;
+  };
+  const chkMetAlk = ()=>{
+    const e = 40+0.7*(hco3-24);
+    let t = 'Alcalose metabólica: pCO₂ esperada ≈ 40 + 0,7×(HCO₃⁻−24) = '+f1(e)+' ± 5 ('+f1(e-5)+'–'+f1(e+5)+') — a compensação é limitada.';
+    if(pcoA > e+5){ dist.push('ACIDOSE RESPIRATÓRIA ASSOCIADA'); t += ' pCO₂ acima do esperado → acidose respiratória associada.'; }
+    else if(pcoA < e-5){ dist.push('ALCALOSE RESPIRATÓRIA ASSOCIADA'); t += ' pCO₂ abaixo do esperado → alcalose respiratória associada.'; }
+    else { dist.push('(COMPENSAÇÃO RESPIRATÓRIA ADEQUADA)'); t += ' Compensação adequada.'; }
+    return t;
+  };
+  let compText = '';
+  if(acidemia){
+    if(hcoLow && pcoHigh){ dist.push('ACIDOSE MISTA (METABÓLICA + RESPIRATÓRIA)'); compText = 'Acidemia com HCO₃⁻ baixo E pCO₂ alta: dois processos acidificantes somados (sem compensação possível um pelo outro).'; }
+    else if(hcoLow){ dist.unshift('ACIDOSE METABÓLICA'); primary='metac'; compText = chkMetAcid(); }
+    else if(pcoHigh){ dist.unshift('ACIDOSE RESPIRATÓRIA'); primary='resac'; compText = chkResp('acid'); }
+    else { dist.push('ACIDEMIA SEM DISTÚRBIO PRIMÁRIO CLARO (valores limítrofes)'); compText = 'pH baixo com pCO₂ e HCO₃⁻ na faixa normal: conferir os valores e repetir a coleta.'; }
+  } else if(alcalemia){
+    if(hcoHigh && pcoLow){ dist.push('ALCALOSE MISTA (METABÓLICA + RESPIRATÓRIA)'); compText = 'Alcalemia com HCO₃⁻ alto E pCO₂ baixa: dois processos alcalinizantes somados.'; }
+    else if(hcoHigh){ dist.unshift('ALCALOSE METABÓLICA'); primary='metal'; compText = chkMetAlk(); }
+    else if(pcoLow){ dist.unshift('ALCALOSE RESPIRATÓRIA'); primary='resal'; compText = chkResp('alk'); }
+    else { dist.push('ALCALEMIA SEM DISTÚRBIO PRIMÁRIO CLARO (valores limítrofes)'); compText = 'pH alto com pCO₂ e HCO₃⁻ na faixa normal: conferir os valores e repetir a coleta.'; }
+  } else {
+    if(pcoHigh && hcoHigh){ dist.push('ACIDOSE RESPIRATÓRIA CRÔNICA COMPENSADA OU ALCALOSE METABÓLICA COM RETENÇÃO DE CO₂ (pH NORMAL)'); compText = 'pH normal com pCO₂ e HCO₃⁻ altos: o contexto clínico define (DPOC/hipoventilação crônica vs. alcalose metabólica). Se acidose respiratória, HCO₃⁻ esperado ≈'+f1(24+0.1*(pcoA-40))+' (aguda) a ≈'+f1(24+0.35*(pcoA-40))+' (crônica); se alcalose metabólica, pCO₂ esperada ≈'+f1(40+0.7*(hco3-24))+' ± 5.'; }
+    else if(pcoLow && hcoLow){ dist.push('ALCALOSE RESPIRATÓRIA CRÔNICA COMPENSADA OU ACIDOSE METABÓLICA COM COMPENSAÇÃO RESPIRATÓRIA (pH NORMAL)'); compText = 'pH normal com pCO₂ e HCO₃⁻ baixos: o contexto define (hiperventilação crônica/altitude/gestação vs. acidose metabólica compensada). Para acidose metabólica, a compensação raramente normaliza o pH por completo. Se acidose metabólica, Winter esperaria pCO₂ ≈'+f1(1.5*hco3+8)+' ± 2; se alcalose respiratória, HCO₃⁻ esperado ≈'+f1(24-0.2*(40-pcoA))+' (aguda) a ≈'+f1(24-0.4*(40-pcoA))+' (crônica).'; }
+    else if(pcoHigh && hcoLow){ dist.push('ACIDOSE MISTA (pH NORMAL POR ARREDONDAMENTO/LIMÍTROFE)'); compText = 'pCO₂ alta com HCO₃⁻ baixo: distúrbios acidificantes opostos à compensação — conferir.'; }
+    else if(pcoLow && hcoHigh){ dist.push('ALCALOSE MISTA (pH NORMAL POR ARREDONDAMENTO/LIMÍTROFE)'); compText = 'pCO₂ baixa com HCO₃⁻ alto: conferir.'; }
+    else if(pcoHigh || pcoLow || hcoHigh || hcoLow){ dist.push('ALTERAÇÃO ISOLADA LEVE COM pH NORMAL'); compText = 'Apenas um parâmetro fora da faixa, pH normal: pode ser compensação parcial ou variação sem significado; correlacionar com a clínica.'; }
+    else { dist.push('GASOMETRIA SEM ALTERAÇÕES ÁCIDO-BASE'); compText = 'pH, pCO₂ e HCO₃⁻ normais (se houver anemia/hiperlactatemia com ânion gap elevado, o AG pode revelar distúrbio oculto).'; }
+  }
+  if(compText) steps.push('<b>3) Compensação</b>: '+compText);
+  // ânion gap
+  let ag = null, agCorr = null, agHigh = false, nagma = false, delta = null;
+  if(p.na!=null && p.cl!=null){
+    ag = p.na - p.cl - hco3;
+    agCorr = (p.alb!=null) ? ag + 2.5*(4.0-p.alb) : ag;
+    agHigh = agCorr > 14; const agBord = agCorr > 12 && !agHigh;
+    let t = '<b>4) Ânion gap</b> = Na − Cl − HCO₃⁻ = '+f1(ag)+(p.alb!=null?'; corrigido pela albumina ('+f1(p.alb)+' g/dL) = '+f1(agCorr):'')+' (normal ≈8–12; 13–14 limítrofe, >14 elevado).'+(agBord?' Valor limítrofe — não classificado como AG elevado.':'');
+    if(p.alb==null) t += ' Albumina não informada: com hipoalbuminemia o AG real é subestimado (cada −1 g/dL de albumina reduz o AG em ≈2,5).';
+    if(agHigh){
+      t += ' AG ELEVADO.';
+      if(!hcoLow){ dist.push('ACIDOSE METABÓLICA DE ÂNION GAP ELEVADO OCULTA'); }
+      else if(!dist.some(x=>/ÂNION GAP/.test(x))) dist[0] = dist[0].replace('ACIDOSE METABÓLICA','ACIDOSE METABÓLICA DE ÂNION GAP ELEVADO');
+      const dHco = 24-hco3, dAg = agCorr-12;
+      if(dHco > 0){
+        delta = dAg/dHco;
+        t += ' Delta/delta (ΔAG/ΔHCO₃⁻) = '+f1(dAg)+'/'+f1(dHco)+' = '+f2(delta)+': ';
+        if(delta < 0.4){ t += 'predomina acidose hiperclorêmica (AG normal) com pouca contribuição do AG.'; dist.push('ACIDOSE METABÓLICA HIPERCLORÊMICA ASSOCIADA'); }
+        else if(delta < 1){ t += 'acidose metabólica mista (AG elevado + AG normal/hiperclorêmica).'; dist.push('ACIDOSE METABÓLICA HIPERCLORÊMICA (AG NORMAL) ASSOCIADA'); }
+        else if(delta <= 2){ t += 'acidose metabólica de AG elevado pura.'; }
+        else { t += 'ΔHCO₃⁻ menor que o ΔAG → alcalose metabólica associada (ou HCO₃⁻ basal elevado, p.ex. retentor crônico de CO₂).'; dist.push('ALCALOSE METABÓLICA ASSOCIADA'); }
+      } else {
+        t += ' HCO₃⁻ ≥24 com AG elevado → alcalose metabólica concomitante (ΔHCO₃⁻ negativo).';
+        dist.push('ALCALOSE METABÓLICA ASSOCIADA');
+      }
+    } else if(hcoLow){
+      nagma = true; t += ' AG normal → ACIDOSE METABÓLICA HIPERCLORÊMICA (AG normal).';
+      dist[0] = dist[0].replace('ACIDOSE METABÓLICA','ACIDOSE METABÓLICA HIPERCLORÊMICA (AG NORMAL)');
+    }
+    steps.push(t);
+  } else if(hcoLow){
+    steps.push('<b>4) Ânion gap</b>: informe Na e Cl (e, se possível, albumina) para diferenciar acidose metabólica de AG elevado × AG normal — é o passo que mais muda o diagnóstico diferencial.');
+  }
+  // lactato
+  if(p.lac!=null){
+    steps.push('<b>Lactato '+f1(p.lac)+' mmol/L</b>: '+(p.lac>=4?'MUITO ELEVADO (≥4) — hipoperfusão/choque até prova em contrário; critério de gravidade em sepse.':p.lac>2?'elevado (>2) — investigar hipoperfusão, sepse, convulsão, drogas (metformina, β-agonistas).':'normal (≤2).'));
+  }
+  // diferenciais
+  if(agHigh){
+    diffs.push('<b>AG elevado</b> (CAUSAS): cetoacidose (diabética, alcoólica, jejum) · lactato (choque, sepse, isquemia mesentérica, metformina) · uremia/DRC · toxinas (metanol, etilenoglicol, salicilato, paracetamol em altas doses, propilenoglicol) · D-lactato. Dosar lactato, cetonemia/cetonúria, ureia/creatinina e glicemia; se nada explicar, considerar <b>gap osmolar</b> (metanol/etilenoglicol) e salicilemia.');
+  }
+  if(nagma){
+    diffs.push('<b>AG normal (hiperclorêmica)</b>: diarreia/perda de bicarbonato, acidose tubular renal, excesso de solução salina 0,9%, acetazolamida, fístula pancreática/biliar, derivação urinária. Cl urinário/AG urinário ajudam a separar perda renal de GI.');
+  }
+  if(primary==='metal'){
+    diffs.push('<b>Alcalose metabólica</b>: responsiva a cloreto (Cl urinário <20 mEq/L) — vômitos, SNG, diuréticos, pós-hipercapnia; não responsiva (Cl urinário >20) — hiperaldosteronismo, hipocalemia grave, Cushing, uso de álcalis. Checar K⁺, volemia e uso de diuréticos.');
+  }
+  if(primary==='resac' || dist.some(x=>/RESPIRATÓRIA ASSOCIADA/.test(x) && /ACIDOSE/.test(x))){
+    diffs.push('<b>Acidose respiratória (hipoventilação)</b>: DPOC exacerbado, asma grave, depressão do SNC/opioides/benzodiazepínicos, fadiga muscular, doença neuromuscular, obesidade-hipoventilação, trauma torácico, obstrução de via aérea. Avaliar necessidade de VNI/IOT conforme pH, nível de consciência e esforço respiratório.');
+  }
+  if(primary==='resal' || dist.some(x=>/ALCALOSE RESPIRATÓRIA/.test(x))){
+    diffs.push('<b>Alcalose respiratória (hiperventilação)</b>: dor/ansiedade, hipoxemia, TEP, pneumonia/edema, sepse (precoce), salicilato, gestação, cirrose, febre. Em paciente com dispneia: TEP e hipoxemia primeiro.');
+  }
+  // oxigenação
+  let ox = null;
+  if(!venosa && p.po2!=null){
+    let t = '<b>5) Oxigenação</b>: PaO₂ '+f1(p.po2)+' mmHg — '+(p.po2<60?'HIPOXEMIA (<60 mmHg; insuficiência respiratória tipo I se pCO₂ normal/baixa, tipo II se pCO₂ >45).':p.po2<80?'discretamente reduzida (60–79).':'adequada.');
+    if(p.fio2!=null){
+      const fi = p.fio2>1 ? p.fio2/100 : p.fio2;
+      const pf = p.po2/fi;
+      t += ' <b>PaO₂/FiO₂ = '+Math.round(pf)+'</b> ('+(pf>=400?'normal':pf>=300?'discreta alteração':pf>=200?'<300: lesão pulmonar relevante':pf>=100?'<200: grave':'<100: muito grave')+'; os graus de SDRA exigem também PEEP ≥5, imagem bilateral e causa compatível — Berlin 2012).';
+      const aa = fi*713 - p.pco2/0.8 - p.po2;
+      const esp = p.idade!=null ? (p.idade/4+4) : null;
+      t += ' Gradiente A-a ≈ '+f1(aa)+' mmHg (nível do mar)'+(esp!=null?'; esperado ≈'+f1(esp)+' para a idade':'; esperado ≈ idade/4 + 4')+'. ';
+      const elevado = esp!=null ? aa > esp+5 : aa > 20;
+      t += elevado ? 'ELEVADO → shunt, alteração V/Q ou difusão (parênquima/vasculatura pulmonar).' : 'normal → se há hipoxemia, pensar em hipoventilação (pCO₂ alta) ou baixa FiO₂/altitude.';
+      t += ' (A-a depende de FiO₂ real entregue — pouco confiável em máscara/cateter.)';
+      ox = {pf:Math.round(pf), aa};
+    } else t += ' Informe a FiO₂ para calcular PaO₂/FiO₂ e gradiente A-a.';
+    steps.push(t);
+  }
+  const mixed = dist.filter(x=>!/^\(/.test(x));
+  if(mixed.length>1){ const i = mixed.indexOf('GASOMETRIA SEM ALTERAÇÕES ÁCIDO-BASE'); if(i>=0) mixed.splice(i,1); }
+  const headline = (mixed.join(' + ') || 'SEM ALTERAÇÃO');
+  const tag = dist.filter(x=>/^\(/.test(x)).join(' ');
+  let level = 'low';
+  if(headline!=='GASOMETRIA SEM ALTERAÇÕES ÁCIDO-BASE') level='mod';
+  if(phA < 7.2 || phA > 7.6 || (p.lac!=null && p.lac>=4) || (!venosa && p.po2!=null && p.po2<60)) level='high';
+  const crit = [];
+  if(phA<7.2) crit.push('pH <7,2: acidemia grave — monitorização contínua e tratar a causa; discutir bicarbonato apenas em situações selecionadas (acidose metabólica grave com pH <7,0–7,1 / hiperK; evidência limitada).');
+  if(phA>7.6) crit.push('pH >7,6: alcalemia grave — risco de arritmia/convulsão; tratar a causa e corrigir K⁺/volemia.');
+  if(!venosa && primary==='resac' && phA<7.30) crit.push('Acidose respiratória com pH <7,30: avaliar suporte ventilatório (VNI/IOT conforme consciência e esforço).');
+  const text = ('GASOMETRIA '+(venosa?'VENOSA':'ARTERIAL')+': PH '+f2(p.ph)+' / PCO2 '+f1(p.pco2)+' / HCO3 '+f1(hco3)+(p.po2!=null&&!venosa?' / PO2 '+f1(p.po2):'')+(p.fio2!=null&&!venosa?' (FIO2 '+Math.round(p.fio2>1?p.fio2:p.fio2*100)+'%)':'')+(p.lac!=null?' / LACTATO '+f1(p.lac):'')+(ag!=null?' / ÂNION GAP '+f1(agCorr)+(p.alb!=null?' (CORRIGIDO)':''):'')+'. INTERPRETAÇÃO: '+headline+(tag?' '+tag:'')+'.').toUpperCase();
+  return {headline, tag, level, steps, diffs, warnings:W, crit, text, ag, agCorr, delta, hco3, hcoCalc, ox};
+}
+function f1(n){ return (Math.round(n*10)/10).toString().replace('.',','); }
+function f2(n){ return (Math.round(n*100)/100).toFixed(2).replace('.',','); }
+
+function calcGaso(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>Gasometria — interpretação ácido-base</h2>
+    <div class="calcdesc">Informe os valores: pH → distúrbio primário → compensação esperada (Winter etc.) → ânion gap (corrigido pela albumina) → delta/delta → oxigenação (PaO₂/FiO₂ e gradiente A-a).</div>
+    <div class="calcgrid">
+      ${selIn('gsAmostra','Tipo de amostra',[{v:'a',t:'Arterial'},{v:'v',t:'Venosa'}],'Venosa: pH e pCO₂ são convertidos por estimativa; sem avaliação de oxigenação.')}
+      ${numIn('gsPh','pH','Ex: 7,28',0.01)}
+      ${numIn('gsPco2','pCO₂ (mmHg)','Ex: 30',0.1)}
+      ${numIn('gsHco3','HCO₃⁻ (mEq/L) — opcional','Se vazio, é calculado',0.1)}
+      ${numIn('gsPo2','PaO₂ (mmHg) — opcional','Ex: 85',0.1)}
+      ${numIn('gsFio2','FiO₂ (%) — opcional','Ar ambiente = 21',1)}
+      ${numIn('gsNa','Sódio (mEq/L) — opcional','Ex: 138',1)}
+      ${numIn('gsCl','Cloro (mEq/L) — opcional','Ex: 104',1)}
+      ${numIn('gsAlb','Albumina (g/dL) — opcional','Ex: 3,0',0.1)}
+      ${numIn('gsLac','Lactato (mmol/L) — opcional','Ex: 2,1',0.1)}
+      ${numIn('gsIdade','Idade (anos) — opcional','Para o A-a esperado',1)}
+    </div>
+    <button class="calcbtn" id="gsBtn">Interpretar</button>
+    <div id="gsRes"></div>
+  </div>`;
+  document.getElementById('gsBtn').onclick = ()=>{
+    const res = document.getElementById('gsRes');
+    const p = {venosa: document.getElementById('gsAmostra').value==='v', ph:readNum('gsPh'), pco2:readNum('gsPco2'), hco3:readNum('gsHco3'),
+      po2:readNum('gsPo2'), fio2:readNum('gsFio2'), na:readNum('gsNa'), cl:readNum('gsCl'), alb:readNum('gsAlb'), lac:readNum('gsLac'), idade:readNum('gsIdade')};
+    const bad = p.ph==null || p.pco2==null || p.ph<6.5 || p.ph>8 || p.pco2<5 || p.pco2>200 || (p.hco3!=null && (p.hco3<2||p.hco3>60)) ||
+      (p.na!=null && (p.na<100||p.na>180)) || (p.cl!=null && (p.cl<60||p.cl>140)) || (p.alb!=null && (p.alb<0.5||p.alb>6)) ||
+      (p.fio2!=null && (p.fio2<=0 || p.fio2>100)) || (p.po2!=null && (p.po2<10||p.po2>700));
+    if(bad){ res.innerHTML = calcResultHtml('—', null, 'Informe pelo menos pH e pCO₂ em valores válidos (pH 6,5–8,0; pCO₂ em mmHg). Conferir também as unidades dos demais campos (albumina em g/dL, lactato em mmol/L, FiO₂ em %).', 'risk-mod'); return; }
+    const r = gasoAnalyze(p);
+    const cls = r.level==='high' ? 'risk-high' : (r.level==='mod' ? 'risk-mod' : 'risk-low');
+    let html = calcResultHtml(esc(r.headline), null, esc(r.tag||''), cls);
+    r.warnings.forEach(w=>{ html += `<div class="sep-note warn">${esc(w)}</div>`; });
+    r.crit.forEach(w=>{ html += `<div class="sep-note crit">${esc(w)}</div>`; });
+    html += `<div class="ins-sec"><h4>Raciocínio passo a passo</h4><ul>${r.steps.map(s=>`<li>${s}</li>`).join('')}</ul></div>`;
+    if(r.diffs.length) html += `<div class="ins-sec"><h4>Diagnósticos diferenciais a considerar</h4><ul>${r.diffs.map(s=>`<li>${s}</li>`).join('')}</ul></div>`;
+    html += `<div class="copybox"><div class="cp-title">Texto para evolução</div>
+      <div class="cp-text" id="gsCp">${esc(r.text)}</div>
+      <button class="cp-btn" onclick="copyCP('gsCp', this)">Copiar</button></div>
+      <details class="sep-sources"><summary>Fontes e limitações</summary>
+      Método sequencial clássico de interpretação ácido-base: fórmula de Winter (Albert 1967) para acidose metabólica; regras empíricas de compensação para distúrbios respiratórios e para alcalose metabólica (valores de referência de livros-texto de nefrologia/terapia intensiva); ânion gap corrigido pela albumina (Figge 1998); delta/delta; classificação de PaO₂/FiO₂ (Berlin 2012). <b>Não consultei fonte online para esta calculadora</b> — as fórmulas são as de uso corrente, mas confira em seu material de referência.<br>
+      <b>Limitações:</b> a compensação de distúrbios crônicos varia entre autores (±2 mEq/L é tolerância usual). Delta/delta é frágil em distúrbios mistos e na hipoalbuminemia. Valores devem ser correlacionados com a clínica, e a amostra repetida se inconsistente. Gradiente A-a calculado ao nível do mar (Patm 760 mmHg) e com FiO₂ informada.
+      </details>`;
+    res.innerHTML = html;
+  };
+}
+
+
+/* ============ GRACE (mortalidade intra-hospitalar, SCA) e PPS (Palliative Performance Scale v2) ============ */
+/* GRACE: pontos conforme Granger et al., Arch Intern Med 2003 (modelo intra-hospitalar), tabela conferida em fpnotebook.com. */
+function graceScore(p){
+  const band = (v, cuts, pts)=>{ for(let i=0;i<cuts.length;i++){ if(v<cuts[i]) return pts[i]; } return pts[pts.length-1]; };
+  const pt = {};
+  pt.idade = band(p.idade, [30,40,50,60,70,80,90], [0,8,25,41,58,75,91,100]);
+  pt.fc = band(p.fc, [50,70,90,110,150,200], [0,3,9,15,24,38,46]);
+  // PAS: pontuação decresce com PAS maior
+  pt.pas = band(p.pas, [80,100,120,140,160,200], [58,53,43,34,24,10,0]);
+  pt.cr = band(p.cr, [0.4,0.8,1.2,1.6,2.0,4.0], [1,4,7,10,13,21,28]);
+  pt.killip = [0,20,39,59][p.killip];
+  pt.parada = p.parada ? 39 : 0;
+  pt.st = p.st ? 28 : 0;
+  pt.enz = p.enz ? 14 : 0;
+  const total = Object.values(pt).reduce((a,b)=>a+b,0);
+  const nste = !p.stemi;
+  let cat, mort, level;
+  if(nste){
+    if(total<109){ cat='BAIXO'; mort='<1%'; level='low'; } else if(total<=140){ cat='INTERMEDIÁRIO'; mort='1–3%'; level='mod'; } else { cat='ALTO'; mort='>3%'; level='high'; }
+  } else {
+    if(total<126){ cat='BAIXO'; mort='<2%'; level='low'; } else if(total<=154){ cat='INTERMEDIÁRIO'; mort='2–5%'; level='mod'; } else { cat='ALTO'; mort='>5%'; level='high'; }
+  }
+  return {pt, total, cat, mort, level, nste};
+}
+function calcGrace(area){
+  area.innerHTML = `<div class="calccard">
+    <h2>GRACE (risco na SCA)</h2>
+    <div class="calcdesc">Mortalidade intra-hospitalar na síndrome coronariana aguda. Apoia a estratificação e a decisão sobre estratégia invasiva; não substitui o julgamento clínico.</div>
+    <div class="calcgrid">
+      ${selIn('grTipo','Tipo de SCA',[{v:'nste',t:'SCA sem supra de ST (SCASST)'},{v:'stemi',t:'SCA com supra de ST (SCACST)'}],'Os pontos são os mesmos; mudam os limiares de categoria.')}
+      ${numIn('grIdade','Idade (anos)','Ex: 66',1)}
+      ${numIn('grFc','Frequência cardíaca (bpm)','Ex: 92',1)}
+      ${numIn('grPas','PA sistólica (mmHg)','Ex: 128',1)}
+      ${numIn('grCr','Creatinina (mg/dL)','Ex: 1,1',0.01)}
+      ${selIn('grKillip','Classe de Killip',[{v:0,t:'I — sem sinais de IC'},{v:1,t:'II — estertores e/ou B3 / estase jugular'},{v:2,t:'III — edema agudo de pulmão'},{v:3,t:'IV — choque cardiogênico'}])}
+    </div>
+    <div class="ins-flags"><div class="ttl">Outros fatores</div>
+      <label><input type="checkbox" id="grParada"> Parada cardíaca na admissão</label>
+      <label><input type="checkbox" id="grSt"> Desvio do segmento ST no ECG</label>
+      <label><input type="checkbox" id="grEnz"> Marcadores de necrose miocárdica elevados (troponina)</label></div>
+    <button class="calcbtn" id="grBtn">Calcular</button>
+    <div id="grRes"></div>
+  </div>`;
+  document.getElementById('grBtn').onclick = ()=>{
+    const res = document.getElementById('grRes');
+    const p = { idade:readNum('grIdade'), fc:readNum('grFc'), pas:readNum('grPas'), cr:readNum('grCr'), killip:parseInt(document.getElementById('grKillip').value,10),
+      parada:document.getElementById('grParada').checked, st:document.getElementById('grSt').checked, enz:document.getElementById('grEnz').checked, stemi:document.getElementById('grTipo').value==='stemi' };
+    if(p.idade==null||p.fc==null||p.pas==null||p.cr==null||p.idade<18||p.idade>120||p.fc<20||p.fc>300||p.pas<40||p.pas>300||p.cr<=0||p.cr>20){
+      res.innerHTML = calcResultHtml('—', null, 'Informe idade, FC, PA sistólica e creatinina em valores válidos.', 'risk-mod'); return;
+    }
+    const r = graceScore(p);
+    const cls = r.level==='high'?'risk-high':(r.level==='mod'?'risk-mod':'risk-low');
+    let html = calcResultHtml(r.total, null, '<b>Risco '+r.cat+'</b> — mortalidade intra-hospitalar estimada '+r.mort+' ('+(r.nste?'SCASST':'SCACST')+').', cls);
+    html += `<div class="ins-sec"><h4>Pontos por item</h4><table class="ins-table"><tbody>
+      <tr><td>Idade</td><td>${r.pt.idade}</td></tr><tr><td>Frequência cardíaca</td><td>${r.pt.fc}</td></tr><tr><td>PA sistólica</td><td>${r.pt.pas}</td></tr>
+      <tr><td>Creatinina</td><td>${r.pt.cr}</td></tr><tr><td>Killip</td><td>${r.pt.killip}</td></tr><tr><td>Parada na admissão</td><td>${r.pt.parada}</td></tr>
+      <tr><td>Desvio de ST</td><td>${r.pt.st}</td></tr><tr><td>Marcadores elevados</td><td>${r.pt.enz}</td></tr></tbody></table></div>`;
+    if(r.nste && r.total>140) html += `<div class="sep-note warn">GRACE &gt;140 em SCASST é descrito nas diretrizes europeias (ESC) como critério de alto risco para estratégia invasiva precoce (&lt;24 h) — informação de memória, não verificada nesta sessão; confirmar na diretriz vigente. Instabilidade hemodinâmica/elétrica, dor refratária ou IC aguda indicam estratégia imediata independentemente do escore.</div>`;
+    html += `<details class="sep-sources"><summary>Fonte e limitações</summary>Modelo GRACE intra-hospitalar (Granger et al., <i>Arch Intern Med</i> 2003). Tabela de pontos e limiares de categoria conferidos em fpnotebook.com ("GRACE score"): SCASST &lt;109 baixo, 109–140 intermediário, &gt;140 alto; SCACST &lt;126, 126–154 e &gt;154. É a versão de mortalidade <b>hospitalar</b>, não a de 6 meses. Não use isoladamente para alta precoce: combine com HEART, ECG seriado e troponina seriada.</details>`;
+    res.innerHTML = html;
+  };
+}
+
+/* PPS v2 — Victoria Hospice (versão em português). Resumo/paráfrase; o texto oficial é da Victoria Hospice Society. */
+const PPS_ROWS = [
+  {p:100, amb:'Normal', ativ:'Atividade e trabalho normais; sem sinais de doença', auto:'Completo', ing:'Normal', cons:'Plena'},
+  {p:90, amb:'Normal', ativ:'Atividade e trabalho normais; alguns sinais de doença', auto:'Completo', ing:'Normal', cons:'Plena'},
+  {p:80, amb:'Normal', ativ:'Atividade normal com esforço; alguns sinais de doença', auto:'Completo', ing:'Normal ou reduzida', cons:'Plena'},
+  {p:70, amb:'Reduzida', ativ:'Incapaz de trabalhar; doença significativa', auto:'Completo', ing:'Normal ou reduzida', cons:'Plena'},
+  {p:60, amb:'Reduzida', ativ:'Incapaz de hobbies e afazeres domésticos; doença significativa', auto:'Assistência ocasional', ing:'Normal ou reduzida', cons:'Plena ou confusão'},
+  {p:50, amb:'Maior parte do tempo sentado ou deitado', ativ:'Incapaz de qualquer trabalho; doença extensa', auto:'Assistência considerável', ing:'Normal ou reduzida', cons:'Plena ou confusão'},
+  {p:40, amb:'Maior parte do tempo acamado', ativ:'Incapaz da maioria das atividades; doença extensa', auto:'Assistência quase completa', ing:'Normal ou reduzida', cons:'Plena ou sonolência ± confusão'},
+  {p:30, amb:'Totalmente acamado', ativ:'Incapaz de qualquer atividade; doença extensa', auto:'Dependência completa', ing:'Normal ou reduzida', cons:'Plena ou sonolência ± confusão'},
+  {p:20, amb:'Totalmente acamado', ativ:'Incapaz de qualquer atividade; doença extensa', auto:'Dependência completa', ing:'Apenas pequenos goles', cons:'Plena ou sonolência ± confusão'},
+  {p:10, amb:'Totalmente acamado', ativ:'Incapaz de qualquer atividade; doença extensa', auto:'Dependência completa', ing:'Cuidados com a boca', cons:'Sonolência ou coma ± confusão'},
+  {p:0, amb:'Óbito', ativ:'—', auto:'—', ing:'—', cons:'—'}
+];
+function ppsInterp(p){
+  if(p>=70) return {t:'Relativamente independente (deambula, autocuidado preservado). Estado funcional ainda favorável.', cls:'risk-low'};
+  if(p>=40) return {t:'Dependência funcional progressiva (de assistência ocasional a quase completa; mais tempo sentado/acamado). Rever metas de cuidado e considerar avaliação por cuidados paliativos.', cls:'risk-mod'};
+  if(p>0) return {t:'Dependência quase total ou total, acamado. Em geral associado a prognóstico reservado (escala tem valor prognóstico, mas a estimativa de tempo depende da doença de base). Priorizar conforto e discussão de metas com paciente/família.', cls:'risk-high'};
+  return {t:'Óbito.', cls:'risk-high'};
+}
+function calcPps(area){
+  const rows = PPS_ROWS.filter(r=>r.p>0).map(r=>`<label class="ppsrow"><input type="radio" name="ppsSel" value="${r.p}"><div><div class="ppsval">${r.p}%</div>
+    <div class="ppstxt"><b>Deambulação:</b> ${r.amb}<br><b>Atividade/doença:</b> ${r.ativ}<br><b>Autocuidado:</b> ${r.auto} · <b>Ingesta:</b> ${r.ing}<br><b>Consciência:</b> ${r.cons}</div></div></label>`).join('');
+  area.innerHTML = `<div class="calccard">
+    <h2>PPS — Palliative Performance Scale (v2)</h2>
+    <div class="calcdesc">Estado funcional do paciente em cuidados paliativos/doença avançada (0–100%, em passos de 10). Leia as colunas da esquerda para a direita e escolha o nível que melhor descreve o paciente; deambulação e atividade pesam mais. Em caso de dúvida entre dois níveis, o julgamento clínico decide.</div>
+    <div class="ppslist">${rows}</div>
+    <button class="calcbtn" id="ppsBtn">Ver resultado</button>
+    <div id="ppsRes"></div>
+  </div>`;
+  document.getElementById('ppsBtn').onclick = ()=>{
+    const sel = area.querySelector('input[name="ppsSel"]:checked'); const res = document.getElementById('ppsRes');
+    if(!sel){ res.innerHTML = calcResultHtml('—', null, 'Selecione o nível que melhor descreve o paciente.', 'risk-mod'); return; }
+    const p = parseInt(sel.value,10); const it = ppsInterp(p);
+    res.innerHTML = calcResultHtml(p+'%', null, esc(it.t), it.cls) +
+      `<div class="copybox"><div class="cp-title">Texto para evolução</div><div class="cp-text" id="ppsCp">${esc('PALLIATIVE PERFORMANCE SCALE (PPS) = '+p+'%.')}</div><button class="cp-btn" onclick="copyCP('ppsCp', this)">Copiar</button></div>
+      <details class="sep-sources"><summary>Fonte e limitações</summary>PPS v2 da Victoria Hospice Society (Anderson et al., J Palliat Care 1996; versão 2 de 2001). Os níveis acima são um <b>resumo/paráfrase</b> da versão em português do Brasil disponível no site da Victoria Hospice; para uso institucional, consulte o texto oficial e as condições de reprodução. As faixas de interpretação são genéricas e não substituem a avaliação clínica; não incluí estimativas numéricas de sobrevida por não terem sido verificadas.</details>`;
+  };
+}
+
+
+/* ============ RECEITA (CARRINHO) + PACOTE POR DIAGNÓSTICO + GERADOR DE DOCUMENTOS ============ */
+let PACKAGES = {};
+const RX_REG = {}, RX_GRP = {};
+const DOCS = { rx: [], exams: [], tab: 'rx' };
+const DOC_PROFILE_KEY = 'plantaoref_doc_profile';
+const ROUTES = ['USO ORAL','USO TÓPICO','USO EXTERNO','USO NASAL','USO OCULAR','USO OTOLÓGICO','USO INALATÓRIO','USO RETAL','USO VAGINAL','USO SUBLINGUAL','USO INTRAMUSCULAR','USO ENDOVENOSO','USO SUBCUTÂNEO'];
+const ANTIMICROB_RE = /AMOXICILINA|CLAVULANATO|CEFALEXINA|CEFTRIAXONA|CEFUROXIMA|CEFADROXILA|CEFEPIMA|AZITROMICINA|CLARITROMICINA|CLINDAMICINA|CIPROFLOXACINO|LEVOFLOXACINO|NORFLOXACINO|MOXIFLOXACINO|DOXICICLINA|METRONIDAZOL|SECNIDAZOL|NITROFURANTO[IÍ]NA|FOSFOMICINA|SULFAMETOXAZOL|TRIMETOPRIMA|PENICILINA|AMPICILINA|GENTAMICINA|VANCOMICINA|PIPERACILINA|MEROPENEM|ERTAPENEM|OXACILINA|FLUCONAZOL|ACICLOVIR|VALACICLOVIR|IVERMECTINA|ALBENDAZOL|OSELTAMIVIR/;
+const CONTROLADO_RE = /DIAZEPAM|MIDAZOLAM|LORAZEPAM|CLONAZEPAM|ALPRAZOLAM|BROMAZEPAM|TRAMADOL|COD[EÉ][IÍ]NA|MORFINA|FENTANIL|METADONA|OXICODONA|HALOPERIDOL|FENOBARBITAL|ZOLPIDEM|CETAMINA|QUETAMINA|CARBAMAZEPINA|AMITRIPTILINA|CLORPROMAZINA|LEVOMEPROMAZINA|RIVOTRIL/;
+
+function escA(t){ return esc(t).replace(/"/g,'&quot;'); }
+function dcSafe(fn){ try{ return fn(); }catch(e){ return null; } }
+function dcProfile(){ return dcSafe(()=>JSON.parse(localStorage.getItem(DOC_PROFILE_KEY)||'{}')) || {}; }
+function dcSaveProfile(p){ dcSafe(()=>localStorage.setItem(DOC_PROFILE_KEY, JSON.stringify(p))); }
+function dcTodayISO(){ const d=new Date(); const m=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0'); return d.getFullYear()+'-'+m+'-'+dd; }
+function dcBR(iso){ if(!iso) return ''; const p=iso.split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : iso; }
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function dcLong(iso){ if(!iso) return ''; const p=iso.split('-'); return parseInt(p[2],10)+' de '+MESES[parseInt(p[1],10)-1]+' de '+p[0]; }
+function extenso(n){
+  n = Math.floor(n); if(!(n>0)) return ''; if(n>999) return String(n);
+  const U=['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+  const D=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+  const C=['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+  if(n===100) return 'cem';
+  const parts=[]; const c=Math.floor(n/100), r=n%100;
+  if(c) parts.push(C[c]);
+  if(r){ if(r<20) parts.push(U[r]); else { const d=Math.floor(r/10), u=r%10; parts.push(D[d]+(u?' e '+U[u]:'')); } }
+  return parts.join(' e ');
+}
+
+/* ---- registro de medicamentos na renderização das seções ---- */
+function rxStrip(s){ return String(s||'').replace(/\*\*/g,'').replace(/\s+/g,' ').trim(); }
+function rxAddById(key){
+  const r = RX_REG[key]; if(!r){ return; }
+  if(rxPush(r)) showToast('Adicionado à receita ('+DOCS.rx.length+')'); else showToast('Item já está na receita');
+}
+function rxPush(r){
+  const it = { name: rxStrip(r.name).replace(/^\d+\)\s*/,''), dose: rxStrip(r.dose.join(' ')), route: r.route||'USO ORAL', sec: r.secTitle||'' };
+  if(DOCS.rx.some(x=>x.name===it.name && x.dose===it.dose && x.route===it.route)) return false;
+  DOCS.rx.push(it); rxBadge(); rxRender(); return true;
+}
+function rxAddGroup(key){
+  const keys = RX_GRP[key]||[]; let n=0;
+  keys.forEach(k=>{ if(RX_REG[k] && rxPush(RX_REG[k])) n++; });
+  showToast(n ? (n+' item(ns) adicionado(s) à receita ('+DOCS.rx.length+')') : 'Itens já estavam na receita');
+}
+function rxBadge(){ const t = DOCS.rx.length ? ' ('+DOCS.rx.length+')' : ''; ['rxBadge','rxBadge2'].forEach(id=>{ const b=document.getElementById(id); if(b) b.textContent=t; }); }
+
+/* ---- pacote por diagnóstico ---- */
+function pkgBoxHtml(secId){
+  const p = PACKAGES[secId]; if(!p) return '';
+  const ex = (p.exames||[]);
+  const sid = secId.replace(/'/g,'');
+  return `<div class="pkgbox"><div class="pkg-title">📦 Pacote do diagnóstico <span class="pkg-note">(sugestão — conferir)</span></div>
+    ${p.cid?`<div class="pkg-row"><b>CID-10:</b> ${esc(p.cid)} <button class="rxadd" type="button" onclick="pkgSetDx('${sid}')">＋ usar nos documentos</button></div>`:''}
+    ${ex.length?`<div class="pkg-row"><b>Exames a considerar:</b> ${ex.map(e=>esc(e)).join(' · ')} <button class="rxadd" type="button" onclick="pkgAddExams('${sid}')">＋ pedido de exames</button></div>`:''}
+    ${p.obs?`<div class="pkg-row pkg-obs">${esc(p.obs)}</div>`:''}</div>`;
+}
+function pkgSetDx(secId){ const p=PACKAGES[secId]; if(!p) return; DOCS.dx = p.cid || ''; const el=document.getElementById('dcDx'); if(el) el.value = DOCS.dx; showToast('CID/hipótese definidos nos documentos'); }
+function pkgAddExams(secId){
+  const p=PACKAGES[secId]; if(!p) return; let n=0;
+  (p.exames||[]).forEach(e=>{ if(!DOCS.exams.includes(e)){ DOCS.exams.push(e); n++; } });
+  if(p.cid && !DOCS.dx){ DOCS.dx = p.cid; }
+  const el=document.getElementById('dcDx'); if(el) el.value = DOCS.dx||'';
+  exRender(); showToast(n+' exame(s) adicionado(s) ao pedido');
+}
+
+/* ---- textos ---- */
+function rxGroups(){
+  const g = {}, order = [];
+  DOCS.rx.forEach(it=>{ const r=(it.route||'USO ORAL').toUpperCase(); if(!g[r]){ g[r]=[]; order.push(r); } g[r].push(it); });
+  return {g, order};
+}
+function rxText(){
+  const {g, order} = rxGroups(); let n=0; const out=[];
+  order.forEach(r=>{ out.push(r); g[r].forEach(it=>{ n++; out.push(n+') '+it.name.toUpperCase()); if(it.dose) out.push(it.dose.toUpperCase()); out.push(''); }); });
+  return out.join('\n').trim();
+}
+function rxAlerts(){
+  const all = DOCS.rx.map(i=>i.name.toUpperCase()).join(' | ');
+  return { anti: ANTIMICROB_RE.test(all), ctrl: CONTROLADO_RE.test(all) };
+}
+
+/* ---- impressão / PDF ---- */
+function dcDoctorBlock(p){
+  const l1 = [p.nome, p.crm].filter(Boolean).join(' — ');
+  const l2 = [p.rqe?('RQE '+p.rqe):'', p.contato].filter(Boolean).join(' · ');
+  return `<div class="pr-sign"><div class="pr-line"></div><div><b>${esc(l1||'Nome e CRM do médico')}</b></div>${l2?`<div>${esc(l2)}</div>`:''}<div class="pr-small">Assinatura e carimbo</div></div>`;
+}
+function dcHeader(p){
+  const a = [p.unidade, p.endereco, p.contato].filter(Boolean);
+  return `<div class="pr-head"><div class="pr-unit">${esc(p.unidade||'')}</div><div class="pr-addr">${esc([p.endereco, p.contato].filter(Boolean).join(' · '))}</div></div>`;
+}
+function dcPatientLine(pt){
+  const parts = [];
+  parts.push('<b>Paciente:</b> '+esc(pt.nome||'______________________________'));
+  if(pt.cpf) parts.push('<b>CPF:</b> '+esc(pt.cpf));
+  return `<div class="pr-pt">${parts.join(' &nbsp;·&nbsp; ')}</div>`;
+}
+function dcFooter(p, pt){
+  const place = [p.cidade, dcLong(pt.data)].filter(Boolean).join(', ');
+  return `<div class="pr-date">${esc(place)}</div>${dcDoctorBlock(p)}`;
+}
+function dcPrint(sheetsHtml){
+  const el = document.getElementById('printSheet'); if(!el) return;
+  el.innerHTML = sheetsHtml;
+  const clear = ()=>{ el.innerHTML=''; window.removeEventListener('afterprint', clear); };
+  window.addEventListener('afterprint', clear);
+  setTimeout(()=>{ try{ window.print(); }catch(e){ showToast('Não foi possível abrir a impressão neste navegador.', true); } }, 60);
+}
+function dcReadPatient(){
+  return { nome:(document.getElementById('ptNome')||{}).value||'', cpf:(document.getElementById('ptCpf')||{}).value||'', data:(document.getElementById('ptData')||{}).value||dcTodayISO() };
+}
+function dcReadProfile(){
+  const g=id=>((document.getElementById(id)||{}).value||'').trim();
+  const pf = { nome:g('mdNome'), crm:g('mdCrm'), rqe:g('mdRqe'), contato:g('mdContato'), unidade:g('mdUnidade'), endereco:g('mdEndereco'), cidade:g('mdCidade') };
+  if(pf.nome||pf.crm||pf.unidade) dcSaveProfile(pf);
+  return pf;
+}
+function rxPrintHtml(){
+  const p = dcReadProfile(), pt = dcReadPatient(); const {g, order} = rxGroups(); let n=0;
+  const vSel = (document.getElementById('rxVias')||{}).value || '1';
+  const al = rxAlerts();
+  const vias = vSel==='auto' ? (al.anti?2:1) : parseInt(vSel,10);
+  const body = order.map(r=>`<div class="pr-route">${esc(r)}</div>`+g[r].map(it=>{ n++; return `<div class="pr-item"><b>${n}) ${esc(it.name.toUpperCase())}</b>${it.dose?`<br>${esc(it.dose.toUpperCase())}`:''}</div>`; }).join('')).join('');
+  const sheet = (lbl)=>`<div class="pr-sheet">${dcHeader(p)}<div class="pr-title">RECEITUÁRIO</div>${dcPatientLine(pt)}<div class="pr-body">${body}</div>${dcFooter(p, pt)}${lbl?`<div class="pr-via">${lbl}</div>`:''}</div>`;
+  return vias===2 ? sheet('1ª via — retida na farmácia')+sheet('2ª via — paciente') : sheet('');
+}
+function exPrintHtml(){
+  const p = dcReadProfile(), pt = dcReadPatient();
+  const dx = (document.getElementById('dcDx')||{}).value||''; const ind = (document.getElementById('exInd')||{}).value||'';
+  const list = DOCS.exams.map((e,i)=>`<div class="pr-item">${i+1}) ${esc(e.toUpperCase())}</div>`).join('');
+  return `<div class="pr-sheet">${dcHeader(p)}<div class="pr-title">SOLICITAÇÃO DE EXAMES</div>${dcPatientLine(pt)}${dx?`<div class="pr-pt"><b>Hipótese diagnóstica / CID:</b> ${esc(dx)}</div>`:''}${ind?`<div class="pr-pt"><b>Indicação clínica:</b> ${esc(ind)}</div>`:''}<div class="pr-body">${list}</div>${dcFooter(p, pt)}</div>`;
+}
+function atText(){
+  const g=id=>((document.getElementById(id)||{}).value||'');
+  const pt = dcReadPatient(); const p = dcReadProfile();
+  const tipo = g('atTipo'); const nome = pt.nome.trim() || '________________________';
+  const cpf = pt.cpf.trim() ? ', CPF '+pt.cpf.trim() : '';
+  const un = p.unidade || 'esta unidade';
+  const val = parseInt(g('atVal'),10);
+  const valTxt = val>0 ? ' Este atestado é válido por '+val+' ('+extenso(val)+') dias a partir da data de emissão.' : '';
+  if(tipo==='afast'){
+    const n = parseInt(g('atDias'),10); const ini = g('atInicio') || pt.data;
+    const dias = n>0 ? n+' ('+extenso(n)+') dia'+(n>1?'s':'') : '___ dias';
+    const cid = ((document.getElementById('atCidOk')||{}).checked && g('atCid').trim()) ? ' CID-10: '+g('atCid').trim()+' (informado mediante autorização do paciente).' : '';
+    return 'Atesto, para os devidos fins, que '+nome+cpf+', foi atendido(a) nesta data em '+un+', necessitando de afastamento de suas atividades por '+dias+', a contar de '+dcBR(ini)+', para recuperação.'+cid;
+  }
+  if(tipo==='piscina'){
+    return 'Atesto, para os devidos fins, que '+nome+cpf+' foi examinado(a) nesta data e, no momento do exame, não apresenta lesões de pele infectocontagiosas, micoses cutâneas, nem sinais clínicos de doença transmissível que contraindiquem a frequência a piscinas e atividades aquáticas.'+valTxt;
+  }
+  if(tipo==='fisica'){
+    const mod = g('atMod').trim(); 
+    return 'Atesto, para os devidos fins, que '+nome+cpf+' foi submetido(a) a avaliação clínica nesta data e, no momento do exame, não apresenta sinais ou sintomas que contraindiquem a prática de atividade física'+(mod?' ('+mod+')':'')+'. Esta avaliação clínica não substitui avaliação cardiológica nem exames complementares (como eletrocardiograma e teste ergométrico) quando indicados.'+valTxt;
+  }
+  const hi = g('atHi'), hf = g('atHf'); const ac = g('atAcomp').trim();
+  const per = (hi&&hf) ? ', das '+hi+' às '+hf+',' : (hi ? ', a partir das '+hi+',' : '');
+  if(ac) return 'Declaro, para os devidos fins, que '+ac+' compareceu a '+un+' nesta data'+per+' na qualidade de acompanhante de '+nome+cpf+', que recebeu atendimento médico.';
+  return 'Declaro, para os devidos fins, que '+nome+cpf+' compareceu a '+un+' nesta data'+per+' para atendimento médico.';
+}
+function atPrintHtml(){
+  const p = dcReadProfile(), pt = dcReadPatient();
+  const tipo = (document.getElementById('atTipo')||{}).value;
+  const title = tipo==='compar' ? 'DECLARAÇÃO DE COMPARECIMENTO' : 'ATESTADO MÉDICO';
+  const txt = (document.getElementById('atTexto')||{}).value || atText();
+  return `<div class="pr-sheet">${dcHeader(p)}<div class="pr-title">${title}</div><div class="pr-body pr-par">${esc(txt).replace(/\n/g,'<br>')}</div>${dcFooter(p, pt)}<div class="pr-via">Rascunho/modelo — emitir o atestado oficial pelo Atesta CFM (Res. CFM 2.382/2024)</div></div>`;
+}
+
+/* ---- cópia ---- */
+function dcCopy(text, btn){
+  const done = ()=>{ if(!btn) return; const old=btn.textContent; btn.textContent='Copiado ✓'; setTimeout(()=>{ btn.textContent=old; },1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done).catch(()=>{ fallbackCopy(text); done(); }); }
+  else { fallbackCopy(text); done(); }
+}
+
+/* ---- UI ---- */
+function rxRender(){
+  const box = document.getElementById('rxList'); if(!box) return;
+  if(!DOCS.rx.length){
+    box.innerHTML = '<div class="sep-note info">A receita está vazia. Nas seções de <b>Prescrições</b>, toque em <b>＋ receita</b> ao lado de cada medicamento (ou em <b>＋ Adicionar toda a opção</b>) e eles aparecem aqui, agrupados por via. Você pode editar a posologia, trocar a via e reordenar.</div>';
+  } else {
+    box.innerHTML = DOCS.rx.map((it,i)=>{
+      const rs = ROUTES.includes(it.route) ? ROUTES : [it.route].concat(ROUTES);
+      return `<div class="rxitem" data-i="${i}">
+        <div class="rxrow"><input class="rx-name" value="${escA(it.name)}" data-f="name" aria-label="Medicamento"><select data-f="route" aria-label="Via">${rs.map(r=>`<option${r===it.route?' selected':''}>${esc(r)}</option>`).join('')}</select></div>
+        <textarea class="rx-dose" data-f="dose" rows="2" aria-label="Posologia">${esc(it.dose)}</textarea>
+        <div class="rxbtns"><button type="button" data-a="up" title="Subir">↑</button><button type="button" data-a="down" title="Descer">↓</button><button type="button" data-a="del" title="Remover">✕</button>${it.sec?`<span class="rx-src">${esc(it.sec)}</span>`:''}</div>
+      </div>`;
+    }).join('');
+    box.querySelectorAll('.rxitem').forEach(row=>{
+      const i = parseInt(row.dataset.i,10);
+      row.querySelectorAll('[data-f]').forEach(inp=>{
+        inp.addEventListener('input', ()=>{ DOCS.rx[i][inp.dataset.f] = inp.value; rxUpdateText(); });
+        inp.addEventListener('change', ()=>{ DOCS.rx[i][inp.dataset.f] = inp.value; rxUpdateText(); });
+      });
+      row.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+        const a=b.dataset.a;
+        if(a==='del') DOCS.rx.splice(i,1);
+        else if(a==='up' && i>0) [DOCS.rx[i-1],DOCS.rx[i]]=[DOCS.rx[i],DOCS.rx[i-1]];
+        else if(a==='down' && i<DOCS.rx.length-1) [DOCS.rx[i+1],DOCS.rx[i]]=[DOCS.rx[i],DOCS.rx[i+1]];
+        rxBadge(); rxRender();
+      });
+    });
+  }
+  rxUpdateText();
+}
+function rxUpdateText(){
+  const t = document.getElementById('rxText'); if(t) t.textContent = rxText();
+  const al = rxAlerts(); const a = document.getElementById('rxAlerts');
+  if(a){
+    let h='';
+    if(al.anti) h += '<div class="sep-note warn">Contém antimicrobiano: a RDC 20/2011 (Anvisa) exige receita em <b>2 vias</b> (1ª retida na farmácia). Conferir a norma vigente e a regra do seu serviço.</div>';
+    if(al.ctrl) h += '<div class="sep-note crit">Contém medicamento de <b>controle especial</b> (Portaria 344/98): este gerador <b>não substitui</b> o receituário próprio exigido (notificação de receita/receita de controle especial).</div>';
+    a.innerHTML = h;
+  }
+}
+function exRender(){
+  const box = document.getElementById('exList'); if(!box) return;
+  box.innerHTML = DOCS.exams.length ? DOCS.exams.map((e,i)=>`<div class="exitem"><span>${esc(e)}</span><button type="button" data-i="${i}" title="Remover">✕</button></div>`).join('') : '<div class="sep-note info">Nenhum exame ainda. Use os atalhos abaixo, digite um exame ou, nas seções, o botão <b>＋ pedido de exames</b> do pacote do diagnóstico.</div>';
+  box.querySelectorAll('button').forEach(b=>b.onclick=()=>{ DOCS.exams.splice(parseInt(b.dataset.i,10),1); exRender(); });
+}
+const EX_QUICK = ['Hemograma completo','PCR','Ureia','Creatinina','Sódio e potássio','Glicemia','EAS (urina tipo 1)','Urocultura','Gasometria','Lactato','Troponina','ECG','RX de tórax PA e perfil','USG de abdome total','TC de crânio sem contraste','Beta-HCG','TGO/TGP','Bilirrubinas','Amilase/lipase','Coagulograma (TAP/TTPA)','D-dímero','Hemocultura (2 amostras)','Teste rápido HIV/sífilis/hepatites'];
+
+function renderDocs(){
+  const area = document.getElementById('docsArea'); if(!area) return;
+  const pf = dcProfile();
+  area.innerHTML = `
+  <div class="sep-head"><div><h2>Receita e Documentos</h2><div class="sep-sub">Monte a receita pelo carrinho, gere PDF/impressão e modelos de documentos. Nada é enviado para servidor.</div></div></div>
+  <details class="dcbox" id="dcPerfil"${pf.nome?'':' open'}><summary>👤 Meus dados (cabeçalho e assinatura) — ficam só neste aparelho</summary>
+    <div class="calcgrid">
+      ${dcField('mdNome','Nome do médico','Dr(a). ...',pf.nome)}${dcField('mdCrm','CRM/UF','CRM-SP 000000',pf.crm)}${dcField('mdRqe','RQE (se houver)','',pf.rqe)}
+      ${dcField('mdContato','Telefone e/ou e-mail','(19) 0000-0000',pf.contato)}${dcField('mdUnidade','Unidade / consultório','Santa Casa de ...',pf.unidade)}${dcField('mdEndereco','Endereço profissional','Rua ..., nº, cidade',pf.endereco)}${dcField('mdCidade','Cidade (local da data)','Capivari',pf.cidade)}
+    </div></details>
+  <details class="dcbox" open><summary>🧍 Paciente</summary>
+    <div class="calcgrid">${dcField('ptNome','Nome do paciente','')}${dcField('ptCpf','CPF (opcional)','')}<div class="calcfield"><label for="ptData">Data</label><input type="date" id="ptData" value="${dcTodayISO()}"></div></div></details>
+  <div class="sep-tabs dctabs" role="tablist">
+    <button class="dctab" data-t="rx" type="button">💊 Receita<span id="rxBadge2"></span></button>
+    <button class="dctab" data-t="ex" type="button">🧪 Exames</button>
+    <button class="dctab" data-t="at" type="button">📄 Atestados</button>
+  </div>
+  <div id="dcPane"></div>`;
+  area.querySelectorAll('#dcPerfil input').forEach(i=>i.addEventListener('input', ()=>dcSaveProfile(dcReadProfile())));
+  area.querySelectorAll('.dctab').forEach(b=>b.onclick=()=>{ DOCS.tab=b.dataset.t; dcShowTab(); });
+  dcShowTab();
+}
+function dcField(id,label,ph,val){ return `<div class="calcfield"><label for="${id}">${label}</label><input type="text" id="${id}" placeholder="${escA(ph||'')}" value="${escA(val||'')}" autocomplete="off"></div>`; }
+function dcShowTab(){
+  const pane = document.getElementById('dcPane'); if(!pane) return;
+  document.querySelectorAll('#docsArea .dctab').forEach(b=>b.classList.toggle('active', b.dataset.t===DOCS.tab));
+  if(DOCS.tab==='rx'){
+    pane.innerHTML = `<div id="rxList"></div>
+      <div class="rxtools"><button class="sep-ghost" type="button" id="rxFree">＋ Item livre</button><button class="sep-ghost" type="button" id="rxClear">Limpar receita</button>
+        <label class="rxvias">Vias: <select id="rxVias"><option value="auto">Automático</option><option value="1">1 via</option><option value="2">2 vias (antimicrobiano)</option></select></label></div>
+      <div id="rxAlerts"></div>
+      <div class="copybox"><div class="cp-title">Texto da receita (para colar no sistema)</div><div class="cp-text" id="rxText"></div>
+        <button class="cp-btn" type="button" id="rxCopy">Copiar</button> <button class="cp-btn" type="button" id="rxPdf">Gerar PDF / imprimir</button></div>
+      <details class="sep-sources"><summary>Observações</summary>O PDF usa a impressão do navegador (escolha "Salvar como PDF"). Receita simples exige identificação do paciente, via de administração e posologia, data e assinatura com CRM; conferir a regra do seu serviço. O sistema oficial do hospital continua sendo o documento válido para a internação/alta.</details>`;
+    rxRender();
+    document.getElementById('rxCopy').onclick = e=>{ if(!DOCS.rx.length){ showToast('Receita vazia', true); return; } dcCopy(rxText(), e.target); };
+    document.getElementById('rxPdf').onclick = ()=>{ if(!DOCS.rx.length){ showToast('Receita vazia', true); return; } dcPrint(rxPrintHtml()); };
+    document.getElementById('rxClear').onclick = ()=>{ DOCS.rx.length=0; rxBadge(); rxRender(); };
+    document.getElementById('rxFree').onclick = ()=>{ DOCS.rx.push({name:'', dose:'', route:'USO ORAL', sec:''}); rxBadge(); rxRender(); };
+  } else if(DOCS.tab==='ex'){
+    pane.innerHTML = `<div class="calcgrid">${dcField('dcDx','Hipótese diagnóstica / CID','Ex: J18.9 — Pneumonia',DOCS.dx||'')}${dcField('exInd','Indicação clínica (opcional)','')}</div>
+      <div id="exList"></div>
+      <div class="calcgrid" style="margin-top:8px;">${dcField('exNew','Adicionar exame','Ex: Hemograma completo')}</div>
+      <button class="sep-ghost" type="button" id="exAdd">＋ Adicionar</button>
+      <div class="exquick">${EX_QUICK.map(e=>`<button type="button" class="pill cm">${esc(e)}</button>`).join('')}</div>
+      <div class="rxtools" style="margin-top:12px;"><button class="cp-btn" type="button" id="exCopy">Copiar lista</button> <button class="cp-btn" type="button" id="exPdf">Gerar PDF / imprimir</button> <button class="sep-ghost" type="button" id="exClear">Limpar</button></div>`;
+    exRender();
+    document.getElementById('dcDx').addEventListener('input', e=>{ DOCS.dx = e.target.value; });
+    const add = v=>{ v=v.trim(); if(v && !DOCS.exams.includes(v)){ DOCS.exams.push(v); exRender(); } };
+    document.getElementById('exAdd').onclick = ()=>{ const i=document.getElementById('exNew'); add(i.value); i.value=''; };
+    document.getElementById('exNew').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); document.getElementById('exAdd').click(); } });
+    pane.querySelectorAll('.exquick .pill').forEach(b=>b.onclick=()=>add(b.textContent));
+    document.getElementById('exCopy').onclick = e=>{ if(!DOCS.exams.length){ showToast('Lista vazia', true); return; } dcCopy(DOCS.exams.map((x,i)=>(i+1)+') '+x.toUpperCase()).join('\n'), e.target); };
+    document.getElementById('exPdf').onclick = ()=>{ if(!DOCS.exams.length){ showToast('Lista vazia', true); return; } dcPrint(exPrintHtml()); };
+    document.getElementById('exClear').onclick = ()=>{ DOCS.exams.length=0; exRender(); };
+  } else {
+    pane.innerHTML = `<div class="sep-note crit"><b>Atenção:</b> pela Resolução CFM 2.382/2024, o atestado médico válido deve ser emitido pela plataforma <b>Atesta CFM</b> (ou sistema integrado a ela). Use os modelos abaixo como <b>texto-base</b> para colar lá; o PDF gerado aqui é um rascunho/modelo e não comprova autenticidade.</div>
+      <div class="calcgrid">
+        <div class="calcfield"><label for="atTipo">Tipo de documento</label><select id="atTipo"><option value="afast">Afastamento</option><option value="piscina">Aptidão para piscina</option><option value="fisica">Aptidão para atividade física</option><option value="compar">Declaração de comparecimento</option></select></div>
+      </div>
+      <div class="calcgrid" id="atFields"></div>
+      <div class="sep-note info" id="atHint"></div>
+      <div class="calcfield"><label for="atTexto">Texto do documento (editável)</label><textarea id="atTexto" rows="7"></textarea></div>
+      <div class="rxtools"><button class="cp-btn" type="button" id="atCopy">Copiar texto</button> <button class="cp-btn" type="button" id="atPdf">Gerar PDF (rascunho)</button> <button class="sep-ghost" type="button" id="atReset">Refazer texto a partir dos campos</button></div>
+      <details class="sep-sources"><summary>Requisitos do atestado (Res. CFM 2.382/2024, art. 7º) e fontes</summary>Deve conter: nome e CRM/UF do médico; tempo de dispensa necessário à recuperação; RQE (se houver); nome e CPF do paciente (quando houver); CID somente com autorização do paciente (art. 8º); data de emissão; assinatura (qualificada se eletrônico; assinatura e carimbo ou registro no CRM se manuscrito); telefone e/ou e-mail; endereço profissional. Fonte consultada: texto da resolução em normaslegais.com.br (jun/2024). Os modelos de aptidão (piscina/atividade física) são redações-padrão, sem norma específica verificada aqui; use apenas se de fato examinou o paciente.</details>`;
+    const fields = ()=>{
+      const t = document.getElementById('atTipo').value; const f = document.getElementById('atFields'); const h = document.getElementById('atHint');
+      if(t==='afast'){ f.innerHTML = numIn('atDias','Dias de afastamento','Ex: 2',1)+`<div class="calcfield"><label for="atInicio">A contar de</label><input type="date" id="atInicio" value="${dcTodayISO()}"></div>`+dcField('atCid','CID-10 (opcional)','Ex: J06.9')+`<div class="calcfield"><label class="chkrow"><input type="checkbox" id="atCidOk"> Paciente autorizou constar o CID</label></div>`; h.textContent='O CID só entra no texto se o paciente autorizar (marque a caixa).'; }
+      else if(t==='piscina'){ f.innerHTML = numIn('atVal','Validade (dias) — opcional','Ex: 30',1); h.textContent='Emitir somente após examinar pele (e, se for o caso, ouvidos/olhos). O texto fala em "no momento do exame".'; }
+      else if(t==='fisica'){ f.innerHTML = dcField('atMod','Modalidade (opcional)','Ex: musculação')+numIn('atVal','Validade (dias) — opcional','Ex: 90',1); h.textContent='No PS a avaliação é limitada. Considerar encaminhar para avaliação pré-participação (ECG/ergometria) conforme idade, fatores de risco ou sintomas.'; }
+      else { f.innerHTML = `<div class="calcfield"><label for="atHi">Hora de chegada</label><input type="time" id="atHi"></div><div class="calcfield"><label for="atHf">Hora de saída</label><input type="time" id="atHf"></div>`+dcField('atAcomp','Nome do acompanhante (se for o caso)',''); h.textContent='Para acompanhante, preencha o nome dele(a); o nome do paciente fica no campo acima.'; }
+      f.querySelectorAll('input,select').forEach(i=>{ i.addEventListener('input', fill); i.addEventListener('change', fill); });
+      fill();
+    };
+    const fill = ()=>{ document.getElementById('atTexto').value = atText(); };
+    document.getElementById('atTipo').onchange = fields;
+    ['ptNome','ptCpf','ptData','mdUnidade'].forEach(id=>{ const e=document.getElementById(id); if(e){ e.addEventListener('input', fill); e.addEventListener('change', fill); } });
+    fields();
+    document.getElementById('atReset').onclick = fill;
+    document.getElementById('atCopy').onclick = e=>dcCopy(document.getElementById('atTexto').value, e.target);
+    document.getElementById('atPdf').onclick = ()=>dcPrint(atPrintHtml());
+  }
+  rxBadge();
+}
+function rxFinishHtml(html, sec){
+  return html.replace(/<!--G(\d+)-->/g, (m,g)=>{
+    const key = sec+'@'+g; const arr = RX_GRP[key]||[];
+    return arr.length ? `<div class="rxgrpwrap"><button class="rxadd rxgrp" type="button" onclick="rxAddGroup('${key}')">＋ Adicionar toda esta opção à receita (${arr.length})</button></div>` : '';
+  });
+}
+renderDocs();
 
 
 /* ============ BUSCA (UI) + FONTE AJUSTÁVEL + CONDUTAS PEDIÁTRICAS ============ */
