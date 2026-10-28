@@ -635,6 +635,25 @@
   .gr-sdoc{font-size:8.5px;}
   .gr-data{text-align:right; padding:2px 6px 4px; font-size:10.5px;}
   .gr-cut{border-top:1px dashed #000; margin:7px 0;}
+  .ckpts{color:var(--ink-soft); font-size:11px;}
+  .cvout{font-family:'IBM Plex Sans', sans-serif; font-size:13px; margin-top:6px; line-height:1.6;}
+  .r3{display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end; font-size:12px; color:var(--ink-soft);}
+  .r3 .calcfield{flex:1; min-width:70px;}
+  .dctabs{flex-wrap:wrap;}
+  .dctab{min-width:30%;}
+  .ipcard{border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:8px 0; background:var(--card); font-family:'IBM Plex Sans', sans-serif; font-size:13px;}
+  .ipcard .iph{display:flex; justify-content:space-between; gap:8px; align-items:center; font-weight:700;}
+  .ipsev{display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; border:1px solid var(--line);}
+  .ipsev.s-critico{background:#7a1c1c; color:#fff;} .ipsev.s-instavel{background:#c0392b; color:#fff;} .ipsev.s-obs{background:#d9a21b; color:#000;} .ipsev.s-estavel{background:#2e8b57; color:#fff;}
+  .ipchips{display:flex; flex-wrap:wrap; gap:6px; margin:6px 0;}
+  .ipchips button{padding:5px 12px; border-radius:999px; border:1px solid var(--line); background:var(--card); cursor:pointer; font-size:12px; font-weight:600; color:var(--ink);}
+  .ipchips button.on{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .ip-print .ipp{border:1px solid #000; margin:0 0 6px; padding:4px 6px; font-size:11px; page-break-inside:avoid;}
+  .layout-min .pr-head{border-bottom:none; text-align:left;}
+  .layout-min .pr-title{text-align:left; letter-spacing:.2em; font-weight:400;}
+  .layout-min .pr-sheet{font-family:Georgia,'Times New Roman',serif;}
+  .pr-logo{max-height:56px; max-width:140px; vertical-align:middle;}
+  .pr-sigimg{display:block; margin:0 auto -10px; max-height:46px; max-width:200px;}
   #printSheet{display:none;}
   .pr-sheet{font-family:'IBM Plex Sans', Arial, sans-serif; color:#000; font-size:13px; line-height:1.5;}
   .pr-head{text-align:center; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:12px;}
@@ -1795,7 +1814,17 @@ const CALCULATORS = [
   {id:'insulina', label:'Insulina ambulatorial (DM2)'},
   {id:'gaso', label:'Gasometria (ácido-base)'},
   {id:'grace', label:'GRACE (SCA)'},
-  {id:'pps', label:'PPS (paliativos)'}
+  {id:'pps', label:'PPS (paliativos)'},
+  {id:'perc', label:'PERC (exclusão de TEP)'},
+  {id:'spesi', label:'sPESI (TEP)'},
+  {id:'qsofa', label:'qSOFA'},
+  {id:'gbs', label:'Glasgow-Blatchford (HDA)'},
+  {id:'alvarado', label:'Alvarado (apendicite)'},
+  {id:'cchr', label:'Canadian CT Head'},
+  {id:'abcd2', label:'ABCD² (AIT)'},
+  {id:'hasbled', label:'HAS-BLED'},
+  {id:'anest', label:'Anestésico local (dose máx.)'},
+  {id:'conv', label:'Conversões rápidas'}
 ];
 
 function buildCalcIndex(){
@@ -1831,7 +1860,17 @@ function renderCalculator(id){
     insulina: calcInsulina,
     gaso: calcGaso,
     grace: calcGrace,
-    pps: calcPps
+    pps: calcPps,
+    perc: calcPerc,
+    spesi: calcSpesi,
+    qsofa: calcQsofa,
+    gbs: calcGbs,
+    alvarado: calcAlvarado,
+    cchr: calcCchr,
+    abcd2: calcAbcd2,
+    hasbled: calcHasbled,
+    anest: calcAnest,
+    conv: calcConv
   };
   area.innerHTML = '';
   if(fns[id]) fns[id](area);
@@ -3684,14 +3723,77 @@ function rxAlerts(){
 }
 
 /* ---- impressão / PDF ---- */
+
+const DOC_MEDIA_KEY = 'plantaoref_doc_media', DOC_LOCAIS_KEY = 'plantaoref_doc_locais';
+function dcMedia(){ return dcSafe(()=>JSON.parse(localStorage.getItem(DOC_MEDIA_KEY)||'{}')) || {}; }
+function dcSaveMedia(m){ try{ localStorage.setItem(DOC_MEDIA_KEY, JSON.stringify(m)); return true; }catch(e){ showToast('Não foi possível salvar a imagem (armazenamento cheio ou bloqueado).', true); return false; } }
+function dcLocais(){ return dcSafe(()=>JSON.parse(localStorage.getItem(DOC_LOCAIS_KEY)||'[]')) || []; }
+function dcSaveLocais(a){ dcSafe(()=>localStorage.setItem(DOC_LOCAIS_KEY, JSON.stringify(a))); }
+function dcMissing(p){ const m=[]; if(!p.nome) m.push('nome'); if(!p.crm) m.push('CRM/UF'); if(!p.endereco && !p.unidade) m.push('unidade ou endereço profissional'); return m; }
+function dcRefreshMiss(){ const el=document.getElementById('dcMiss'); if(!el) return; const m=dcMissing(dcReadProfile()); el.style.display = m.length?'':'none'; el.innerHTML = m.length ? '<b>Perfil incompleto:</b> faltam '+m.join(', ')+'. Receitas e atestados costumam exigir esses dados (abra "Meus dados").' : ''; }
+function dcImgResize(file, maxW, maxH, keepAlpha, cb){
+  const rd = new FileReader();
+  rd.onload = ()=>{ const im = new Image(); im.onload = ()=>{
+    const k = Math.min(1, maxW/im.width, maxH/im.height); const cv = document.createElement('canvas'); cv.width = Math.max(1,Math.round(im.width*k)); cv.height = Math.max(1,Math.round(im.height*k));
+    const g = cv.getContext('2d'); if(!keepAlpha){ g.fillStyle='#fff'; g.fillRect(0,0,cv.width,cv.height); } g.drawImage(im,0,0,cv.width,cv.height); cb(cv.toDataURL('image/png'));
+  }; im.onerror = ()=>showToast('Imagem inválida', true); im.src = rd.result; };
+  rd.readAsDataURL(file);
+}
+function dcExport(){
+  const data = { app:'plantaoref', v:1, ts:new Date().toISOString(), profile:dcProfile(), locais:dcLocais(), media:dcMedia(), enc:dcSafe(()=>JSON.parse(localStorage.getItem(ENC_KEY)||'{}'))||{} };
+  const blob = new Blob([JSON.stringify(data)], {type:'application/json'}); const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'plantaoref-meus-dados.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+}
+function dcImport(file){
+  const rd = new FileReader();
+  rd.onload = ()=>{ try{
+    const d = JSON.parse(rd.result); if(!d || d.app!=='plantaoref') throw new Error('arquivo');
+    if(d.profile) dcSaveProfile(d.profile); if(d.locais) dcSaveLocais(d.locais); if(d.media) dcSaveMedia(d.media); if(d.enc) encSaveCfg(d.enc);
+    showToast('Dados importados'); renderDocs();
+  }catch(e){ showToast('Arquivo inválido: use o .json exportado pelo Plantão Ref', true); } };
+  rd.readAsText(file);
+}
+function dcExtrasHtml(pf){
+  const m = dcMedia(); const L = dcLocais();
+  return `<div class="calcfield"><label for="mdLocais">Locais de atendimento salvos</label><select id="mdLocais"><option value="">— escolher para preencher unidade/endereço —</option>${L.map((l,i)=>`<option value="${i}">${esc(l.unidade||'Local')}${l.cidade?' — '+esc(l.cidade):''}</option>`).join('')}</select></div>
+    <div class="rxtools"><button class="sep-ghost" type="button" id="mdLocSave">＋ Salvar unidade/endereço atuais como local</button> <button class="sep-ghost" type="button" id="mdLocDel">🗑 Excluir local selecionado</button></div>
+    <div class="calcgrid">
+      <div class="calcfield"><label for="mdLogo">Logo no cabeçalho (opcional)</label><input type="file" id="mdLogo" accept="image/*">${m.logo?`<img class="gr-prev" id="mdLogoPrev" src="${m.logo}" alt=""> <button class="sep-ghost" type="button" id="mdLogoDel">remover</button>`:''}</div>
+      <div class="calcfield"><label for="mdSig">Imagem da assinatura (PNG com fundo transparente)</label><input type="file" id="mdSig" accept="image/*">${m.sig?`<img class="gr-prev" id="mdSigPrev" src="${m.sig}" alt=""> <button class="sep-ghost" type="button" id="mdSigDel">remover</button>`:''}</div>
+      <div class="calcfield"><label for="mdLayout">Layout dos documentos</label><select id="mdLayout"><option value="cl"${m.layout!=='min'?' selected':''}>Clássico (centralizado, com linha)</option><option value="min"${m.layout==='min'?' selected':''}>Minimalista (serifado, sem linha)</option></select></div>
+    </div>
+    <div class="calcfield"><label class="chkrow"><input type="checkbox" id="mdUseSig"${m.useSig?' checked':''}> Imprimir a imagem da assinatura acima da linha</label></div>
+    <div class="sep-note warn">A imagem colada <b>não é assinatura digital</b>. Em receita controlada (Portaria 344/98), atestado (Atesta CFM) e documentos que exijam assinatura qualificada, ela não substitui a assinatura exigida. Deixe desligada se o seu serviço não aceitar.</div>
+    <div class="rxtools"><button class="cp-btn" type="button" id="mdExp">⬇ Exportar meus dados</button> <button class="sep-ghost" type="button" id="mdImpBtn">⬆ Importar</button><input type="file" id="mdImp" accept="application/json,.json" style="display:none"></div>
+    <div class="sep-sub" style="margin-top:4px;">O exportado inclui perfil, locais, logo, assinatura e cabeçalho da guia. Serve de backup e para levar tudo a outro aparelho (o site não usa conta nem servidor).</div>`;
+}
+function dcWireExtras(area){
+  const sel = area.querySelector('#mdLocais');
+  if(sel) sel.onchange = ()=>{ const l = dcLocais()[parseInt(sel.value,10)]; if(!l) return; [['mdUnidade','unidade'],['mdEndereco','endereco'],['mdContato','contato'],['mdCidade','cidade']].forEach(([id,k])=>{ const e=document.getElementById(id); if(e) e.value = l[k]||''; }); dcSaveProfile(dcReadProfile()); dcRefreshMiss(); };
+  const sv = area.querySelector('#mdLocSave'); if(sv) sv.onclick = ()=>{ const p = dcReadProfile(); if(!p.unidade){ showToast('Preencha a unidade primeiro', true); return; } const L = dcLocais(); L.push({unidade:p.unidade, endereco:p.endereco, contato:p.contato, cidade:p.cidade}); dcSaveLocais(L); showToast('Local salvo'); renderDocs(); };
+  const dl = area.querySelector('#mdLocDel'); if(dl) dl.onclick = ()=>{ const i = parseInt(sel.value,10); if(isNaN(i)) return; const L = dcLocais(); L.splice(i,1); dcSaveLocais(L); renderDocs(); };
+  const media = (inputId, key, w, h, alpha)=>{ const el = area.querySelector(inputId); if(el) el.onchange = e=>{ const f = e.target.files && e.target.files[0]; if(!f) return; dcImgResize(f, w, h, alpha, url=>{ const m = dcMedia(); m[key] = url; if(dcSaveMedia(m)) renderDocs(); }); }; };
+  media('#mdLogo','logo',300,140,false); media('#mdSig','sig',500,180,true);
+  const rm = (id,key)=>{ const b = area.querySelector(id); if(b) b.onclick = ()=>{ const m = dcMedia(); delete m[key]; if(key==='sig') m.useSig=false; dcSaveMedia(m); renderDocs(); }; };
+  rm('#mdLogoDel','logo'); rm('#mdSigDel','sig');
+  const lay = area.querySelector('#mdLayout'); if(lay) lay.onchange = ()=>{ const m = dcMedia(); m.layout = lay.value; dcSaveMedia(m); };
+  const us = area.querySelector('#mdUseSig'); if(us) us.onchange = ()=>{ const m = dcMedia(); if(us.checked && !m.sig){ us.checked=false; showToast('Envie primeiro a imagem da assinatura', true); return; } m.useSig = us.checked; dcSaveMedia(m); };
+  const ex = area.querySelector('#mdExp'); if(ex) ex.onclick = dcExport;
+  const ib = area.querySelector('#mdImpBtn'), ii = area.querySelector('#mdImp'); if(ib&&ii){ ib.onclick = ()=>ii.click(); ii.onchange = e=>{ const f=e.target.files&&e.target.files[0]; if(f) dcImport(f); }; }
+  area.querySelectorAll('#dcPerfil input[type=text]').forEach(i=>i.addEventListener('input', dcRefreshMiss));
+  dcRefreshMiss();
+}
 function dcDoctorBlock(p){
+  const m = dcMedia();
   const l1 = [p.nome, p.crm].filter(Boolean).join(' — ');
-  const l2 = [p.rqe?('RQE '+p.rqe):'', p.contato].filter(Boolean).join(' · ');
-  return `<div class="pr-sign"><div class="pr-line"></div><div><b>${esc(l1||'Nome e CRM do médico')}</b></div>${l2?`<div>${esc(l2)}</div>`:''}<div class="pr-small">Assinatura e carimbo</div></div>`;
+  const l2 = [p.esp, p.rqe?('RQE '+p.rqe):'', p.contato].filter(Boolean).join(' · ');
+  const sig = (m.useSig && m.sig) ? `<img class="pr-sigimg" src="${m.sig}" alt="">` : '';
+  return `<div class="pr-sign">${sig}<div class="pr-line"></div><div><b>${esc(l1||'Nome e CRM do médico')}</b></div>${l2?`<div>${esc(l2)}</div>`:''}<div class="pr-small">Assinatura e carimbo</div></div>`;
 }
 function dcHeader(p){
   const a = [p.unidade, p.endereco, p.contato].filter(Boolean);
-  return `<div class="pr-head"><div class="pr-unit">${esc(p.unidade||'')}</div><div class="pr-addr">${esc([p.endereco, p.contato].filter(Boolean).join(' · '))}</div></div>`;
+  const m = dcMedia();
+  return `<div class="pr-head">${m.logo?`<img class="pr-logo" src="${m.logo}" alt=""> `:''}<div class="pr-unit">${esc(p.unidade||'')}</div><div class="pr-addr">${esc([p.endereco, p.contato].filter(Boolean).join(' · '))}</div></div>`;
 }
 function dcPatientLine(pt){
   const parts = [];
@@ -3705,6 +3807,8 @@ function dcFooter(p, pt){
 }
 function dcPrint(sheetsHtml){
   const el = document.getElementById('printSheet'); if(!el) return;
+  const miss = dcMissing(dcReadProfile()); if(miss.length) showToast('Perfil incompleto (faltam: '+miss.join(', ')+'). Preencha em "Meus dados".', true);
+  el.className = dcMedia().layout==='min' ? 'layout-min' : '';
   el.innerHTML = sheetsHtml;
   const clear = ()=>{ el.innerHTML=''; window.removeEventListener('afterprint', clear); };
   window.addEventListener('afterprint', clear);
@@ -3715,7 +3819,7 @@ function dcReadPatient(){
 }
 function dcReadProfile(){
   const g=id=>((document.getElementById(id)||{}).value||'').trim();
-  const pf = { nome:g('mdNome'), crm:g('mdCrm'), rqe:g('mdRqe'), contato:g('mdContato'), unidade:g('mdUnidade'), endereco:g('mdEndereco'), cidade:g('mdCidade') };
+  const pf = { nome:g('mdNome'), crm:g('mdCrm'), esp:g('mdEsp'), rqe:g('mdRqe'), contato:g('mdContato'), unidade:g('mdUnidade'), endereco:g('mdEndereco'), cidade:g('mdCidade') };
   if(pf.nome||pf.crm||pf.unidade) dcSaveProfile(pf);
   return pf;
 }
@@ -3831,8 +3935,9 @@ function renderDocs(){
   <details class="dcbox" id="dcPerfil"${pf.nome?'':' open'}><summary>👤 Meus dados (cabeçalho e assinatura) — ficam só neste aparelho</summary>
     <div class="calcgrid">
       ${dcField('mdNome','Nome do médico','Dr(a). ...',pf.nome)}${dcField('mdCrm','CRM/UF','CRM-SP 000000',pf.crm)}${dcField('mdRqe','RQE (se houver)','',pf.rqe)}
-      ${dcField('mdContato','Telefone e/ou e-mail','(19) 0000-0000',pf.contato)}${dcField('mdUnidade','Unidade / consultório','Santa Casa de ...',pf.unidade)}${dcField('mdEndereco','Endereço profissional','Rua ..., nº, cidade',pf.endereco)}${dcField('mdCidade','Cidade (local da data)','Capivari',pf.cidade)}
-    </div></details>
+      ${dcField('mdContato','Telefone e/ou e-mail','(19) 0000-0000',pf.contato)}${dcField('mdUnidade','Unidade / consultório','Santa Casa de ...',pf.unidade)}${dcField('mdEndereco','Endereço profissional','Rua ..., nº, cidade',pf.endereco)}${dcField('mdCidade','Cidade (local da data)','Capivari',pf.cidade)}${dcField('mdEsp','Especialidade / título (opcional)','Ex: Clínico geral',pf.esp)}
+    </div>${dcExtrasHtml(pf)}</details>
+  <div class="sep-note warn" id="dcMiss" style="display:none"></div>
   <details class="dcbox" open><summary>🧍 Paciente</summary>
     <div class="calcgrid">${dcField('ptNome','Nome do paciente','')}${dcField('ptCpf','CPF (opcional)','')}<div class="calcfield"><label for="ptData">Data</label><input type="date" id="ptData" value="${dcTodayISO()}"></div></div></details>
   <div class="sep-tabs dctabs" role="tablist">
@@ -3840,10 +3945,12 @@ function renderDocs(){
     <button class="dctab" data-t="ex" type="button">🧪 Exames</button>
     <button class="dctab" data-t="at" type="button">📄 Atestados</button>
     <button class="dctab" data-t="enc" type="button">🏥 Encaminhar</button>
+    <button class="dctab" data-t="ip" type="button">🔁 Passagem</button>
   </div>
   <div id="dcPane"></div>`;
   area.querySelectorAll('#dcPerfil input').forEach(i=>i.addEventListener('input', ()=>dcSaveProfile(dcReadProfile())));
   area.querySelectorAll('.dctab').forEach(b=>b.onclick=()=>{ DOCS.tab=b.dataset.t; dcShowTab(); });
+  dcWireExtras(area);
   dcShowTab();
 }
 function dcField(id,label,ph,val){ return `<div class="calcfield"><label for="${id}">${label}</label><input type="text" id="${id}" placeholder="${escA(ph||'')}" value="${escA(val||'')}" autocomplete="off"></div>`; }
@@ -3881,6 +3988,8 @@ function dcShowTab(){
     document.getElementById('exClear').onclick = ()=>{ DOCS.exams.length=0; exRender(); };
   } else if(DOCS.tab==='enc'){
     encShow(pane);
+  } else if(DOCS.tab==='ip'){
+    ipShow(pane);
   } else {
     pane.innerHTML = `<div class="sep-note crit"><b>Atenção:</b> pela Resolução CFM 2.382/2024, o atestado médico válido deve ser emitido pela plataforma <b>Atesta CFM</b> (ou sistema integrado a ela). Use os modelos abaixo como <b>texto-base</b> para colar lá; o PDF gerado aqui é um rascunho/modelo e não comprova autenticidade.</div>
       <div class="calcgrid">
@@ -3965,7 +4074,7 @@ function encText(){
   L.push('DIAGNÓSTICO(S): '+U('enDx')); L.push('CONDUTA: '+U('enConduta')); L.push('MOTIVO DO ENCAMINHAMENTO: '+U('enMotivo'));
   return L.join('\n');
 }
-function encShow(pane){
+function encGuia(pane){
   DOCS.enc = DOCS.enc || {};
   const st = DOCS.enc; if(st.enDx===undefined && DOCS.dx) st.enDx = DOCS.dx;
   const c = encCfg();
@@ -3990,9 +4099,9 @@ function encShow(pane){
   document.getElementById('enPull').onclick = ()=>{ if(!DOCS.exams.length){ showToast('Nenhum exame na aba Exames', true); return; } const el=document.getElementById('enExames'); el.value = DOCS.exams.join(', '); st.enExames = el.value; };
   document.getElementById('enCopy').onclick = e=>dcCopy(encText(), e.target);
   document.getElementById('enPdf').onclick = ()=>dcPrint(encPrintHtml());
-  document.getElementById('enClear').onclick = ()=>{ DOCS.enc = {}; encShow(pane); };
+  document.getElementById('enClear').onclick = ()=>{ DOCS.enc = {}; encGuia(pane); };
   Object.keys(ENC_DEF).forEach(k=>{ if(k==='logo') return; const el=document.getElementById('ec_'+k); if(el) el.addEventListener('input', ()=>{ const cc=encCfg(); cc[k]=el.value; encSaveCfg(cc); }); });
-  document.getElementById('ecReset').onclick = ()=>{ dcSafe(()=>localStorage.removeItem(ENC_KEY)); encShow(pane); };
+  document.getElementById('ecReset').onclick = ()=>{ dcSafe(()=>localStorage.removeItem(ENC_KEY)); encGuia(pane); };
   document.getElementById('ecLogo').onchange = e=>{
     const f = e.target.files && e.target.files[0]; if(!f) return;
     const rd = new FileReader();
@@ -4011,6 +4120,343 @@ function rxFinishHtml(html, sec){
   });
 }
 renderDocs();
+
+/* ============ RODADA 1: escores novos, anestésico local e conversões rápidas ============ */
+function r1Plain(html){ const d=document.createElement('div'); d.innerHTML=html; return (d.textContent||'').replace(/\s+/g,' ').trim(); }
+
+/* ---- construtor genérico de escore por lista de critérios ----
+   cfg: {id,title,desc,pre,items:[{k,label,pts}|{k,label,opts:[[v,texto]]}],ttl,interp(total,st)->{html,cls},src,max}
+*/
+function checkCalc(area, cfg){
+  const checks = cfg.items.filter(i=>!i.opts).map(i=>`<label><input type="checkbox" id="${cfg.id}_${i.k}"> ${i.label}${i.pts!=null?` <span class="ckpts">(+${i.pts})</span>`:''}</label>`).join('');
+  const sels = cfg.items.filter(i=>i.opts).map(i=>`<div class="calcfield"><label for="${cfg.id}_${i.k}">${i.label}</label><select id="${cfg.id}_${i.k}">${i.opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select></div>`).join('');
+  area.innerHTML = `<div class="calccard"><h2>${cfg.title}</h2><div class="calcdesc">${cfg.desc}</div>${cfg.pre||''}
+    ${sels?`<div class="calcgrid">${sels}</div>`:''}
+    ${checks?`<div class="ins-flags"><div class="ttl">${cfg.ttl||'Critérios presentes'}</div>${checks}</div>`:''}
+    <button class="calcbtn" id="${cfg.id}Btn">Calcular</button><div id="${cfg.id}Res"></div></div>`;
+  document.getElementById(cfg.id+'Btn').onclick = ()=>{
+    let total = 0; const st = {};
+    cfg.items.forEach(i=>{
+      const el = document.getElementById(cfg.id+'_'+i.k);
+      if(i.opts){ st[i.k] = parseFloat(el.value)||0; total += st[i.k]; }
+      else { st[i.k] = el.checked; if(el.checked) total += (i.pts==null?1:i.pts); }
+    });
+    const r = cfg.interp(total, st);
+    const res = document.getElementById(cfg.id+'Res');
+    res.innerHTML = calcResultHtml(r.score!=null?r.score:total, cfg.max||null, r.html, r.cls) +
+      `<div class="rxtools"><button class="cp-btn" type="button" id="${cfg.id}Cp">Copiar resultado</button></div>` +
+      (cfg.src?`<details class="sep-sources"><summary>Fonte e limitações</summary>${cfg.src}</details>`:'');
+    document.getElementById(cfg.id+'Cp').onclick = e=>dcCopy(cfg.title.toUpperCase()+': '+(r.score!=null?r.score:total)+(cfg.max?'/'+cfg.max:'')+' — '+r1Plain(r.html), e.target);
+  };
+}
+
+/* ---- PERC ---- */
+function calcPerc(area){
+  checkCalc(area, {id:'pc', title:'PERC (exclusão de TEP)', max:8,
+    desc:'Regra para <b>excluir TEP sem D-dímero</b> quando a probabilidade pré-teste clínica já é <b>baixa</b> (gestalt &lt;15%). Não use se a suspeita de TEP não for baixa.',
+    items:[{k:'a',label:'Idade ≥50 anos'},{k:'b',label:'FC ≥100 bpm'},{k:'c',label:'SatO₂ &lt;95% em ar ambiente'},{k:'d',label:'Edema unilateral de perna'},{k:'e',label:'Hemoptise'},{k:'f',label:'Cirurgia ou trauma com internação/anestesia geral nas últimas 4 semanas'},{k:'g',label:'TEP ou TVP prévios'},{k:'h',label:'Uso de hormônio (anticoncepcional oral, estrogênio)'}],
+    ttl:'Marque os critérios PRESENTES',
+    interp:(t)=> t===0 ? {html:'<b>PERC negativo (0/8).</b> Com probabilidade pré-teste baixa, TEP pode ser considerado excluído sem D-dímero (risco residual estimado &lt;2%).', cls:'risk-low'}
+      : {html:`<b>PERC positivo (${t}/8).</b> A regra <b>não exclui</b> TEP: seguir com Wells/Geneva e D-dímero (ajustado à idade ou YEARS) conforme a probabilidade.`, cls:'risk-mod'},
+    src:'Kline et al., <i>J Thromb Haemost</i> 2004 e 2008 (derivação/validação). Aplicável só a pacientes com baixa suspeita; em populações com maior prevalência de TEP o desempenho cai. Critérios e limiar conforme descrição de memória do autor — conferir no artigo original antes de uso em protocolo institucional.'});
+}
+/* ---- sPESI ---- */
+function calcSpesi(area){
+  checkCalc(area, {id:'sp', title:'sPESI (TEP — gravidade)', max:6,
+    desc:'Versão simplificada do PESI para estratificar o risco de morte em 30 dias em TEP confirmado.',
+    items:[{k:'a',label:'Idade &gt;80 anos'},{k:'b',label:'Câncer (ativo ou histórico de câncer)'},{k:'c',label:'Insuficiência cardíaca ou doença pulmonar crônica'},{k:'d',label:'FC ≥110 bpm'},{k:'e',label:'PA sistólica &lt;100 mmHg'},{k:'f',label:'SatO₂ &lt;90%'}],
+    interp:(t)=> t===0 ? {html:'<b>Baixo risco</b> (mortalidade em 30 dias ≈1%). Antes de considerar tratamento ambulatorial, avaliar disfunção de VD/troponina e os critérios de Hestia, condição social e acesso ao anticoagulante.', cls:'risk-low'}
+      : {html:'<b>Risco não baixo</b> (mortalidade em 30 dias ≈11%). Internação e avaliação de VD/troponina; se instável, tratar como TEP de alto risco.', cls:'risk-high'},
+    src:'Jiménez et al., <i>Arch Intern Med</i> 2010 (sPESI); recomendação de combinar com imagem de VD e troponina: diretriz ESC 2019 de TEP. Percentuais aproximados, de memória.'});
+}
+/* ---- qSOFA ---- */
+function calcQsofa(area){
+  checkCalc(area, {id:'qs', title:'qSOFA', max:3,
+    desc:'Triagem rápida à beira do leito de pacientes com suspeita de infecção quanto ao risco de desfecho ruim.',
+    items:[{k:'a',label:'Frequência respiratória ≥22 irpm'},{k:'b',label:'Alteração do nível de consciência (Glasgow &lt;15)'},{k:'c',label:'PA sistólica ≤100 mmHg'}],
+    interp:(t)=> t>=2 ? {html:'<b>qSOFA ≥2:</b> maior risco de óbito/UTI. Investigar disfunção orgânica (lactato, SOFA) e iniciar o pacote de sepse sem demora.', cls:'risk-high'}
+      : {html:`<b>qSOFA ${t}:</b> não exclui sepse. Se há suspeita clínica, avaliar lactato e SOFA mesmo com qSOFA &lt;2.`, cls:t===1?'risk-mod':'risk-low'},
+    src:'Singer et al., <i>JAMA</i> 2016 (Sepsis-3). A Surviving Sepsis Campaign 2021 <b>recomenda não usar o qSOFA como ferramenta única de triagem</b> (preferir SIRS, NEWS ou MEWS); aqui ele serve de apoio, não de critério de exclusão.'});
+}
+/* ---- Alvarado ---- */
+function calcAlvarado(area){
+  checkCalc(area, {id:'av', title:'Escore de Alvarado (MANTRELS)', max:10,
+    desc:'Probabilidade de apendicite aguda em dor abdominal.',
+    items:[{k:'a',label:'Migração da dor para fossa ilíaca direita',pts:1},{k:'b',label:'Anorexia',pts:1},{k:'c',label:'Náuseas ou vômitos',pts:1},{k:'d',label:'Dor à palpação em fossa ilíaca direita',pts:2},{k:'e',label:'Descompressão brusca dolorosa (Blumberg)',pts:1},{k:'f',label:'Temperatura ≥37,3 °C',pts:1},{k:'g',label:'Leucocitose &gt;10.000/mm³',pts:2},{k:'h',label:'Desvio à esquerda (neutrófilos &gt;75%)',pts:1}],
+    interp:(t)=> t<=4 ? {html:'<b>Baixa probabilidade (1–4).</b> Apendicite pouco provável; observar, reavaliar e buscar outros diagnósticos. Imagem se dúvida persistir.', cls:'risk-low'}
+      : t<=6 ? {html:'<b>Intermediária (5–6).</b> Apendicite possível: exame de imagem (US/TC) e avaliação da cirurgia.', cls:'risk-mod'}
+      : {html:'<b>Alta probabilidade (7–10).</b> Avaliação cirúrgica; imagem conforme o serviço e o perfil do paciente.', cls:'risk-high'},
+    src:'Alvarado, <i>Ann Emerg Med</i> 1986. Desempenha pior em mulheres em idade fértil, crianças e idosos; não substitui imagem nesses grupos. Faixas conforme uso habitual (≤4 / 5–6 / ≥7).'});
+}
+/* ---- Canadian CT Head Rule ---- */
+function calcCchr(area){
+  checkCalc(area, {id:'cc', title:'Canadian CT Head Rule', max:null,
+    desc:'Indicação de TC de crânio no <b>traumatismo cranioencefálico leve</b> (Glasgow 13–15) com perda de consciência, amnésia ou desorientação testemunhadas.',
+    pre:'<div class="sep-note warn"><b>Não se aplica</b> a: &lt;16 anos, uso de anticoagulante ou distúrbio de coagulação, déficit neurológico focal, fratura de crânio óbvia, instabilidade dos sinais vitais, convulsão pós-trauma, gestante, trauma sem evidência clara ou Glasgow &lt;13.</div>',
+    ttl:'Critérios presentes',
+    items:[{k:'a',label:'<b>ALTO RISCO:</b> Glasgow &lt;15 após 2 h do trauma',pts:100},{k:'b',label:'<b>ALTO RISCO:</b> suspeita de fratura aberta ou com afundamento',pts:100},{k:'c',label:'<b>ALTO RISCO:</b> sinal de fratura de base de crânio (hemotímpano, olhos de guaxinim, otorreia/rinorreia liquórica, sinal de Battle)',pts:100},{k:'d',label:'<b>ALTO RISCO:</b> vômitos ≥2 episódios',pts:100},{k:'e',label:'<b>ALTO RISCO:</b> idade ≥65 anos',pts:100},{k:'f',label:'<b>RISCO MÉDIO:</b> amnésia retrógrada ≥30 min antes do impacto',pts:1},{k:'g',label:'<b>RISCO MÉDIO:</b> mecanismo perigoso (pedestre atropelado, ejeção de veículo, queda de altura ≥1 m ou ≥5 degraus)',pts:1}],
+    interp:(t)=> t>=100 ? {score:'POSITIVO', html:'<b>Alto risco:</b> TC de crânio indicada (regra com sensibilidade de 100% para necessidade de intervenção neurocirúrgica no estudo original).', cls:'risk-high'}
+      : t>=1 ? {score:'POSITIVO', html:'<b>Risco médio:</b> TC de crânio indicada (regra para lesão cerebral clinicamente importante).', cls:'risk-mod'}
+      : {score:'NEGATIVO', html:'<b>Regra negativa:</b> TC não é obrigatória por este critério. Considerar observação, orientações de retorno e adulto acompanhante; usar julgamento clínico em caso de dúvida.', cls:'risk-low'},
+    src:'Stiell et al., <i>Lancet</i> 2001; critérios conferidos na descrição do AAFP (2001). Altura do mecanismo perigoso: no original, queda de ≥3 pés (≈1 m) ou 5 degraus. Em idosos e uso de antitrombóticos, o limiar para TC deve ser mais baixo; a regra não cobre esses casos.'});
+}
+/* ---- ABCD² ---- */
+function calcAbcd2(area){
+  checkCalc(area, {id:'ab', title:'ABCD² (risco após AIT)', max:7,
+    desc:'Risco de AVC nos 2, 7 e 90 dias após um ataque isquêmico transitório.',
+    items:[{k:'age',label:'Idade ≥60 anos',pts:1},{k:'bp',label:'PA ≥140/90 mmHg na primeira avaliação',pts:1},{k:'dm',label:'Diabetes',pts:1},
+      {k:'cl',label:'Características clínicas',opts:[[0,'Outras (0)'],[1,'Fala alterada sem fraqueza (1)'],[2,'Fraqueza unilateral (2)']]},
+      {k:'du',label:'Duração dos sintomas',opts:[[0,'&lt;10 min (0)'],[1,'10–59 min (1)'],[2,'≥60 min (2)']]}],
+    ttl:'Fatores',
+    interp:(t)=> t<=3 ? {html:'<b>Baixo risco (0–3)</b> — AVC em 2 dias ≈1%. Mesmo assim, TODO AIT merece investigação (imagem cerebral, vascular, ECG) em até 24–48 h.', cls:'risk-low'}
+      : t<=5 ? {html:'<b>Risco moderado (4–5)</b> — AVC em 2 dias ≈4%. Internação/observação e investigação urgente.', cls:'risk-mod'}
+      : {html:'<b>Alto risco (6–7)</b> — AVC em 2 dias ≈8%. Internação e investigação imediata.', cls:'risk-high'},
+    src:'Johnston et al., <i>Lancet</i> 2007. <b>Não use o escore isolado para decidir alta</b>: ele não captura estenose carotídea, fibrilação atrial nem achados de imagem. Percentuais aproximados, de memória.'});
+}
+/* ---- HAS-BLED ---- */
+function calcHasbled(area){
+  checkCalc(area, {id:'hb', title:'HAS-BLED (risco de sangramento)', max:9,
+    desc:'Risco de sangramento maior em pacientes com fibrilação atrial candidatos à anticoagulação.',
+    items:[{k:'h',label:'Hipertensão não controlada (PA sistólica &gt;160 mmHg)'},{k:'r',label:'Função renal alterada (diálise, transplante ou creatinina &gt;2,26 mg/dL)'},{k:'l',label:'Função hepática alterada (cirrose ou bilirrubina &gt;2× e AST/ALT &gt;3× o limite)'},{k:'s',label:'AVC prévio'},{k:'b',label:'Sangramento prévio ou predisposição (anemia, trombocitopenia)'},{k:'i',label:'INR lábil (TTR &lt;60%) — apenas se em uso de varfarina'},{k:'e',label:'Idade &gt;65 anos'},{k:'d1',label:'Uso de antiagregante ou AINE'},{k:'d2',label:'Etilismo (≥8 doses/semana)'}],
+    interp:(t)=> t>=3 ? {html:'<b>Risco alto (≥3).</b> Não contraindica anticoagulação por si só: corrigir fatores modificáveis (PA, AINE/antiagregante, álcool, INR lábil) e programar reavaliação mais frequente.', cls:'risk-high'}
+      : {html:`<b>Risco ${t<=1?'baixo':'moderado'} (${t}).</b> Corrigir fatores modificáveis; o benefício da anticoagulação costuma superar o risco quando CHA₂DS₂-VASc indica.`, cls:t<=1?'risk-low':'risk-mod'},
+    src:'Pisters et al., <i>Chest</i> 2010. As diretrizes de FA da ESC orientam usar o escore para <b>identificar fatores modificáveis</b>, não para negar anticoagulação. Complementa o CHA₂DS₂-VASc.'});
+}
+
+/* ---- Glasgow-Blatchford ---- */
+function gbsScore(p){
+  const bun = p.ureiaUn==='bun' ? p.ureia : p.ureia/2.14; // limiares originais: 6,5/8/10/25 mmol/L de ureia = BUN 18,2/22,4/28/70 mg/dL
+  const ur = bun>=70?6 : bun>=28?4 : bun>=22.4?3 : bun>=18.2?2 : 0;
+  let hb = 0;
+  if(p.sexo==='m'){ hb = p.hb<10?6 : p.hb<12?3 : p.hb<13?1 : 0; }
+  else { hb = p.hb<10?6 : p.hb<12?1 : 0; }
+  const pas = p.pas<90?3 : p.pas<100?2 : p.pas<110?1 : 0;
+  const fc = p.fc>=100?1:0, mel = p.melena?1:0, sin = p.sincope?2:0, fig = p.figado?2:0, ic = p.ic?2:0;
+  return {total: ur+hb+pas+fc+mel+sin+fig+ic, parts:{ur,hb,pas,fc,mel,sin,fig,ic}};
+}
+function calcGbs(area){
+  area.innerHTML = `<div class="calccard"><h2>Glasgow-Blatchford (HDA)</h2>
+    <div class="calcdesc">Estratifica a necessidade de intervenção (transfusão, endoscopia terapêutica, cirurgia) na hemorragia digestiva alta e identifica pacientes de risco muito baixo.</div>
+    <div class="calcgrid">
+      ${selIn('gbSexo','Sexo',[{v:'m',t:'Masculino'},{v:'f',t:'Feminino'}])}
+      ${numIn('gbHb','Hemoglobina (g/dL)','Ex: 9,8',0.1)}
+      ${numIn('gbUreia','Ureia','Ex: 72',1)}
+      ${selIn('gbUn','Unidade da ureia',[{v:'ureia',t:'Ureia (mg/dL) — laudo usual no Brasil'},{v:'bun',t:'BUN (mg/dL)'}])}
+      ${numIn('gbPas','PA sistólica (mmHg)','Ex: 104',1)}
+      ${numIn('gbFc','Frequência cardíaca (bpm)','Ex: 108',1)}
+    </div>
+    <div class="ins-flags"><div class="ttl">Outros</div>
+      <label><input type="checkbox" id="gbMel"> Melena</label><label><input type="checkbox" id="gbSin"> Síncope</label>
+      <label><input type="checkbox" id="gbFig"> Doença hepática (atual ou prévia)</label><label><input type="checkbox" id="gbIc"> Insuficiência cardíaca</label></div>
+    <button class="calcbtn" id="gbBtn">Calcular</button><div id="gbRes"></div></div>`;
+  document.getElementById('gbBtn').onclick = ()=>{
+    const res = document.getElementById('gbRes');
+    const p = {sexo:document.getElementById('gbSexo').value, hb:readNum('gbHb'), ureia:readNum('gbUreia'), ureiaUn:document.getElementById('gbUn').value, pas:readNum('gbPas'), fc:readNum('gbFc'),
+      melena:document.getElementById('gbMel').checked, sincope:document.getElementById('gbSin').checked, figado:document.getElementById('gbFig').checked, ic:document.getElementById('gbIc').checked};
+    if(p.hb==null||p.ureia==null||p.pas==null||p.fc==null||p.hb<=0||p.hb>25||p.ureia<0||p.pas<40||p.pas>300||p.fc<20||p.fc>300){ res.innerHTML = calcResultHtml('—', null, 'Informe hemoglobina, ureia, PA sistólica e FC em valores válidos.', 'risk-mod'); return; }
+    const r = gbsScore(p);
+    const cls = r.total===0?'risk-low':(r.total<=5?'risk-mod':'risk-high');
+    let interp = r.total===0 ? '<b>Risco muito baixo (0).</b> Nesta situação a literatura admite manejo ambulatorial, desde que estável, sem sinais de gravidade e com seguimento garantido.'
+      : r.total===1 ? '<b>Risco baixo (1).</b> Diretrizes recentes (ACG 2021, ESGE 2021) consideram 0–1 como candidatos a alta com endoscopia ambulatorial, se estáveis e sem outros fatores de risco.'
+      : r.total<=5 ? `<b>Risco intermediário (${r.total}).</b> Internação/observação e endoscopia nas primeiras 24 h.`
+      : `<b>Risco alto (${r.total}).</b> No estudo de validação, escore ≥6 teve mais de 50% de chance de necessitar de intervenção. Internação, acesso calibroso, reposição guiada e endoscopia precoce.`;
+    let html = calcResultHtml(r.total, 23, interp, cls);
+    const q=r.parts;
+    html += `<div class="ins-sec"><h4>Pontos por item</h4><table class="ins-table"><tbody><tr><td>Ureia</td><td>${q.ur}</td></tr><tr><td>Hemoglobina</td><td>${q.hb}</td></tr><tr><td>PA sistólica</td><td>${q.pas}</td></tr><tr><td>FC ≥100</td><td>${q.fc}</td></tr><tr><td>Melena</td><td>${q.mel}</td></tr><tr><td>Síncope</td><td>${q.sin}</td></tr><tr><td>Doença hepática</td><td>${q.fig}</td></tr><tr><td>Insuficiência cardíaca</td><td>${q.ic}</td></tr></tbody></table></div>`;
+    html += `<div class="rxtools"><button class="cp-btn" type="button" id="gbCp">Copiar resultado</button></div><details class="sep-sources"><summary>Fonte e limitações</summary>Blatchford et al., <i>Lancet</i> 2000. Pontuação conferida na página da Wikipédia (Glasgow-Blatchford score). Limiares de ureia em mmol/L (6,5 / 8 / 10 / 25) convertidos para <b>ureia em mg/dL</b> (×6: 39 / 48 / 60 / 150); BUN × 2,14 = ureia. Valor de corte 0–1 conforme diretrizes ACG/ESGE 2021 — citado de memória, conferir na diretriz vigente. Não se aplica a hemorragia varicosa sem considerar protocolo próprio (terlipressina, antibiótico, endoscopia em até 12 h).</details>`;
+    res.innerHTML = html;
+    document.getElementById('gbCp').onclick = e=>dcCopy('GLASGOW-BLATCHFORD: '+r.total+'/23 — '+r1Plain(interp), e.target);
+  };
+}
+
+/* ============ ANESTÉSICO LOCAL — dose máxima ============ */
+const LA_DATA = {
+  lido:{ n:'Lidocaína', plain:{mgkg:4.5, abs:300}, epi:{mgkg:7, abs:500}, conc:[0.5,1,2] },
+  bupi:{ n:'Bupivacaína', plain:{mgkg:2, abs:175}, epi:{mgkg:3, abs:225}, conc:[0.25,0.5,0.75] },
+  ropi:{ n:'Ropivacaína', plain:{mgkg:3, abs:200}, epi:{mgkg:3, abs:200}, conc:[0.2,0.5,0.75,1] }
+};
+function laMax(drug, epi, peso, concPct){
+  const d = LA_DATA[drug]; const r = epi ? d.epi : d.plain;
+  const porPeso = r.mgkg*peso; const mg = Math.min(porPeso, r.abs);
+  return { mg, ml: mg/(concPct*10), cap: porPeso>r.abs, mgkg:r.mgkg, abs:r.abs };
+}
+function calcAnest(area){
+  area.innerHTML = `<div class="calccard"><h2>Anestésico local — dose máxima</h2>
+    <div class="calcdesc">Dose máxima <b>por procedimento</b> (infiltração/bloqueio) pelo peso, já limitada pelo teto absoluto, e o volume correspondente à concentração usada.</div>
+    <div class="calcgrid">
+      ${numIn('laPeso','Peso (kg)','Ex: 70',0.1,'Em obesos, usar peso ideal/magro.')}
+      ${selIn('laDrug','Anestésico',[{v:'lido',t:'Lidocaína'},{v:'bupi',t:'Bupivacaína'},{v:'ropi',t:'Ropivacaína'}])}
+      ${selIn('laEpi','Vasoconstritor (adrenalina)',[{v:'0',t:'Sem vasoconstritor'},{v:'1',t:'Com vasoconstritor'}])}
+      ${selIn('laConc','Concentração',[{v:'1',t:'1%'}])}
+    </div>
+    <button class="calcbtn" id="laBtn">Calcular</button><div id="laRes"></div></div>`;
+  const dSel = document.getElementById('laDrug'), cSel = document.getElementById('laConc');
+  const fillConc = ()=>{ const arr = LA_DATA[dSel.value].conc; cSel.innerHTML = arr.map(c=>`<option value="${c}">${String(c).replace('.',',')}% (${String(c*10).replace('.',',')} mg/mL)</option>`).join(''); cSel.value = String(arr.includes(dSel.value==='lido'?2:0.5) ? (dSel.value==='lido'?2:0.5) : arr[0]); };
+  dSel.onchange = fillConc; fillConc();
+  document.getElementById('laBtn').onclick = ()=>{
+    const res = document.getElementById('laRes'); const peso = readNum('laPeso');
+    if(!peso || peso<=0 || peso>350){ res.innerHTML = calcResultHtml('—', null, 'Informe o peso (kg).', 'risk-mod'); return; }
+    const drug = dSel.value, epi = document.getElementById('laEpi').value==='1', conc = parseFloat(cSel.value);
+    const r = laMax(drug, epi, peso, conc);
+    const html = calcResultHtml(fmt1(r.mg)+' mg  ≈  '+fmt1(r.ml)+' mL', null,
+      `<b>${LA_DATA[drug].n} ${String(conc).replace('.',',')}%${epi?' com vasoconstritor':' sem vasoconstritor'}</b>: ${String(r.mgkg).replace('.',',')} mg/kg${r.cap?` → limitado ao teto de <b>${r.abs} mg</b>`:` (teto ${r.abs} mg)`}.`,
+      'risk-mod');
+    res.innerHTML = html + `<div class="sep-note warn"><b>Segurança:</b> aspirar antes de injetar e injetar fracionado; <b>não somar doses completas de dois anestésicos</b> (efeito aditivo: use frações que somem 100%); reduzir dose em hepatopatia, IC, idoso e uso de β-bloqueador. <b>Sem vasoconstritor</b> em extremidades terminais (dedos, pênis, orelha, nariz). Sinais de toxicidade (LAST): gosto metálico, parestesia perioral, zumbido, agitação → convulsão, arritmia, parada. Tratar: parar a injeção, pedir ajuda, via aérea/O₂, benzodiazepínico para convulsão e <b>emulsão lipídica 20%: 1,5 mL/kg IV em 1 min, depois 0,25 mL/kg/min</b> (repetir bolus até 2× se persistir colapso; máx. ~12 mL/kg). Evitar vasopressina e, em parada, usar adrenalina em doses reduzidas (≤1 mcg/kg).</div>
+      <div class="rxtools"><button class="cp-btn" type="button" id="laCp">Copiar</button></div>
+      <details class="sep-sources"><summary>Fontes e limitações</summary>Tetos e mg/kg conferidos na Tabela 2 de revisão em PMC (PMC7058875): lidocaína 4,5 mg/kg (máx. 300–350 mg) sem e &lt;7 mg/kg (máx. 300–500 mg) com adrenalina; bupivacaína 2 mg/kg ou 175 mg sem e 225 mg com adrenalina; ropivacaína 2,9 mg/kg (200 mg). Aqui: lidocaína 300/500 mg; bupivacaína 175/225 mg (3 mg/kg com adrenalina é prática comum, <b>valor não confirmado nesta fonte</b>); ropivacaína 3 mg/kg com teto de 200 mg sem diferença por adrenalina. Emulsão lipídica conforme WikEM (Dillane &amp; Finucane, <i>Can J Anaesth</i> 2010) e o checklist da ASRA — doses de adrenalina na parada (≤1 mcg/kg) e a lista de condutas citadas de memória. Seguir o protocolo da sua unidade. Bupivacaína hiperbárica (raquianestesia) não é para infiltração.</details>`;
+    document.getElementById('laCp').onclick = e=>dcCopy(`DOSE MÁXIMA ${LA_DATA[drug].n.toUpperCase()} ${String(conc).replace('.',',')}%${epi?' C/ VASO':' S/ VASO'} — ${fmt1(peso)} KG: ${fmt1(r.mg)} MG (≈ ${fmt1(r.ml)} ML)`, e.target);
+  };
+}
+
+/* ============ CONVERSÕES RÁPIDAS ============ */
+const CV_SOL = [
+  {n:'NaCl 20% (3,4 mEq/mL)', ion:'Na⁺', eq:3.42}, {n:'NaCl 0,9% (0,154 mEq/mL)', ion:'Na⁺', eq:0.154},
+  {n:'KCl 19,1% (2,56 mEq/mL)', ion:'K⁺', eq:2.56}, {n:'NaHCO₃ 8,4% (1 mEq/mL)', ion:'HCO₃⁻/Na⁺', eq:1},
+  {n:'Gluconato de cálcio 10% (0,465 mEq/mL)', ion:'Ca²⁺', eq:0.465}, {n:'Cloreto de cálcio 10% (1,36 mEq/mL)', ion:'Ca²⁺', eq:1.36},
+  {n:'Sulfato de magnésio 50% (4,06 mEq/mL)', ion:'Mg²⁺', eq:4.06}, {n:'Sulfato de magnésio 10% (0,81 mEq/mL)', ion:'Mg²⁺', eq:0.81}
+];
+function calcConv(area){
+  area.innerHTML = `<div class="calccard"><h2>Conversões rápidas</h2>
+    <div class="calcdesc">Contas do dia a dia da prescrição. Resultado aparece enquanto você digita.</div>
+    <div class="ins-sec"><h4>Concentração: % ↔ mg/mL</h4><div class="calcgrid">${numIn('cvPct','Concentração (%)','Ex: 2',0.01)}</div><div id="cvPctR" class="cvout"></div></div>
+    <div class="ins-sec"><h4>Dose (mg) → volume (mL)</h4><div class="calcgrid">${numIn('cvDose','Dose desejada (mg)','Ex: 500',0.01)}${numIn('cvConc','Concentração (mg/mL)','Ex: 100',0.01)}</div><div id="cvVolR" class="cvout"></div></div>
+    <div class="ins-sec"><h4>Regra de 3</h4><div class="r3">${numIn('r3a','A','',0.0001)}<span>está para</span>${numIn('r3b','B','',0.0001)}<span>assim como</span>${numIn('r3c','C','',0.0001)}<span>está para X</span></div><div id="r3R" class="cvout"></div></div>
+    <div class="ins-sec"><h4>Gotejamento ↔ mL/h</h4><div class="calcgrid">${numIn('cvGt','Gotas por minuto','Ex: 30',1)}${numIn('cvMlh','mL por hora','Ex: 90',1)}</div><div id="cvGtR" class="cvout"></div></div>
+    <div class="ins-sec"><h4>Soluções de eletrólito: mL ↔ mEq</h4><div class="calcgrid">${selIn('cvSol','Solução',CV_SOL.map((s,i)=>({v:i,t:s.n})))}${numIn('cvMl','Volume (mL)','Ex: 10',0.1)}${numIn('cvEq','ou mEq desejados','Ex: 20',0.1)}</div><div id="cvSolR" class="cvout"></div></div>
+    <div class="ins-sec"><h4>Unidades laboratoriais e gerais</h4><div class="calcgrid">${numIn('cvCr','Creatinina (mg/dL)','Ex: 1,2',0.01)}${numIn('cvGli','Glicose (mg/dL)','Ex: 180',1)}${numIn('cvCa','Cálcio total (mg/dL)','Ex: 8,4',0.1)}${numIn('cvTc','Temperatura (°C)','Ex: 38,5',0.1)}${numIn('cvKg','Peso (kg)','Ex: 70',0.1)}</div><div id="cvUnR" class="cvout"></div></div>
+    <details class="sep-sources"><summary>Fatores usados</summary>mg/mL = % × 10. Gotejamento: 20 macrogotas = 1 mL (mL/h = gts/min × 3); microgotas: 60/mL (gts/min = mL/h). mEq/mL calculado pelo peso molecular de cada sal (NaCl 58,4; KCl 74,55; NaHCO₃ 84; gluconato de Ca 430; CaCl₂·2H₂O 147; MgSO₄·7H₂O 246,5) — confira a concentração impressa na ampola. Creatinina: mg/dL × 88,4 = µmol/L. Glicose: mg/dL ÷ 18 = mmol/L. Cálcio: mg/dL ÷ 4,008 = mmol/L. Peso: kg × 2,205 = lb.</details></div>`;
+  const S = (id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
+  const f=(n,d)=>String(Math.round(n*Math.pow(10,d))/Math.pow(10,d)).replace('.',',');
+  const upd = ()=>{
+    const pct=readNum('cvPct'); S('cvPctR', pct!=null?`<b>${f(pct,3)}%</b> = <b>${f(pct*10,2)} mg/mL</b>`:'');
+    const d=readNum('cvDose'), c=readNum('cvConc'); S('cvVolR', (d!=null&&c)?`<b>${f(d/c,2)} mL</b>`:'');
+    const a=readNum('r3a'), b=readNum('r3b'), cc=readNum('r3c'); S('r3R', (a&&b!=null&&cc!=null)?`X = <b>${f(b*cc/a,4)}</b>`:'');
+    const gt=readNum('cvGt'), mh=readNum('cvMlh'); let g=''; if(gt!=null) g+=`${f(gt,1)} gts/min = <b>${f(gt*3,1)} mL/h</b> (macro) · `; if(mh!=null) g+=`${f(mh,1)} mL/h = <b>${f(mh/3,1)} gts/min</b> (macro) ou <b>${f(mh,1)} mcgts/min</b> (micro)`; S('cvGtR', g.replace(/ · $/,''));
+    const s=CV_SOL[parseInt(document.getElementById('cvSol').value,10)], ml=readNum('cvMl'), eq=readNum('cvEq'); let h=''; if(ml!=null) h+=`${f(ml,1)} mL = <b>${f(ml*s.eq,2)} mEq</b> de ${s.ion}`; if(eq!=null){ h+=(h?' · ':'')+`${f(eq,1)} mEq = <b>${f(eq/s.eq,2)} mL</b>`; } S('cvSolR', h);
+    const cr=readNum('cvCr'), gl=readNum('cvGli'), ca=readNum('cvCa'), tc=readNum('cvTc'), kg=readNum('cvKg'); const u=[];
+    if(cr!=null) u.push(`Creatinina ${f(cr,2)} mg/dL = <b>${f(cr*88.4,0)} µmol/L</b>`); if(gl!=null) u.push(`Glicose ${f(gl,0)} mg/dL = <b>${f(gl/18,1)} mmol/L</b>`); if(ca!=null) u.push(`Cálcio ${f(ca,1)} mg/dL = <b>${f(ca/4.008,2)} mmol/L</b>`);
+    if(tc!=null) u.push(`${f(tc,1)} °C = <b>${f(tc*9/5+32,1)} °F</b>`); if(kg!=null) u.push(`${f(kg,1)} kg = <b>${f(kg*2.205,1)} lb</b>`); S('cvUnR', u.join('<br>'));
+  };
+  area.querySelectorAll('input,select').forEach(i=>{ i.addEventListener('input', upd); i.addEventListener('change', upd); });
+}
+
+/* ============ RODADA 1 (documentos): modelo livre de encaminhamento e passagem de plantão I-PASS ============ */
+function encShow(pane){
+  DOCS.encModel = DOCS.encModel || 'guia';
+  pane.innerHTML = `<div class="calcgrid"><div class="calcfield"><label for="encModel">Modelo de encaminhamento</label><select id="encModel"><option value="guia"${DOCS.encModel==='guia'?' selected':''}>Guia para Referência (SUDS-SP — Capivari)</option><option value="livre"${DOCS.encModel==='livre'?' selected':''}>Relatório de encaminhamento / transferência (livre)</option></select></div></div><div id="encBody"></div>`;
+  const body = document.getElementById('encBody');
+  const go = ()=>{ DOCS.encModel = document.getElementById('encModel').value; if(DOCS.encModel==='livre') encLivre(body); else encGuia(body); };
+  document.getElementById('encModel').onchange = go; go();
+}
+
+/* ---- modelo livre ---- */
+const EL_IDS = ['elDest','elSetor','elMotivo','elIdade','elResumo','elExames','elDx','elCond','elPA','elFC','elFR','elSat','elTax','elGli','elGcs','elEstado','elTransp','elAcomp'];
+function elVal(id){ const el=document.getElementById(id); if(el){ DOCS.el[id]=el.value; } return (DOCS.el[id]||'').trim(); }
+function elVitais(){
+  const a=[]; const v=(id,lab,un)=>{ const x=elVal(id); if(x) a.push(lab+' '+x+(un||'')); };
+  v('elPA','PA',' mmHg'); v('elFC','FC',' bpm'); v('elFR','FR',' irpm'); v('elSat','SatO₂',' %'); v('elTax','Tax',' °C'); v('elGli','Glicemia',' mg/dL'); v('elGcs','Glasgow','');
+  return a.join(' · ');
+}
+function elPrintHtml(){
+  const p = dcReadProfile(), pt = dcReadPatient(); const U = id=>elVal(id).toUpperCase();
+  const sec = (t,v)=> v ? `<div class="pr-pt"><b>${t}:</b><br>${encNl(v)}</div>` : '';
+  const head = `<div class="pr-pt"><b>Paciente:</b> ${esc((pt.nome||'______________________').toUpperCase())}${elVal('elIdade')?' &nbsp;·&nbsp; <b>Idade:</b> '+esc(elVal('elIdade')):''}${pt.cpf?' &nbsp;·&nbsp; <b>CPF:</b> '+esc(pt.cpf):''}</div>`;
+  const dest = [elVal('elDest')&&('<b>Para:</b> '+esc(U('elDest'))), elVal('elSetor')&&('<b>Setor/especialidade:</b> '+esc(U('elSetor')))].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  const vit = elVitais();
+  return `<div class="pr-sheet">${dcHeader(p)}<div class="pr-title">ENCAMINHAMENTO / RELATÓRIO MÉDICO</div>${head}${dest?`<div class="pr-pt">${dest}</div>`:''}
+    ${sec('Motivo do encaminhamento', U('elMotivo'))}${sec('Resumo clínico', U('elResumo'))}${sec('Exames / achados', U('elExames'))}${sec('Diagnóstico(s) / CID', U('elDx'))}${sec('Condutas realizadas e medicações em uso', U('elCond'))}
+    ${vit?`<div class="pr-pt"><b>Sinais vitais na saída:</b> ${esc(vit)}${elVal('elEstado')?' &nbsp;·&nbsp; <b>Estado:</b> '+esc(elVal('elEstado')):''}</div>`:(elVal('elEstado')?`<div class="pr-pt"><b>Estado:</b> ${esc(elVal('elEstado'))}</div>`:'')}
+    ${elVal('elTransp')?`<div class="pr-pt"><b>Transporte:</b> ${esc(elVal('elTransp'))}${elVal('elAcomp')?' &nbsp;·&nbsp; <b>Acompanhante:</b> '+esc(elVal('elAcomp')):''}</div>`:''}
+    ${dcFooter(p, pt)}</div>`;
+}
+function elText(){
+  const pt = dcReadPatient(); const U = id=>elVal(id).toUpperCase(); const L = [];
+  L.push('ENCAMINHAMENTO — '+dcBR(pt.data));
+  L.push('PACIENTE: '+(pt.nome||'').toUpperCase()+(elVal('elIdade')?' — '+elVal('elIdade'):''));
+  if(U('elDest')) L.push('PARA: '+U('elDest')+(U('elSetor')?' / '+U('elSetor'):''));
+  if(U('elMotivo')) L.push('MOTIVO: '+U('elMotivo')); if(U('elResumo')) L.push('RESUMO CLÍNICO: '+U('elResumo')); if(U('elExames')) L.push('EXAMES: '+U('elExames'));
+  if(U('elDx')) L.push('DIAGNÓSTICO(S): '+U('elDx')); if(U('elCond')) L.push('CONDUTAS REALIZADAS: '+U('elCond'));
+  const v = elVitais(); if(v) L.push('SINAIS VITAIS NA SAÍDA: '+v.toUpperCase()+(elVal('elEstado')?' — '+elVal('elEstado').toUpperCase():''));
+  if(elVal('elTransp')) L.push('TRANSPORTE: '+elVal('elTransp').toUpperCase()+(elVal('elAcomp')?' — ACOMPANHANTE: '+elVal('elAcomp').toUpperCase():''));
+  return L.join('\n');
+}
+function encLivre(pane){
+  DOCS.el = DOCS.el || {}; const st = DOCS.el; if(st.elDx===undefined && DOCS.dx) st.elDx = DOCS.dx;
+  const fi = (id,label,ph,type)=>`<div class="calcfield"><label for="${id}">${label}</label><input type="${type||'text'}" id="${id}" placeholder="${escA(ph||'')}" value="${escA(st[id]||'')}" autocomplete="off"></div>`;
+  const ta = (id,label,rows)=>`<div class="calcfield"><label for="${id}">${label}</label><textarea id="${id}" rows="${rows||3}">${esc(st[id]||'')}</textarea></div>`;
+  const sl = (id,label,opts)=>`<div class="calcfield"><label for="${id}">${label}</label><select id="${id}">${opts.map(o=>`<option value="${escA(o)}"${(st[id]||'')===o?' selected':''}>${o||'—'}</option>`).join('')}</select></div>`;
+  pane.innerHTML = `<div class="sep-note info"><b>Relatório de encaminhamento / transferência.</b> Usa o cabeçalho e a assinatura de "Meus dados". Nome e data vêm do bloco "Paciente". Para transferência com regulação (vaga zero, CROSS/CRUE), siga o fluxo da regulação; este relatório é o resumo clínico que acompanha o paciente.</div>
+    <div class="calcgrid">${fi('elDest','Destino (serviço / médico)','Ex: Hospital ... / Dr(a). ...')}${fi('elSetor','Setor / especialidade','Ex: Ortopedia, UTI, Cirurgia geral')}${fi('elIdade','Idade','Ex: 41 anos')}</div>
+    ${ta('elMotivo','Motivo do encaminhamento',2)}${ta('elResumo','Resumo clínico (história, exame físico, evolução no PS)',5)}${ta('elExames','Exames e achados relevantes',3)}
+    <div class="rxtools"><button class="sep-ghost" type="button" id="elPull">↧ Puxar lista da aba Exames</button></div>
+    <div class="calcgrid">${fi('elDx','Diagnóstico(s) / CID','Ex: S82.6 — Fratura de maléolo lateral')}</div>
+    ${ta('elCond','Condutas realizadas e medicações em uso (doses e horários)',4)}
+    <div class="calcgrid">${fi('elPA','PA (mmHg)','120/80')}${fi('elFC','FC (bpm)','')}${fi('elFR','FR (irpm)','')}${fi('elSat','SatO₂ (%)','')}${fi('elTax','Tax (°C)','')}${fi('elGli','Glicemia (mg/dL)','')}${fi('elGcs','Glasgow','')}
+      ${sl('elEstado','Estado na saída',['','Estável','Estável com monitorização','Instável','Grave'])}${sl('elTransp','Transporte',['','Transporte próprio','Ambulância de transporte básico','Ambulância com suporte avançado (UTI móvel)'])}${fi('elAcomp','Acompanhante (opcional)','')}</div>
+    <div class="rxtools"><button class="cp-btn" type="button" id="elCopy">Copiar texto</button> <button class="cp-btn" type="button" id="elPdf">Gerar PDF / imprimir</button> <button class="sep-ghost" type="button" id="elClear">Limpar campos</button></div>`;
+  EL_IDS.forEach(id=>{ const el=document.getElementById(id); if(el){ el.addEventListener('input', ()=>{ st[id]=el.value; }); el.addEventListener('change', ()=>{ st[id]=el.value; }); } });
+  document.getElementById('elPull').onclick = ()=>{ if(!DOCS.exams.length){ showToast('Nenhum exame na aba Exames', true); return; } const el=document.getElementById('elExames'); el.value = (el.value?el.value+'; ':'')+DOCS.exams.join(', '); st.elExames = el.value; };
+  document.getElementById('elCopy').onclick = e=>dcCopy(elText(), e.target);
+  document.getElementById('elPdf').onclick = ()=>dcPrint(elPrintHtml());
+  document.getElementById('elClear').onclick = ()=>{ DOCS.el = {}; encLivre(pane); };
+}
+
+/* ---- passagem de plantão I-PASS (sem servidor; só sessionStorage da aba) ---- */
+const IP_KEY = 'plantaoref_ipass_session';
+const IP_SEV = [['critico','Crítico'],['instavel','Instável'],['obs','Observação'],['estavel','Estável']];
+function ipLoad(){ if(!DOCS.ip){ DOCS.ip = dcSafe(()=>JSON.parse(sessionStorage.getItem(IP_KEY)||'[]')) || []; } return DOCS.ip; }
+function ipSave(){ dcSafe(()=>sessionStorage.setItem(IP_KEY, JSON.stringify(DOCS.ip||[]))); }
+function ipSevLabel(k){ const f = IP_SEV.find(x=>x[0]===k); return f?f[1]:'—'; }
+function ipSorted(){ const o = {critico:0,instavel:1,obs:2,estavel:3}; return ipLoad().map((x,i)=>({x,i})).sort((a,b)=>(o[a.x.sev]-o[b.x.sev])||(a.i-b.i)).map(z=>z.x); }
+function ipText(){
+  const p = dcProfile(); const now = new Date(); const dt = dcBR(dcTodayISO())+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const L = ['PASSAGEM DE PLANTÃO (I-PASS) — '+dt+(p.nome?' — PASSA: '+p.nome.toUpperCase():'')+'', ''];
+  ipSorted().forEach(x=>{
+    L.push('LEITO '+(x.leito||'—').toUpperCase()+(x.ident?' — '+x.ident.toUpperCase():'')+' — '+ipSevLabel(x.sev).toUpperCase());
+    if(x.p) L.push('P: '+x.p.toUpperCase()); if(x.a) L.push('A: '+x.a.toUpperCase()); if(x.s) L.push('S: '+x.s.toUpperCase());
+    L.push('S (READ-BACK): '+(x.rb?'CONFIRMADO':'PENDENTE')); L.push('');
+  });
+  return L.join('\n').trim();
+}
+function ipPrintHtml(){
+  const p = dcProfile(); const now = new Date(); const dt = dcBR(dcTodayISO())+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const body = ipSorted().map(x=>`<div class="ipp"><b>LEITO ${esc((x.leito||'—').toUpperCase())}${x.ident?' — '+esc(x.ident.toUpperCase()):''} — ${esc(ipSevLabel(x.sev).toUpperCase())}</b>
+    ${x.p?`<div><b>P:</b> ${encNl(x.p.toUpperCase())}</div>`:''}${x.a?`<div><b>A:</b> ${encNl(x.a.toUpperCase())}</div>`:''}${x.s?`<div><b>S:</b> ${encNl(x.s.toUpperCase())}</div>`:''}<div><b>Read-back:</b> ${x.rb?'confirmado':'pendente'}</div></div>`).join('');
+  return `<div class="pr-sheet ip-print"><div class="pr-title" style="margin:0 0 8px;">PASSAGEM DE PLANTÃO (I-PASS)</div><div class="pr-pt">${esc(dt)}${p.nome?' — Passa: '+esc(p.nome):''}${p.unidade?' — '+esc(p.unidade):''}</div>${body}</div>`;
+}
+function ipShow(pane){
+  const list = ipLoad(); DOCS.ipSev = DOCS.ipSev || 'estavel'; DOCS.ipEdit = (DOCS.ipEdit===undefined)?-1:DOCS.ipEdit;
+  const cur = DOCS.ipEdit>=0 ? (list[DOCS.ipEdit]||{}) : {}; if(DOCS.ipEdit>=0) DOCS.ipSev = cur.sev||'estavel';
+  const ta = (id,label,v,rows,ph)=>`<div class="calcfield"><label for="${id}">${label}</label><textarea id="${id}" rows="${rows}" placeholder="${escA(ph||'')}">${esc(v||'')}</textarea></div>`;
+  pane.innerHTML = `<div class="sep-note warn"><b>Privacidade:</b> use <b>leito e iniciais</b>, não o nome completo. Os dados ficam só nesta aba do navegador (somem ao fechá-la) e não vão para servidor. Use "Limpar tudo" ao terminar o plantão.</div>
+    <div class="calcgrid"><div class="calcfield"><label for="ipLeito">Leito</label><input type="text" id="ipLeito" placeholder="Ex: 101A" value="${escA(cur.leito||'')}" autocomplete="off"></div><div class="calcfield"><label for="ipId">Iniciais / identificação</label><input type="text" id="ipId" placeholder="Ex: M.S., 67a" value="${escA(cur.ident||'')}" autocomplete="off"></div></div>
+    <div class="calcfield"><label>I — Gravidade (illness severity)</label><div class="ipchips" id="ipChips">${IP_SEV.map(s=>`<button type="button" data-s="${s[0]}" class="${DOCS.ipSev===s[0]?'on':''}">${s[1]}</button>`).join('')}</div></div>
+    ${ta('ipP','P — Resumo do paciente (história, evolução em 24 h, exames relevantes)',cur.p,3,'Ex: HAS/DM2, admitido por pneumonia, dia 2 de ceftriaxona, O₂ 2 L/min…')}
+    ${ta('ipA','A — Ações / pendências',cur.a,2,'Ex: colher hemocultura, reavaliar RX às 18 h, ajustar insulina')}
+    ${ta('ipS','S — Consciência situacional e plano de contingência',cur.s,2,'Ex: se SatO₂ <90% → ↑O₂ e chamar plantonista; se PAS <90 → SF 500 mL e avisar')}
+    <div class="rxtools"><button class="cp-btn" type="button" id="ipAdd">${DOCS.ipEdit>=0?'Salvar alterações':'＋ Adicionar paciente'}</button>${DOCS.ipEdit>=0?' <button class="sep-ghost" type="button" id="ipCancel">Cancelar edição</button>':''}</div>
+    <div id="ipList">${ipSorted().length?'':'<div class="sep-sub">Nenhum paciente na passagem.</div>'}${ipSorted().map(x=>{ const idx = list.indexOf(x); return `<div class="ipcard"><div class="iph"><span>Leito ${esc(x.leito||'—')}${x.ident?' — '+esc(x.ident):''}</span><span class="ipsev s-${x.sev}">${ipSevLabel(x.sev)}</span></div>
+      ${x.p?`<div><b>P:</b> ${encNl(x.p)}</div>`:''}${x.a?`<div><b>A:</b> ${encNl(x.a)}</div>`:''}${x.s?`<div><b>S:</b> ${encNl(x.s)}</div>`:''}
+      <label class="chkrow"><input type="checkbox" data-rb="${idx}"${x.rb?' checked':''}> S — Read-back confirmado pelo receptor</label>
+      <div class="rxtools"><button class="sep-ghost" type="button" data-ed="${idx}">Editar</button> <button class="sep-ghost" type="button" data-rm="${idx}">Remover</button></div></div>`; }).join('')}</div>
+    <div class="rxtools"><button class="cp-btn" type="button" id="ipCopy">Copiar passagem</button> <button class="cp-btn" type="button" id="ipPdf">Gerar PDF / imprimir</button> <button class="sep-ghost" type="button" id="ipClear">Limpar tudo</button></div>
+    <details class="sep-sources"><summary>Sobre o I-PASS</summary>Método estruturado de passagem de plantão: <b>I</b>llness severity, <b>P</b>atient summary, <b>A</b>ction list, <b>S</b>ituation awareness &amp; contingency, <b>S</b>ynthesis by receiver (read-back). Starmer et al., <i>N Engl J Med</i> 2014 (redução de eventos adversos evitáveis). A saída ordena por gravidade (crítico primeiro). Ferramenta de apoio: o registro oficial continua sendo o do prontuário/serviço.</details>`;
+  pane.querySelectorAll('#ipChips button').forEach(b=>b.onclick=()=>{ DOCS.ipSev = b.dataset.s; pane.querySelectorAll('#ipChips button').forEach(x=>x.classList.toggle('on', x===b)); });
+  const g = id=>(document.getElementById(id).value||'').trim();
+  document.getElementById('ipAdd').onclick = ()=>{
+    const item = { leito:g('ipLeito'), ident:g('ipId'), sev:DOCS.ipSev, p:g('ipP'), a:g('ipA'), s:g('ipS'), rb:false };
+    if(!item.leito && !item.ident){ showToast('Informe o leito ou as iniciais', true); return; }
+    if(DOCS.ipEdit>=0){ item.rb = list[DOCS.ipEdit].rb; list[DOCS.ipEdit] = item; DOCS.ipEdit = -1; } else list.push(item);
+    DOCS.ipSev = 'estavel'; ipSave(); ipShow(pane);
+  };
+  const cn = document.getElementById('ipCancel'); if(cn) cn.onclick = ()=>{ DOCS.ipEdit = -1; ipShow(pane); };
+  pane.querySelectorAll('[data-ed]').forEach(b=>b.onclick=()=>{ DOCS.ipEdit = parseInt(b.dataset.ed,10); ipShow(pane); window.scrollTo({top:0, behavior:'smooth'}); });
+  pane.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ list.splice(parseInt(b.dataset.rm,10),1); DOCS.ipEdit = -1; ipSave(); ipShow(pane); });
+  pane.querySelectorAll('[data-rb]').forEach(c=>c.onchange=()=>{ list[parseInt(c.dataset.rb,10)].rb = c.checked; ipSave(); });
+  document.getElementById('ipCopy').onclick = e=>{ if(!list.length){ showToast('Passagem vazia', true); return; } dcCopy(ipText(), e.target); };
+  document.getElementById('ipPdf').onclick = ()=>{ if(!list.length){ showToast('Passagem vazia', true); return; } dcPrint(ipPrintHtml()); };
+  document.getElementById('ipClear').onclick = ()=>{ if(!list.length) return; if(window.confirm('Apagar todos os pacientes da passagem?')){ list.length = 0; DOCS.ipEdit = -1; ipSave(); ipShow(pane); } };
+}
 
 
 /* ============ BUSCA (UI) + FONTE AJUSTÁVEL + CONDUTAS PEDIÁTRICAS ============ */
