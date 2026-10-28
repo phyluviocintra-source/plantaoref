@@ -1281,7 +1281,9 @@ function buildCards(){
 
     const body = document.createElement('div');
     body.className = 'card-body';
-    body.innerHTML = pkgBoxHtml(sec.id) + parseRaw(sec.raw, sec.id);
+    body.innerHTML = pkgBoxHtml(sec.id) + parseRaw((sec.raw||'').replace(/^TOOL:.*$/m,''), sec.id);
+    { const tm = /^TOOL:(\w+)/m.exec(sec.raw||''); if(tm){ const host = document.createElement('div'); host.className = 'toolhost'; body.appendChild(host); const fnN = {cidbusca:'calcCidBusca', lab:'calcLab'}[tm[1]];
+      details.addEventListener('toggle', ()=>{ if(details.open && !host.dataset.on && typeof window[fnN]==='function'){ host.dataset.on='1'; window[fnN](host); } }); } }
 
     // anotações pessoais
     const noteWrap = document.createElement('div');
@@ -1862,12 +1864,10 @@ const CALCULATORS = [
   {id:'peddose', label:'Pediatria: dose por peso'},
   {id:'pedemerg', label:'Pediatria: emergência (PALS)'},
   {id:'rcp', label:'Metrônomo de RCP'},
-  {id:'cidbusca', label:'Busca CID-10'},
-  {id:'lab', label:'Compactador de exames'},
   {id:'diluicoes', label:'Guia de diluições'}
 ];
-const CALC_GROUPS = {"glasgow": "Neurologia", "cha2ds2vasc": "Cardiologia", "framingham": "Cardiologia", "curb65": "Infectologia e sepse", "wellsdvt": "Pulmão e tromboembolismo", "wellspe": "Pulmão e tromboembolismo", "nihss": "Neurologia", "heart": "Cardiologia", "renal": "Rim, metabólico e endócrino", "infusao": "Doses e conversões", "insulina": "Rim, metabólico e endócrino", "gaso": "Rim, metabólico e endócrino", "grace": "Cardiologia", "pps": "Paliativos", "perc": "Pulmão e tromboembolismo", "spesi": "Pulmão e tromboembolismo", "qsofa": "Infectologia e sepse", "gbs": "Abdome, fígado e gastro", "alvarado": "Abdome, fígado e gastro", "cchr": "Trauma", "abcd2": "Neurologia", "hasbled": "Cardiologia", "anest": "Doses e conversões", "conv": "Doses e conversões", "years": "Pulmão e tromboembolismo", "geneva": "Pulmão e tromboembolismo", "hestia": "Pulmão e tromboembolismo", "padua": "Pulmão e tromboembolismo", "edacs": "Cardiologia", "sfsr": "Cardiologia", "oesil": "Cardiologia", "qtc": "Cardiologia", "psi": "Infectologia e sepse", "mascc": "Infectologia e sepse", "nexus": "Trauma", "pecarn": "Pediatria", "mrs": "Neurologia", "childpugh": "Abdome, fígado e gastro", "meld": "Abdome, fígado e gastro", "ranson": "Abdome, fígado e gastro", "stone": "Rim, metabólico e endócrino", "cacorr": "Rim, metabólico e endócrino", "ciwa": "Psiquiatria e toxicologia", "downes": "Pediatria", "eletro": "Rim, metabólico e endócrino", "peddose": "Pediatria", "pedemerg": "Pediatria", "rcp": "Cardiologia", "cidbusca": "Códigos e documentos", "lab": "Códigos e documentos", "diluicoes": "Doses e conversões"};
-const CALC_GROUP_ORDER = ["Cardiologia", "Pulmão e tromboembolismo", "Neurologia", "Infectologia e sepse", "Trauma", "Abdome, fígado e gastro", "Rim, metabólico e endócrino", "Psiquiatria e toxicologia", "Pediatria", "Paliativos", "Doses e conversões", "Códigos e documentos"];
+const CALC_GROUPS = {"glasgow": "Neurologia", "cha2ds2vasc": "Cardiologia", "framingham": "Cardiologia", "curb65": "Infectologia e sepse", "wellsdvt": "Pulmão e tromboembolismo", "wellspe": "Pulmão e tromboembolismo", "nihss": "Neurologia", "heart": "Cardiologia", "renal": "Rim, metabólico e endócrino", "infusao": "Doses e conversões", "insulina": "Rim, metabólico e endócrino", "gaso": "Rim, metabólico e endócrino", "grace": "Cardiologia", "pps": "Paliativos", "perc": "Pulmão e tromboembolismo", "spesi": "Pulmão e tromboembolismo", "qsofa": "Infectologia e sepse", "gbs": "Abdome, fígado e gastro", "alvarado": "Abdome, fígado e gastro", "cchr": "Trauma", "abcd2": "Neurologia", "hasbled": "Cardiologia", "anest": "Doses e conversões", "conv": "Doses e conversões", "years": "Pulmão e tromboembolismo", "geneva": "Pulmão e tromboembolismo", "hestia": "Pulmão e tromboembolismo", "padua": "Pulmão e tromboembolismo", "edacs": "Cardiologia", "sfsr": "Cardiologia", "oesil": "Cardiologia", "qtc": "Cardiologia", "psi": "Infectologia e sepse", "mascc": "Infectologia e sepse", "nexus": "Trauma", "pecarn": "Pediatria", "mrs": "Neurologia", "childpugh": "Abdome, fígado e gastro", "meld": "Abdome, fígado e gastro", "ranson": "Abdome, fígado e gastro", "stone": "Rim, metabólico e endócrino", "cacorr": "Rim, metabólico e endócrino", "ciwa": "Psiquiatria e toxicologia", "downes": "Pediatria", "eletro": "Rim, metabólico e endócrino", "peddose": "Pediatria", "pedemerg": "Pediatria", "rcp": "Cardiologia", "diluicoes": "Doses e conversões"};
+const CALC_GROUP_ORDER = ["Cardiologia", "Pulmão e tromboembolismo", "Neurologia", "Infectologia e sepse", "Trauma", "Abdome, fígado e gastro", "Rim, metabólico e endócrino", "Psiquiatria e toxicologia", "Pediatria", "Paliativos", "Doses e conversões"];
 
 function buildCalcIndex(){
   const wrap = document.getElementById('calcIndexWrap');
@@ -1942,8 +1942,6 @@ function renderCalculator(id){
     peddose: calcPedDose,
     pedemerg: calcPedEmerg,
     rcp: calcRcp,
-    cidbusca: calcCidBusca,
-    lab: calcLab,
     diluicoes: calcDil
   };
   area.innerHTML = '';
